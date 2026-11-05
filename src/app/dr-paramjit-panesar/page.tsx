@@ -1,15 +1,20 @@
 import Link from 'next/link';
 import { Phone } from 'lucide-react';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { ButtonLink } from '@/components/ui/Button';
 import { JsonLd } from '@/components/ui/JsonLd';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
+import { BREADCRUMBS } from '@/data/navigation';
 import { PROVIDER, SPECIALTY } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
 import { NPI, OFFICE, PHONES } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
 import { breadcrumbNode, clinicNode, graph, physicianNode, websiteNode } from '@/lib/structured-data';
 import { telHref } from '@/lib/utils';
+
+/** Official state license lookup. A neutral consumer resource: it asserts nothing about Dr. Panesar's license. */
+const LICENSE_LOOKUP_URL = 'https://search.dca.ca.gov/';
 
 export const metadata = buildMetadata({
   title: PAGE_META.panesar.title,
@@ -25,12 +30,11 @@ export default function PanesarPage() {
           websiteNode(),
           clinicNode(),
           physicianNode(),
-          breadcrumbNode('/dr-paramjit-panesar#breadcrumb', [
-            { name: 'Home', path: '/' },
-            { name: PROVIDER.name, path: PAGE_META.panesar.path },
-          ]),
+          breadcrumbNode('/dr-paramjit-panesar#breadcrumb', BREADCRUMBS.panesar),
         )}
       />
+
+      <Breadcrumbs items={BREADCRUMBS.panesar} />
 
       <PageHero title={PROVIDER.name} eyebrow="Apollo Physicians" subtitle={`${SPECIALTY} at Apollo Physicians, ${OFFICE.line}.`}>
         <ButtonLink href={telHref(PHONES.main.tel)} variant="light">
@@ -64,7 +68,18 @@ export default function PanesarPage() {
         </dl>
       </Section>
 
-      <Section headingId="panesar-links-heading" title="Related" tone="muted">
+      <Section headingId="panesar-verify-heading" title="Check a physician's license" tone="muted">
+        <p className="max-w-3xl text-navy-800">
+          California physicians are licensed by the Medical Board of California. You can look up any California physician, including
+          license status, with the{' '}
+          <a href={LICENSE_LOOKUP_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-800 hover:underline">
+            California Department of Consumer Affairs license search<span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          .
+        </p>
+      </Section>
+
+      <Section headingId="panesar-links-heading" title="Related">
         <p className="max-w-3xl text-navy-800">
           Read about{' '}
           <Link href="/" className="font-semibold text-teal-800 hover:underline">

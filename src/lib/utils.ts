@@ -20,6 +20,11 @@ export function mapsDirectionsUrl(query: string): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
 }
 
+/** Google Maps directions link from a named starting area (for example a city) to the office. */
+export function mapsDirectionsFromUrl(origin: string, destination: string): string {
+  return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+}
+
 /** Builds a tel: href from an E.164 value (see PHONES in src/data/site.ts). */
 export function telHref(tel: string): string {
   return `tel:${tel}`;

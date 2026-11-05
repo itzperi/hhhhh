@@ -5,8 +5,19 @@ import { cn } from '@/lib/utils';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'light';
 
+/**
+ * Literal class names, so Tailwind's scanner sees every variant. Building the name with a template
+ * string (`btn-${variant}`) made it drop btn-light, btn-outline and btn-secondary from the CSS.
+ */
+const VARIANT_CLASS: Record<ButtonVariant, string> = {
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  outline: 'btn-outline',
+  light: 'btn-light',
+};
+
 export function buttonClasses(variant: ButtonVariant = 'primary', className?: string): string {
-  return cn('btn', `btn-${variant}`, className);
+  return cn('btn', VARIANT_CLASS[variant], className);
 }
 
 interface ButtonLinkProps {

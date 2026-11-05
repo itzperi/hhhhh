@@ -44,9 +44,12 @@ export const PROVIDER = {
   honorificSuffix: 'MD',
 } as const;
 
-/** Elk Grove has no office. CLIENT: the practice's keyword list says patients travel to Sacramento. */
-export const ELK_GROVE_NOTE =
-  'Apollo Physicians does not operate an Elk Grove office. Elk Grove patients see providers at the Sacramento office.';
+/**
+ * One office, stated plainly and led with access. Elk Grove patients are seen at the Sacramento office
+ * (CLIENT: the practice's keyword list says patients travel to Sacramento). No drive time is stated:
+ * it must be measured in Google Maps first (docs/seo/client-confirmations.md, item 20).
+ */
+export const ELK_GROVE_NOTE = `Apollo Physicians has one office, in South Sacramento at ${OFFICE.line}. Elk Grove patients are seen there.`;
 
 /** Printed insurance list in reading order, e.g. "Aetna, Cigna, and Medicare". */
 export function insuranceSentence(): string {
@@ -76,8 +79,8 @@ export const HOME_FAQS: readonly FaqItem[] = [
 
 export const ELK_GROVE_FAQS: readonly FaqItem[] = [
   {
-    question: 'Do you have an office in Elk Grove?',
-    answer: ELK_GROVE_NOTE,
+    question: 'Does Apollo Physicians serve patients from Elk Grove?',
+    answer: `Yes. Elk Grove patients are seen at the Apollo Physicians office at ${OFFICE.line}.`,
   },
   {
     question: 'Where should Elk Grove patients go for their visit?',

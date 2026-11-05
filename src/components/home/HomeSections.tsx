@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Calendar, CheckCircle2, MapPin, Phone, Stethoscope, Wallet } from 'lucide-react';
 import { ButtonLink } from '@/components/ui/Button';
+import { MapEmbed } from '@/components/ui/MapEmbed';
 import { Section } from '@/components/ui/Section';
 import { APPOINTMENT_AVAILABILITY, HOME_FAQS, INITIAL_VISIT_PRICE, INSURANCE_ACCEPTED, PROVIDER, SPECIALTY } from '@/data/practice';
 import { OFFICE, PHONES } from '@/data/site';
@@ -14,7 +15,8 @@ export function HomeSections() {
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-lg leading-relaxed text-navy-800">
-              Apollo Physicians is a family medicine practice at {OFFICE.line}. {APPOINTMENT_AVAILABILITY} {INITIAL_VISIT_PRICE}
+              Apollo Physicians is a family medicine practice in South Sacramento at {OFFICE.line}. {APPOINTMENT_AVAILABILITY}{' '}
+              {INITIAL_VISIT_PRICE}
             </p>
             <p className="text-lg leading-relaxed text-navy-800">
               Looking for a family doctor or a primary care doctor in Sacramento? Family medicine is a primary care specialty, and
@@ -40,7 +42,13 @@ export function HomeSections() {
         </div>
       </Section>
 
-      <Section headingId="home-insurance-heading" title="Insurance we accept" tone="muted" description="Accepted plans, as listed by the practice.">
+      <Section
+        id="insurance"
+        headingId="home-insurance-heading"
+        title="Insurance we accept"
+        tone="muted"
+        description={`Accepted plans, as listed by the practice. Call ${PHONES.main.display} to confirm your plan before your visit.`}
+      >
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {INSURANCE_ACCEPTED.map((plan) => (
             <li key={plan} className="card flex items-center gap-2 font-semibold text-navy-900">
@@ -67,11 +75,31 @@ export function HomeSections() {
         </article>
       </Section>
 
-      <Section headingId="home-communities-heading" title="Communities we serve" tone="muted">
+      <Section id="location" headingId="home-location-heading" title="Find the office" tone="muted">
+        <div className="grid gap-8 lg:grid-cols-2">
+          <div className="space-y-4">
+            <address className="text-lg not-italic leading-relaxed text-navy-800">{OFFICE.line}</address>
+            <p className="text-navy-800">The office is the only Apollo Physicians location.</p>
+            <div className="flex flex-wrap gap-3">
+              <ButtonLink href={mapsDirectionsUrl(OFFICE.line)} variant="outline" external>
+                <MapPin className="h-5 w-5" aria-hidden="true" />
+                Get directions
+              </ButtonLink>
+              <ButtonLink href={telHref(PHONES.main.tel)} variant="primary">
+                <Phone className="h-5 w-5" aria-hidden="true" />
+                Call {PHONES.main.display}
+              </ButtonLink>
+            </div>
+          </div>
+          <MapEmbed query={OFFICE.line} title={`Map of the Apollo Physicians office at ${OFFICE.line}`} />
+        </div>
+      </Section>
+
+      <Section headingId="home-communities-heading" title="Communities we serve">
         <div className="card max-w-3xl space-y-3">
           <p className="text-navy-800">
-            Patients from Elk Grove see providers at our Sacramento office. Our Elk Grove page explains how to get here and what to
-            expect.
+            Apollo Physicians has one office, in South Sacramento. Elk Grove patients are seen there, and our Elk Grove page explains
+            how to get here and what to expect.
           </p>
           <Link href="/family-physician-elk-grove" className="inline-flex items-center gap-2 font-semibold text-teal-800 hover:underline">
             <MapPin className="h-5 w-5" aria-hidden="true" />

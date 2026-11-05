@@ -1,5 +1,6 @@
 import { CheckCircle2, MapPin, Phone, Stethoscope } from 'lucide-react';
 import { ButtonLink } from '@/components/ui/Button';
+import { InsurancePills } from '@/components/ui/InsurancePills';
 import { APPOINTMENT_AVAILABILITY, INITIAL_VISIT_PRICE, PROVIDER } from '@/data/practice';
 import { OFFICE, PHONES } from '@/data/site';
 import { mapsDirectionsUrl, telHref } from '@/lib/utils';
@@ -34,7 +35,9 @@ export function HomeHero() {
             </ButtonLink>
           </div>
 
-          <ul className="mt-8 grid gap-2 text-sm text-navy-100 sm:grid-cols-2">
+          <InsurancePills href="#insurance" tone="dark" className="mt-8" />
+
+          <ul className="mt-6 grid gap-2 text-sm text-navy-100 sm:grid-cols-2">
             <li className="flex items-start gap-2">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-300" aria-hidden="true" />
               <span>{APPOINTMENT_AVAILABILITY}</span>

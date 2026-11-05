@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { MapPin, Phone } from 'lucide-react';
-import { FOOTER_COLUMNS, LOCATION_MENU } from '@/data/navigation';
+import { FOOTER_COLUMNS } from '@/data/navigation';
 import { BRAND, OFFICE, PHONES } from '@/data/site';
 import { mapsDirectionsUrl, telHref } from '@/lib/utils';
 
 /**
- * Site footer: contact details, the page links, and the location list. The copyright
- * year is computed at build time.
+ * Site footer: contact details and the page links. There is one office, so there is no location
+ * list. The copyright year is computed at build time.
  */
 export function Footer() {
   const year = new Date().getFullYear();
@@ -17,7 +17,7 @@ export function Footer() {
         Site footer
       </h2>
 
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
         <div>
           <p className="text-xl font-bold text-white">{BRAND.name}</p>
           <p className="mt-4 text-sm leading-relaxed">Family medicine in Sacramento, California.</p>
@@ -37,6 +37,9 @@ export function Footer() {
               </a>
             </p>
           </address>
+          <a href={mapsDirectionsUrl(OFFICE.line)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-[24px] items-center text-sm font-semibold text-teal-200 hover:underline">
+            Get directions to the office<span className="sr-only"> (opens in a new tab)</span>
+          </a>
         </div>
 
         {FOOTER_COLUMNS.map((column) => (
@@ -60,30 +63,6 @@ export function Footer() {
           </nav>
         ))}
 
-        <nav aria-label="Locations" className="md:col-span-2 lg:col-span-4">
-          <h3 className="text-sm font-bold text-white">Locations</h3>
-          <div className="mt-4 grid gap-6 text-sm sm:grid-cols-2">
-            {LOCATION_MENU.map((group) => (
-              <div key={group.label}>
-                <Link href={group.href} className="font-semibold text-teal-200 hover:underline">
-                  {group.label}
-                </Link>
-                <ul className="mt-1.5 space-y-1.5">
-                  {group.items.map((item) => (
-                    <li key={item.href}>
-                      <Link href={item.href} className="inline-flex min-h-[24px] items-center rounded hover:text-white hover:underline">
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <a href={mapsDirectionsUrl(OFFICE.line)} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block text-sm font-semibold text-teal-200 hover:underline">
-            Get directions to the office<span className="sr-only"> (opens in a new tab)</span>
-          </a>
-        </nav>
       </div>
 
       <div className="border-t border-navy-700">

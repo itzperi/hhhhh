@@ -182,3 +182,12 @@ Live pages load no third-party scripts. The only third-party URLs are outbound l
 
 - `docs/seo-audit-2026-11-02.docx` is an audit of a **different organisation's site (chcahealth.org)**. It does not belong in this repo. `docs/apollo-seo-full-audit-2026-11-04.docx` is out of date: it says apollophysicians.com does not resolve, which is no longer true, and it states `FamilyPractice` is valid, which is wrong.
 - The git repository root is `C:\Users\itzme` (the home folder), the branch has **no commits**, and this project folder is untracked inside it. "One commit group per step" needs a repository for this project. Decision needed (see summary).
+
+## 11. Step 3 notes (5 Nov 2026)
+
+Added after the audit, found while building Step 3:
+- **Unstyled buttons on the live site.** `btn-light`, `btn-outline` and `btn-secondary` had no CSS in the production build, because Tailwind cannot see class names assembled as `` `btn-${variant}` ``. The hero Call button on the Elk Grove and Dr. Panesar pages and the 404 page, and the outline "Get directions" buttons, were rendering unstyled. Fixed in `Button.tsx` with literal class names.
+
+Built from confirmed facts only: plain primary navigation (no Locations menu), visible breadcrumbs that feed the BreadcrumbList schema, plan pills above the fold on `/` and `/family-physician-elk-grove`, a click-to-load map (nothing is requested from Google until the visitor presses the button), "Directions from Elk Grove" (a Google Maps link, so no drive time is stated by us), access-led Elk Grove copy that states one office and never an absence, and a neutral link to the state license lookup on the physician page.
+
+Not built, blocked on `client-confirmations.md`: services list, hours, first-visit content, physician bio, photo, credentials, drive time, parking, `/insurance-and-pricing` (needs verified-date, plan restrictions and what the $65 covers) and `/same-day-appointments` (needs the policy and cut-off times).
