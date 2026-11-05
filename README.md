@@ -2,28 +2,49 @@
 
 Website for Apollo Physicians, a family medicine practice at 8191 Timberlake Way, Suite 200, Sacramento, CA 95823. Built with Next.js.
 
-**Reference domain:** https://www.apollophysicians.com (the deployment domain is confirmed separately; override with `NEXT_PUBLIC_SITE_URL`).
+**Domain:** https://www.apollophysicians.com. The site URL is pinned in `src/data/site.ts`.
 
 **Stack:** Next.js 14.2 (App Router) · React 18 · TypeScript (strict) · Tailwind CSS 3 · lucide-react · Vitest
 
-## Pages
+This is a medical (YMYL) site. **Publish only confirmed facts.** The list of what is confirmed is `docs/seo/client-confirmations.md`; read it before adding any claim.
+
+## Pages and files served
 
 | Route | Purpose |
 |---|---|
 | `/` | Family Physician in Sacramento (canonical page for that phrase) |
-| `/family-physician-elk-grove` | Elk Grove patients: how to get here, booking and FAQs |
+| `/family-physician-elk-grove` | Elk Grove patients: how to get to the one Sacramento office, booking, FAQs |
 | `/dr-paramjit-panesar` | Provider page for Dr. Paramjit Panesar, MD |
+| `/sitemap.xml`, `/robots.txt`, `/llms.txt` | Generated from the data files |
 
-Other former routes return 404 or redirect (see `next.config.mjs`).
+Old URLs from the previous site: some redirect, some return 410, the rest return 404 (see `next.config.mjs` and `docs/seo/audit.md`, section 6).
 
-## Facts and sources
+## Where the facts live
 
-Every claim on the site is listed in `src/data/practice.ts`, with its source:
+| What | File |
+|---|---|
+| Phone, address, brand, map pin, profile links, booking URL | `src/data/site.ts` (the only place they may appear as literals; a test enforces this) |
+| Copy, FAQs, plans, price, the `LLMS_CONFIRMED` switches | `src/data/practice.ts` |
+| Titles, descriptions, sitemap dates | `src/data/pages.ts` |
+| Navigation and breadcrumbs | `src/data/navigation.ts` |
+| AI crawler policy (decided: allow all) | `src/data/crawlers.ts` |
+| Schema.org JSON-LD | `src/lib/structured-data.ts` |
 
-- **NPPES registry** (CMS): NPI 1124405584 (organisation, address, phone) and NPI 1982892659 (Dr. Panesar). Taxonomy 207Q00000X, Family Medicine.
-- **Supplied by the practice** (marked CLIENT in the code): the insurance list, the $65 initial-visit price, and the same-day and next-day appointment wording. These must be re-checked against the live site before launch.
+Not yet confirmed by the practice but still published (from the previous site): the nine accepted plans, the $65 starting price, and "same-day and next-day appointments". `docs/seo/claims-audit.md` lists every published claim, its status, and the file to edit.
 
-Nothing else is shown: no biographies, office hours, travel times, coordinates or payer names beyond the supplied list.
+## SEO documents (`docs/seo/`)
+
+| File | What it is |
+|---|---|
+| `client-confirmations.md` | Checklist of facts for the practice to confirm. Source of truth for what may be published. |
+| `claims-audit.md` | Every published claim, confirmed or not; what was left out |
+| `audit.md` | The Step 1 audit, redirect map and notes from each later step |
+| `schema-validation.md` | Structured-data fixes and validation results |
+| `ai-crawler-policy.md` | AI crawler options and the owner's decision |
+| `analytics-decision.md` | Click events and the analytics choice (no vendor installed) |
+| `local-gbp-checklist.md` | Google Business Profile, directory corrections, review process, insurer listings |
+| `search-engine-submission.md` | Submitting the sitemap to Google and Bing |
+| `final-report.md` | Summary of the work, and what the practice must do next |
 
 ## Setup
 
@@ -31,10 +52,11 @@ Requires Node.js 18.18 or later.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
-npm test             # unit tests (Vitest)
-npm run build        # production build
-node scripts/verify-apollo-pivot.mjs   # checks the compiled output in .next
+npm run dev
+npm test
+npm run build
+node scripts/verify-apollo-pivot.mjs   # checks the compiled output in .next (run after build)
+npm run validate:schema                # checks the JSON-LD against schema.org (run after build)
 ```
 
 | Script | What it does |
@@ -44,14 +66,15 @@ node scripts/verify-apollo-pivot.mjs   # checks the compiled output in .next
 | `npm start` | Serve the production build |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript, no emit |
-| `npm test` | Unit tests |
+| `npm test` | Unit tests (Vitest) |
+| `npm run validate:schema` | JSON-LD against the schema.org vocabulary |
 
-## Open items before launch
+## Before each release
 
-- Confirm the CLIENT facts above against the live apollophysicians.com pages.
-- Dr. Panesar's biography, photo and credentials (not supplied, so not shown).
-- Privacy policy and terms of use (not supplied, so the pages are not linked yet).
-- Office hours and telephone line hours (not supplied).
-- Whether the practice has an Elk Grove presence (the copy says it does not).
-- Legal business name: the NPI registry spells it "APOLLO PHYSICANS MEDICAL GROUP", which may be a typo. `BRAND.legalName` stays `null` (and is not shown) until the practice confirms it.
-- `llms.txt` is generated by `src/lib/llms.ts (served by src/app/llms.txt/route.ts)` from the data files; there is no static copy in `public/`.
+1. `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`, then the two scripts above.
+2. Update `lastModified` in `src/data/pages.ts` for any page whose content changed.
+3. After deploy: Rich Results Test and validator.schema.org on the live URLs, and Search Console sitemap status (see `docs/seo/schema-validation.md` and `search-engine-submission.md`).
+
+## Open items
+
+All open questions are in `docs/seo/client-confirmations.md` and `docs/seo/final-report.md`. The ones that block the most content: hours, new-patient status, credentials, the legal business name, and who operates the office.

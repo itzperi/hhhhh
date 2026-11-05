@@ -11,8 +11,14 @@ import './globals.css';
 /** Body and UI text. A clean, open sans with good numerals for phone numbers and prices. */
 const sans = Figtree({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 
-/** Headings. A warm, readable serif that suits a family practice. */
-const display = Newsreader({ subsets: ['latin'], variable: '--font-display', display: 'swap', adjustFontFallback: false });
+/**
+ * Headings. A warm, readable serif that suits a family practice.
+ *
+ * display: 'optional' means the font is used only if it is ready at first paint (it is preloaded, so it
+ * usually is) and never swaps in afterwards. A late swap re-flowed the H1 and caused layout shift, and
+ * next/font has no fallback metrics for Newsreader to hide it (adjustFontFallback must stay off).
+ */
+const display = Newsreader({ subsets: ['latin'], variable: '--font-display', display: 'optional', adjustFontFallback: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

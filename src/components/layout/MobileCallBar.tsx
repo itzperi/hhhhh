@@ -15,7 +15,8 @@ export const MOBILE_BAR_HEIGHT_REM = 4.5;
 
 export function MobileCallBar() {
   return (
-    <div
+    <nav
+      aria-label="Quick contact"
       data-placement="mobile_bar"
       className="fixed inset-x-0 bottom-0 z-40 flex h-[4.5rem] items-center border-t border-warm-200 bg-white px-3 md:hidden"
     >
@@ -31,6 +32,6 @@ export function MobileCallBar() {
           </a>
         ) : null}
       </div>
-    </div>
+    </nav>
   );
 }
