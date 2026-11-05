@@ -28,7 +28,7 @@ Note on FAQPage: Google limits FAQ rich results to well-known government and hea
 | Relative `@id` on FAQ and breadcrumb | All `@id` values absolute. |
 | No `WebPage` nodes | One per page (`ProfilePage` for the physician page) linking site, entity, FAQ and breadcrumb. |
 | Home page had a one-item BreadcrumbList that no page shows | Removed. |
-| No `geo`, no map link | Added `geo` (38.45994, -121.41591) and `hasMap`. Coordinates agree between the US Census geocoder and OpenStreetMap Nominatim to within a few metres. |
+| No `geo`, no map link | Added `geo` and `hasMap`. **Corrected in Step 7:** `geo` is now 38.46019, -121.41317, the pin on the practice's own Google Maps listing. The first version (38.45994, -121.41591, from the Census geocoder and OpenStreetMap) was about 240 m west of it. |
 
 ## Deliberately not in the markup (unconfirmed)
 

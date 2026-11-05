@@ -161,7 +161,7 @@ for (const page of PAGES) {
   // Deliberate deviations from the brief: these were not verified, so they must be absent.
   check(`${page.path} omits unverified isAcceptingNewPatients`, !serialised.includes('isAcceptingNewPatients'));
   check(`${page.path} omits unverified Wikidata areaServed`, !serialised.includes('wikidata.org'));
-  check(`${page.path} carries the geo coordinates`, serialised.includes('"latitude":38.45994') && serialised.includes('"longitude":-121.41591'));
+  check(`${page.path} carries the geo coordinates`, serialised.includes('"latitude":38.46019') && serialised.includes('"longitude":-121.41317'));
 
   // Every @id reference must resolve inside the document.
   const refs = [];

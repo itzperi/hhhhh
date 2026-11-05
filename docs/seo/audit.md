@@ -211,3 +211,12 @@ Details and results are in `docs/seo/schema-validation.md`. One finding was miss
 - `llms.txt`: confirmed facts only; unconfirmed facts are gated behind `LLMS_CONFIRMED`.
 - Legacy redirects (finding 4) implemented from the approved map: 301s for the unconditional rows, 410 Gone for cosmetic services, testimonials and the blog, and 404 kept for the on-hold rows. Checked against a local production server. The map was approved on 5 Nov 2026 but was not implemented until this step.
 - Still open for the owner: the `drparamjitpanesar.com` DNS (finding 5), and submission of the sitemap to Google and Bing (`docs/seo/search-engine-submission.md`).
+
+## 15. Step 7 notes (5 Nov 2026): local and off-site
+
+Full detail in `docs/seo/local-gbp-checklist.md`. New findings from reading the live listings:
+- The Google Business Profile exists, is active and shows the right name, category, address and phone, but its **website field points to `drparamjitpanesar.com`**, the parked Hostinger page.
+- Google's pin is about 240 m east of the Census and OpenStreetMap geocodes used in Step 5. `geo` now uses Google's pin (`src/data/site.ts`).
+- A review and the earlier CHCA Health project suggest this office may be linked to another organisation. Unresolved; confirmations item 40.
+- Directory problems: WebMD, Birdeye and (probably) Vitals and Yelp are unclaimed; Superpages shows a wrong phone (916-655-9883); Medifind misspells the name; Dr. Panesar's NPPES record is from 2014.
+- `apollophysicians.riolabz.com` still resolves to a server with an expired TLS certificate and has appeared in search results (a copy of the previous site, found via search). It could not be inspected because the check needed certificate validation turned off, which was not done. The practice or its former web agency should take it down or redirect it.

@@ -45,11 +45,14 @@ export const PHYSICIAN_PROFILE_LIST: readonly ExternalProfile[] = [
 export const PHYSICIAN_PROFILES: readonly string[] = PHYSICIAN_PROFILE_LIST.map((p) => p.url);
 
 /**
- * Office coordinates. Geocoded from the confirmed address with two independent sources that agree
- * to within a few metres: the US Census geocoder (38.45994, -121.41591) and OpenStreetMap Nominatim
- * (38.45991, -121.41593). Rounded to five decimals (about a metre).
+ * Office coordinates: the pin on the practice's own Google Maps listing ("Apollo Physicians", family
+ * practice physician), read on 5 Nov 2026 as 38.4601913, -121.4131662 and rounded to five decimals.
+ * It sits on Timberlake Way next to Highway 99. The US Census geocoder and OpenStreetMap placed the
+ * address about 240 m west (38.45994, -121.41591); street-range geocoders interpolate along the road
+ * and can miss a building set back from it, so the business's own pin is used. The practice should
+ * confirm the pin in its Google Business Profile (docs/seo/client-confirmations.md, item 39).
  */
-export const GEO = { latitude: 38.45994, longitude: -121.41591 } as const;
+export const GEO = { latitude: 38.46019, longitude: -121.41317 } as const;
 
 export const BRAND: { readonly name: string; readonly legalName: string | null } = {
   /** Public-facing brand. Confirmed by the practice. */
