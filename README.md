@@ -1,0 +1,55 @@
+# Apollo Physicians: Website
+
+Website for Apollo Physicians (legal name APOLLO PHYSICANS MEDICAL GROUP), a family medicine practice at 8191 Timberlake Way, Suite 200, Sacramento, CA 95823. Built with Next.js.
+
+**Reference domain:** https://www.apollophysicians.com (the deployment domain is confirmed separately; override with `NEXT_PUBLIC_SITE_URL`).
+
+**Stack:** Next.js 14.2 (App Router) · React 18 · TypeScript (strict) · Tailwind CSS 3 · lucide-react · Vitest
+
+## Pages
+
+| Route | Purpose |
+|---|---|
+| `/` | Family Physician in Sacramento (canonical page for that phrase) |
+| `/family-physician-elk-grove` | Elk Grove patients: how to get here, booking and FAQs |
+| `/dr-paramjit-panesar` | Provider page for Dr. Paramjit Panesar, MD |
+
+Other former routes return 404 or redirect (see `next.config.mjs`).
+
+## Facts and sources
+
+Every claim on the site is listed in `src/data/practice.ts`, with its source:
+
+- **NPPES registry** (CMS): NPI 1124405584 (organisation, legal name, address, phone) and NPI 1982892659 (Dr. Panesar). Taxonomy 207Q00000X, Family Medicine.
+- **Supplied by the practice** (marked CLIENT in the code): the insurance list, the $65 initial-visit price, and the same-day and next-day appointment wording. These must be re-checked against the live site before launch.
+
+Nothing else is shown: no biographies, office hours, travel times, coordinates or payer names beyond the supplied list.
+
+## Setup
+
+Requires Node.js 18.18 or later.
+
+```bash
+npm install
+npm run dev          # http://localhost:3000
+npm test             # unit tests (Vitest)
+npm run build        # production build
+node scripts/verify-apollo-pivot.mjs   # checks the compiled output in .next
+```
+
+| Script | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript, no emit |
+| `npm test` | Unit tests |
+
+## Open items before launch
+
+- Confirm the CLIENT facts above against the live apollophysicians.com pages.
+- Dr. Panesar's biography, photo and credentials (not supplied, so not shown).
+- Privacy policy and terms of use (not supplied, so the pages are not linked yet).
+- Office hours and telephone line hours (not supplied).
+- Whether the practice has an Elk Grove presence (the copy says it does not).
