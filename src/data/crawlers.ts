@@ -34,5 +34,5 @@ export const AI_TRAINING_AGENTS = [
  */
 export type AiCrawlerPolicy = 'allow-all' | 'search-only' | 'block-all';
 
-/** PENDING OWNER DECISION. Left at the pre-existing behavior until the owner chooses. */
+/** DECIDED 5 Nov 2026 by the owner: allow all. See docs/seo/ai-crawler-policy.md to revisit. */
 export const AI_CRAWLER_POLICY: AiCrawlerPolicy = 'allow-all';

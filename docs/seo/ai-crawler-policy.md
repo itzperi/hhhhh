@@ -1,6 +1,6 @@
-# AI crawler policy: owner decision needed
+# AI crawler policy: Option A (allow all) chosen
 
-Prepared 5 Nov 2026 (Step 6). **Status: pending the owner's decision.** Until then `robots.txt` has no AI-specific rules, which is exactly how the site behaved before. Normal search crawlers (Googlebot, Bingbot and the rest) are allowed in every option below.
+Prepared 5 Nov 2026 (Step 6). **Status: DECIDED on 5 Nov 2026 by the owner: Option A, allow all.** `robots.txt` has no AI-specific rules, which is exactly how the site behaved before. The rest of this page is kept as the reasoning and as the way to change the decision later. Normal search crawlers (Googlebot, Bingbot and the rest) are allowed in every option below.
 
 ## The two groups
 
@@ -25,7 +25,7 @@ Not covered by the lists: other AI-related agents (for example Apple's, Meta's o
 
 ## Options
 
-| | A. Allow all (current) | B. Search only (recommended) | C. Block all AI |
+| | A. Allow all (**chosen**) | B. Search only (recommended) | C. Block all AI |
 |---|---|---|---|
 | Search and user-fetch agents | Allowed | Allowed | Blocked |
 | Training agents | Allowed | Blocked | Blocked |
@@ -33,7 +33,7 @@ Not covered by the lists: other AI-related agents (for example Apple's, Meta's o
 | Content used to train models | Allowed | Opted out | Opted out |
 | robots.txt change | none | one constant | one constant |
 
-## Recommendation: B, search only
+## Recommendation at the time: B, search only (not taken; the owner chose A)
 
 Why: the goal is new-patient calls from AI answers, and those come from the search and user-fetch agents, which stay allowed. The training agents bring no citation or call back to the practice. Insurance, pricing and availability on a medical practice's site change, and a model trained on an old copy can repeat stale facts with no link to the page that has the current ones.
 
@@ -44,9 +44,9 @@ Trade-offs to weigh:
 - Blocking `Google-Extended` is documented not to affect Google Search. Google's page does not mention AI Overviews, so blocking it is not documented to affect them either. Google Search rules govern AI Overviews.
 - There is no patient information on the site, so privacy law does not push the decision either way. This is about content reuse.
 
-## How to apply the decision
+## How to change the decision later
 
-Change one line in `src/data/crawlers.ts` and redeploy:
+A is set today. To switch, change one line in `src/data/crawlers.ts` and redeploy:
 
 ```ts
 export const AI_CRAWLER_POLICY: AiCrawlerPolicy = 'search-only'; // or 'allow-all' | 'block-all'
