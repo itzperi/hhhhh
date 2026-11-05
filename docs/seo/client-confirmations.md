@@ -23,7 +23,7 @@ Status key:
 | 11 | Residency | Not confirmed | No | | | |
 | 12 | California license number | Not confirmed | No | NPPES shows the same license value (A114684) on both the organisation and the physician record. That looks like a copy, so do not publish until checked on the Medical Board of California license lookup. | | |
 | 13 | Dr. Panesar NPI 1982892659 | Not confirmed | Yes (provider page, schema, llms.txt) | Exists in NPPES as a Family Medicine physician. Record is stale (see item 5). Client should confirm it is the NPI they want shown and update NPPES. | | |
-| 14 | Organisation NPI 1124405584 | Not confirmed | Yes (schema, llms.txt) | Exists in NPPES. Authorized official listed there is a Dr. Dhaliwal, not Dr. Panesar. Confirm it is still the correct group NPI. | | |
+| 14 | Organisation NPI 1124405584 | Not confirmed | **Removed from schema in Step 5** (no page shows it) | Exists in NPPES. Authorized official listed there is a Dr. Dhaliwal, not Dr. Panesar. Confirm it is still the correct group NPI. | | |
 | 15 | Years in practice | Not confirmed | No | | | |
 | 16 | Languages spoken (physician and staff) | Not confirmed | No | | | |
 | 17 | Other providers at the practice (a 2023 archive of the old site listed Drs. Jaspreet Tiwana and Ramandeep Dhaliwal and a nurse practitioner) | Not confirmed | No | Are any still at this office? If yes they need entries; if no, directories listing them must be corrected. | | |
@@ -40,15 +40,16 @@ Status key:
 | 27 | Telehealth available | Not confirmed | No | A Tebra directory page claims telemedicine and 24/7 phone support. Not confirmed by the practice, so not used. | | |
 | 28 | Online booking URL | Not confirmed | No | If none exists, the mobile bar stays a single Call button. | | |
 | 29 | Patient portal URL | Not confirmed | No | | | |
-| 30 | Legacy phone numbers: which exist, which are in use | Not confirmed | No (none on site) | Found so far: **916-266-7473** is the **fax** number in NPPES for the organisation, so it must not be published as a phone. **916-824-3278** is named in the brief and was not found in any source we checked. Directories show other numbers (916-655-9883 on Superpages; 916-281-5963 for an authorized official; 800-470-0071 and 916-781-1927 on Dr. Panesar's NPPES record). Client to say which are fax, tracking, or dead. | | |
+| 30 | Legacy phone numbers: which exist, which are in use | Not confirmed | No (none on site) | Found so far: **916-266-7473** is the **fax** number in NPPES for the organisation, and Doximity's page for Dr. Panesar also lists it as Fax, so it must not be published as a phone. **916-824-3278** is named in the brief and was not found in any source we checked. Directories show other numbers (916-655-9883 on Superpages; 916-281-5963 for an authorized official; 800-470-0071 and 916-781-1927 on Dr. Panesar's NPPES record). Client to say which are fax, tracking, or dead. | | |
 | 31 | Staff and clinic photos, with written permission to publish | Not confirmed | No (site has no photos) | | | |
-| 32 | Verified profile URLs for `sameAs`: Doximity, WebMD, Sharecare (currently in schema), Google Business Profile, Healthgrades, Zocdoc | Not confirmed | Yes (Doximity, WebMD, Sharecare in schema) | The three URLs are physician profiles, not the clinic's. Client to confirm each is correct and claimed. | | |
+| 32 | Verified profile URLs for `sameAs`: Doximity, WebMD, Sharecare (currently in schema), Google Business Profile, Healthgrades, Zocdoc | Not confirmed | Yes (Doximity and WebMD, on the physician page and in its schema) | Step 5: opened Doximity and WebMD on 5 Nov 2026; both show Dr. Panesar, family medicine, at the Timberlake Way address and 916-236-5800. Sharecare could not be opened (HTTP 403) and was **removed**. These are physician profiles, not the clinic's. Client to confirm they are claimed and correct. | | |
 | 33 | Google Business Profile exists, is verified, and who owns it | Not confirmed | n/a | | | |
 | 34 | Legacy domain drparamjitpanesar.com: does the practice own it, and should it redirect here? | Not confirmed | n/a | Currently a parked Hostinger page. See audit.md. | | |
 | 35 | Old apollophysicians.com site (Tebra/WordPress-style, archived 2023): was it the practice's? Who has the old hosting/DNS and email (MX points to IONOS)? | Not confirmed | n/a | Affects the redirect map. | | |
 | 36 | Privacy policy and notice of privacy practices, and terms | Not confirmed | No | Not linked on the site. Required before any form, chat or analytics goes live. | | |
 | 37 | Clinical review: Dr. Panesar approves any health-information content before publishing | Not confirmed | n/a | Process confirmation. | | |
 | 38 | Analytics: is any analytics, pixel or session tool currently installed on the live site or planned? | Not confirmed | No third-party scripts found on the live site | | | |
+| 39 | Office map coordinates (38.45994, -121.41591) | Not confirmed | Yes, in schema `geo` only | Geocoded from the confirmed address. The US Census geocoder gave 38.459936, -121.415911 and OpenStreetMap Nominatim gave 38.459910, -121.415932, within a few metres. Client may check the pin in Google Business Profile. | | |
 
 ## Hard rules while items are unconfirmed
 

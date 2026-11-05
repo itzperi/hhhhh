@@ -26,15 +26,30 @@ export const ASSETS = {
   shareCard: `${SITE_URL}/brand/share-card.png`,
 } as const;
 
+/** A physician profile on another site, shown on the physician page and used as schema.org sameAs. */
+export interface ExternalProfile {
+  label: string;
+  url: string;
+}
+
 /**
- * Verified profiles for the physician, used as schema.org sameAs. Append Facebook, LinkedIn,
- * or Google Business Profile URLs here; every schema node reads from this array.
+ * Profiles for the physician. Each was opened on 5 Nov 2026 and shows Dr. Panesar, family medicine,
+ * at this office address and phone. Sharecare was dropped because it could not be opened (HTTP 403),
+ * so it could not be verified. Add Google Business Profile, Healthgrades or Zocdoc only after checking.
  */
-export const SAME_AS_PROFILES: readonly string[] = [
-  'https://www.doximity.com/pub/paramjit-panesar-md',
-  'https://doctor.webmd.com/doctor/paramjit-panesar-c3eb9c8a-cf8b-4162-99f1-8af864e0efac-overview',
-  'https://www.sharecare.com/doctor/dr-paramjit-s-panesar',
+export const PHYSICIAN_PROFILE_LIST: readonly ExternalProfile[] = [
+  { label: 'Doximity', url: 'https://www.doximity.com/pub/paramjit-panesar-md' },
+  { label: 'WebMD', url: 'https://doctor.webmd.com/doctor/paramjit-panesar-c3eb9c8a-cf8b-4162-99f1-8af864e0efac-overview' },
 ];
+
+export const PHYSICIAN_PROFILES: readonly string[] = PHYSICIAN_PROFILE_LIST.map((p) => p.url);
+
+/**
+ * Office coordinates. Geocoded from the confirmed address with two independent sources that agree
+ * to within a few metres: the US Census geocoder (38.45994, -121.41591) and OpenStreetMap Nominatim
+ * (38.45991, -121.41593). Rounded to five decimals (about a metre).
+ */
+export const GEO = { latitude: 38.45994, longitude: -121.41591 } as const;
 
 export const BRAND: { readonly name: string; readonly legalName: string | null } = {
   /** Public-facing brand. Confirmed by the practice. */

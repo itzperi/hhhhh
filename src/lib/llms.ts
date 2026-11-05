@@ -6,7 +6,7 @@ import {
   SPECIALTY,
   insuranceSentence,
 } from '@/data/practice';
-import { BRAND, NPI, OFFICE, PHONES, SAME_AS_PROFILES, SITE_URL, absoluteUrl } from '@/data/site';
+import { BRAND, NPI, OFFICE, PHONES, PHYSICIAN_PROFILES, SITE_URL, absoluteUrl } from '@/data/site';
 import { PAGE_META } from '@/data/pages';
 
 /**
@@ -25,7 +25,7 @@ Website: ${SITE_URL}
 
 - ${PROVIDER.name}. ${SPECIALTY}. NPI ${NPI.panesar}.
 - Profile page: ${absoluteUrl(PAGE_META.panesar.path)}
-- Public profiles: ${SAME_AS_PROFILES.join(' ; ')}
+- Public profiles: ${PHYSICIAN_PROFILES.join(' ; ')}
 
 ## Location and contact
 

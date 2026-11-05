@@ -20,6 +20,11 @@ export function mapsDirectionsUrl(query: string): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
 }
 
+/** Google Maps place link for an address query, used as the schema.org hasMap value. */
+export function mapsPlaceUrl(query: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 /** Google Maps directions link from a named starting area (for example a city) to the office. */
 export function mapsDirectionsFromUrl(origin: string, destination: string): string {
   return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;

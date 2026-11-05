@@ -12,7 +12,7 @@ import { ELK_GROVE_FAQS, ELK_GROVE_NOTE } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
 import { OFFICE, PHONES } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
-import { breadcrumbNode, clinicNode, faqNode, graph, physicianNode, websiteNode } from '@/lib/structured-data';
+import { breadcrumbNode, clinicNode, faqNode, graph, physicianNode, webPageNode, websiteNode } from '@/lib/structured-data';
 import { mapsDirectionsFromUrl, mapsDirectionsUrl, telHref } from '@/lib/utils';
 
 export const metadata = buildMetadata({
@@ -29,8 +29,15 @@ export default function ElkGrovePage() {
           websiteNode(),
           clinicNode(),
           physicianNode(),
-          faqNode('/family-physician-elk-grove#faq', ELK_GROVE_FAQS),
-          breadcrumbNode('/family-physician-elk-grove#breadcrumb', BREADCRUMBS.elkGrove),
+          webPageNode({
+            path: PAGE_META.elkGrove.path,
+            name: PAGE_META.elkGrove.title,
+            description: PAGE_META.elkGrove.description,
+            breadcrumb: true,
+            faq: true,
+          }),
+          faqNode(PAGE_META.elkGrove.path, ELK_GROVE_FAQS),
+          breadcrumbNode(PAGE_META.elkGrove.path, BREADCRUMBS.elkGrove),
         )}
       />
 

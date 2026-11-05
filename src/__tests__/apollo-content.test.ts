@@ -3,9 +3,9 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { ELK_GROVE_FAQS, HOME_FAQS, INSURANCE_ACCEPTED, INITIAL_VISIT_PRICE } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
-import { BRAND, NPI, OFFICE, PHONES, SITE_URL } from '@/data/site';
+import { BRAND, GEO, NPI, OFFICE, PHONES, PHYSICIAN_PROFILES, SITE_URL } from '@/data/site';
 import { DESCRIPTION_MAX, DESCRIPTION_MIN, TITLE_MAX, TITLE_MIN } from '@/lib/seo-fit';
-import { CLINIC_ID, PHYSICIAN_ID, breadcrumbNode, clinicNode, faqNode, graph, physicianNode } from '@/lib/structured-data';
+import { CLINIC_ID, PHYSICIAN_ID, WEBSITE_ID, clinicNode, faqNode, graph, physicianNode, webPageNode, websiteNode } from '@/lib/structured-data';
 
 const PAGES = Object.values(PAGE_META);
 
@@ -55,7 +55,13 @@ describe('verified facts', () => {
 });
 
 describe('structured data graph', () => {
-  const doc = graph(clinicNode(), physicianNode(), faqNode('/#faq', HOME_FAQS), breadcrumbNode('/#breadcrumb', [{ name: 'Home', path: '/' }]));
+  const doc = graph(
+    websiteNode(),
+    clinicNode(),
+    physicianNode(),
+    webPageNode({ path: '/', name: 'x', description: 'y', faq: true }),
+    faqNode('/', HOME_FAQS),
+  );
   const nodes = doc['@graph'] as Record<string, unknown>[];
   const ids = new Set(nodes.map((n) => n['@id']).filter(Boolean));
 
@@ -64,6 +70,10 @@ describe('structured data graph', () => {
     expect(ids.has(PHYSICIAN_ID)).toBe(true);
     expect(CLINIC_ID).toBe(`${SITE_URL}/#clinic`);
     expect(PHYSICIAN_ID).toBe(`${SITE_URL}/#dr-paramjit-panesar`);
+  });
+
+  it('gives every node an absolute @id', () => {
+    for (const id of ids) expect(String(id).startsWith(`${SITE_URL}/`), String(id)).toBe(true);
   });
 
   it('resolves every @id reference inside the document', () => {
@@ -82,27 +92,70 @@ describe('structured data graph', () => {
       }
     };
     walk(nodes);
+    expect(refs.length).toBeGreaterThan(0);
     for (const ref of refs) expect(ids.has(ref), `unresolved ${ref}`).toBe(true);
   });
 
   it('gives the clinic the verified fields and no unverified ones', () => {
     const clinic = clinicNode();
+    expect(clinic['@type']).toBe('MedicalClinic');
     expect(clinic.name).toBe('Apollo Physicians');
-    expect(clinic).not.toHaveProperty('legalName');
     expect(clinic.telephone).toBe('+19162365800');
-    expect(clinic.medicalSpecialty).toEqual(['FamilyPractice']);
-    expect(clinic.identifier).toEqual({ '@type': 'PropertyValue', propertyID: 'NPI', value: '1124405584' });
-    expect(clinic.paymentAccepted).toBe(INSURANCE_ACCEPTED.join(', '));
-    for (const field of ['geo', 'isAcceptingNewPatients', 'areaServed', 'openingHoursSpecification']) {
+    expect(clinic.medicalSpecialty).toBe('https://schema.org/PrimaryCare');
+    expect(clinic.geo).toEqual({ '@type': 'GeoCoordinates', latitude: GEO.latitude, longitude: GEO.longitude });
+    for (const field of [
+      'legalName',
+      'identifier',
+      'paymentAccepted',
+      'sameAs',
+      'isAcceptingNewPatients',
+      'areaServed',
+      'openingHoursSpecification',
+      'openingHours',
+      'priceRange',
+      'aggregateRating',
+      'review',
+    ]) {
       expect(clinic).not.toHaveProperty(field);
     }
   });
 
+  it('never uses the invalid FamilyPractice specialty value', () => {
+    expect(JSON.stringify(nodes)).not.toContain('FamilyPractice');
+  });
+
+  it('keeps the physician profiles on the physician', () => {
+    const physician = physicianNode();
+    expect(physician.sameAs).toEqual([...PHYSICIAN_PROFILES]);
+    expect(PHYSICIAN_PROFILES.length).toBeGreaterThan(0);
+    expect(physician.identifier).toEqual({ '@type': 'PropertyValue', propertyID: 'NPI', value: NPI.panesar });
+    expect(physician.worksFor).toEqual({ '@id': CLINIC_ID });
+  });
+
+  it('puts the office inside plausible Sacramento coordinates', () => {
+    expect(GEO.latitude).toBeGreaterThan(38.3);
+    expect(GEO.latitude).toBeLessThan(38.7);
+    expect(GEO.longitude).toBeGreaterThan(-121.7);
+    expect(GEO.longitude).toBeLessThan(-121.2);
+  });
+
   it('mirrors each FAQ page one for one', () => {
-    const faq = faqNode('/#faq', HOME_FAQS) as { mainEntity: unknown[] };
+    const faq = faqNode('/', HOME_FAQS) as { mainEntity: unknown[] };
     expect(faq.mainEntity).toHaveLength(HOME_FAQS.length);
-    const elk = faqNode('/family-physician-elk-grove#faq', ELK_GROVE_FAQS) as { mainEntity: unknown[] };
+    const elk = faqNode('/family-physician-elk-grove', ELK_GROVE_FAQS) as { mainEntity: unknown[] };
     expect(elk.mainEntity).toHaveLength(ELK_GROVE_FAQS.length);
+  });
+
+  it('builds WebPage nodes that link the site, the entity, the FAQ and the breadcrumb', () => {
+    const page = webPageNode({ path: '/family-physician-elk-grove', name: 'n', description: 'd', breadcrumb: true, faq: true }) as Record<string, unknown>;
+    expect(page['@id']).toBe(`${SITE_URL}/family-physician-elk-grove#webpage`);
+    expect(page.isPartOf).toEqual({ '@id': WEBSITE_ID });
+    expect(page.about).toEqual({ '@id': CLINIC_ID });
+    expect(page.breadcrumb).toEqual({ '@id': `${SITE_URL}/family-physician-elk-grove#breadcrumb` });
+    expect(page.hasPart).toEqual({ '@id': `${SITE_URL}/family-physician-elk-grove#faq` });
+    const profile = webPageNode({ path: '/dr-paramjit-panesar', name: 'n', description: 'd', type: 'ProfilePage', about: 'physician' }) as Record<string, unknown>;
+    expect(profile['@type']).toBe('ProfilePage');
+    expect(profile.mainEntity).toEqual({ '@id': PHYSICIAN_ID });
   });
 });
 

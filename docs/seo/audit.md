@@ -199,3 +199,7 @@ Not built, blocked on `client-confirmations.md`: services list, hours, first-vis
 - **Deliberately not answered, because the facts are unconfirmed:** "Is Apollo Physicians accepting new patients?" (item 8) and "What are the office hours?" (item 6). A hedge such as "call to ask" would soften an unknown, so the questions are left out until the practice answers.
 - **Still published from the previous site, unconfirmed:** the plan list (item 23), the $65 starting price (item 24) and the same-day and next-day wording (item 7). Answers state them as the practice listed them ("lists same-day and next-day appointments") and add "confirm your plan". If the practice says any is wrong, change `src/data/practice.ts` and the answers update everywhere.
 - The home and Elk Grove pages share the plan pills and the map control, so the build's duplicate-content check (5-word shingles) reads 11.6%, under the 15% limit. Elk Grove FAQ wording was varied from the home page's on purpose.
+
+## 13. Step 5 notes (5 Nov 2026): structured data
+
+Details and results are in `docs/seo/schema-validation.md`. One finding was missing from section 5: schema.org defines `Physician` as a medical organization, not a person, so `honorificPrefix`, `honorificSuffix` and `worksFor` were invalid on the physician node. It is now typed `["Physician", "Person"]`. The new `scripts/validate-schema.mjs` found it, and it would also have caught the `FamilyPractice` error.

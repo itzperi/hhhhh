@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "validate:schema": "node scripts/validate-schema.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",

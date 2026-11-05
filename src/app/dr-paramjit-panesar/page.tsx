@@ -8,9 +8,9 @@ import { Section } from '@/components/ui/Section';
 import { BREADCRUMBS } from '@/data/navigation';
 import { PANESAR_FAQS, PANESAR_LEAD, PROVIDER, SPECIALTY } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
-import { NPI, OFFICE, PHONES } from '@/data/site';
+import { NPI, OFFICE, PHONES, PHYSICIAN_PROFILE_LIST } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
-import { breadcrumbNode, clinicNode, faqNode, graph, physicianNode, websiteNode } from '@/lib/structured-data';
+import { breadcrumbNode, clinicNode, faqNode, graph, physicianNode, webPageNode, websiteNode } from '@/lib/structured-data';
 import { telHref } from '@/lib/utils';
 
 /** Official state license lookup. A neutral consumer resource: it asserts nothing about Dr. Panesar's license. */
@@ -30,8 +30,17 @@ export default function PanesarPage() {
           websiteNode(),
           clinicNode(),
           physicianNode(),
-          faqNode('/dr-paramjit-panesar#faq', PANESAR_FAQS),
-          breadcrumbNode('/dr-paramjit-panesar#breadcrumb', BREADCRUMBS.panesar),
+          webPageNode({
+            path: PAGE_META.panesar.path,
+            name: PAGE_META.panesar.title,
+            description: PAGE_META.panesar.description,
+            type: 'ProfilePage',
+            about: 'physician',
+            breadcrumb: true,
+            faq: true,
+          }),
+          faqNode(PAGE_META.panesar.path, PANESAR_FAQS),
+          breadcrumbNode(PAGE_META.panesar.path, BREADCRUMBS.panesar),
         )}
       />
 
@@ -65,6 +74,26 @@ export default function PanesarPage() {
           <div className="card sm:col-span-2">
             <dt className="text-sm font-semibold uppercase tracking-wide text-teal-800">NPI</dt>
             <dd className="mt-2 text-navy-900">{NPI.panesar}</dd>
+          </div>
+          <div className="card sm:col-span-2">
+            <dt className="text-sm font-semibold uppercase tracking-wide text-teal-800">Profiles on other sites</dt>
+            <dd className="mt-2">
+              <ul className="flex flex-wrap gap-x-6">
+                {PHYSICIAN_PROFILE_LIST.map((profile) => (
+                  <li key={profile.url}>
+                    <a
+                      href={profile.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-[44px] items-center font-semibold text-teal-800 hover:underline"
+                    >
+                      {profile.label}
+                      <span className="sr-only"> profile for {PROVIDER.shortName} (opens in a new tab)</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </dd>
           </div>
         </dl>
       </Section>

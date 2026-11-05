@@ -151,12 +151,17 @@ for (const page of PAGES) {
   check(`${page.path} JSON-LD omits the unconfirmed legal name`, !serialised.includes('legalName'));
   check(`${page.path} JSON-LD carries the office address`, serialised.includes('8191 Timberlake Way, Suite 200'));
   check(`${page.path} JSON-LD carries the phone`, serialised.includes('+1-916-236-5800') || serialised.includes('+19162365800'));
-  check(`${page.path} JSON-LD carries the NPI`, serialised.includes('"value":"1124405584"'));
+  check(`${page.path} JSON-LD carries the physician NPI shown on the page`, serialised.includes('"value":"1982892659"'));
+  check(`${page.path} JSON-LD omits the organisation NPI, which no page shows`, !serialised.includes('1124405584'));
+  check(`${page.path} JSON-LD omits paymentAccepted (insurers are not payment methods)`, !serialised.includes('paymentAccepted'));
+  check(`${page.path} JSON-LD uses no invalid FamilyPractice specialty`, !serialised.includes('FamilyPractice') && serialised.includes('https://schema.org/PrimaryCare'));
+  check(`${page.path} JSON-LD @ids are all absolute`, [...ids].every((id) => String(id).startsWith('https://www.apollophysicians.com/')), [...ids].join(', '));
+  check(`${page.path} JSON-LD has a WebPage-type node for this page`, nodes.some((n) => ['WebPage', 'ProfilePage'].includes(n['@type']) && n.url === expectedCanonical));
 
   // Deliberate deviations from the brief: these were not verified, so they must be absent.
   check(`${page.path} omits unverified isAcceptingNewPatients`, !serialised.includes('isAcceptingNewPatients'));
   check(`${page.path} omits unverified Wikidata areaServed`, !serialised.includes('wikidata.org'));
-  check(`${page.path} omits unverified geo coordinates`, !serialised.includes('"geo"'));
+  check(`${page.path} carries the geo coordinates`, serialised.includes('"latitude":38.45994') && serialised.includes('"longitude":-121.41591'));
 
   // Every @id reference must resolve inside the document.
   const refs = [];
