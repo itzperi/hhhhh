@@ -15,7 +15,7 @@
 | `b46a7ee` | 6 | Owner decision recorded: allow all AI crawlers |
 | `25c3372` | 7 | Local SEO checklist; schema map pin corrected |
 | `5d83115` | 8 | Mobile call bar fixed; privacy-safe click events (no vendor attached) |
-| (Step 9 commit) | 9 | Accessibility landmark fix, font-shift fix, claims audit and guard test, README, this report |
+| `fd79cf3` | 9 | Accessibility landmark fix, font-shift fix, claims audit and guard test, README, this report |
 
 ## 2. Results
 
