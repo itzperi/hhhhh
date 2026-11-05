@@ -42,11 +42,11 @@ export function Header() {
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-warm-200 bg-white shadow-sm">
+    <header data-placement="header" className="sticky top-0 z-40 border-b border-warm-200 bg-white shadow-sm">
       {/* Utility bar */}
       <div className="bg-navy-800 text-white">
-        <div className="mx-auto flex h-10 max-w-6xl items-center justify-between gap-4 px-4 text-sm sm:px-6 lg:px-8">
-          <a href={telHref(PHONES.main.tel)} className="inline-flex min-h-[32px] items-center gap-2 rounded font-semibold hover:underline">
+        <div className="mx-auto flex h-11 max-w-6xl items-center justify-between gap-4 px-4 text-sm sm:px-6 lg:px-8">
+          <a href={telHref(PHONES.main.tel)} className="inline-flex min-h-[44px] items-center gap-2 rounded font-semibold hover:underline">
             <Phone className="h-4 w-4" aria-hidden="true" />
             <span>
               <span className="sr-only">Call us at </span>
@@ -62,7 +62,7 @@ export function Header() {
 
       {/* Main navigation */}
       <nav aria-label="Primary" className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center rounded text-xl font-bold text-navy-900" aria-label={`${BRAND.name}, home`}>
+        <Link href="/" className="flex min-h-[44px] shrink-0 items-center rounded text-xl font-bold text-navy-900" aria-label={`${BRAND.name}, home`}>
           {BRAND.name}
         </Link>
 

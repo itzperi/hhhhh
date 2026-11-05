@@ -67,6 +67,13 @@ export const BRAND: { readonly name: string; readonly legalName: string | null }
 };
 
 /** The only public phone number. Confirmed by the practice. Single source of truth, like OFFICE. */
+/**
+ * Online booking URL. The practice has none (docs/seo/client-confirmations.md, item 28), so this is null
+ * and the mobile bar shows a single Call button. Set it to the booking page URL to add "Book online"
+ * to the mobile bar and to start counting booking clicks. Use an https URL on a HIPAA-appropriate vendor.
+ */
+export const BOOKING_URL: string | null = null;
+
 export const PHONES = {
   main: { label: 'Main', display: '916-236-5800', tel: '+19162365800' } satisfies PhoneNumber,
 } as const;

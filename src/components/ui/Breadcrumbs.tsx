@@ -19,7 +19,7 @@ export function Breadcrumbs({ items }: { items: readonly Crumb[] }) {
                   </span>
                 ) : (
                   <>
-                    <Link href={item.path} className="inline-flex min-h-[44px] items-center rounded font-medium text-teal-800 hover:underline">
+                    <Link href={item.path} className="inline-flex min-h-[44px] min-w-[44px] items-center rounded font-medium text-teal-800 hover:underline">
                       {item.name}
                     </Link>
                     <ChevronRight className="h-4 w-4 text-navy-500" aria-hidden="true" />

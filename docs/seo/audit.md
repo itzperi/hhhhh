@@ -220,3 +220,21 @@ Full detail in `docs/seo/local-gbp-checklist.md`. New findings from reading the 
 - A review and the earlier CHCA Health project suggest this office may be linked to another organisation. Unresolved; confirmations item 40.
 - Directory problems: WebMD, Birdeye and (probably) Vitals and Yelp are unclaimed; Superpages shows a wrong phone (916-655-9883); Medifind misspells the name; Dr. Panesar's NPPES record is from 2014.
 - `apollophysicians.riolabz.com` still resolves to a server with an expired TLS certificate and has appeared in search results (a copy of the previous site, found via search). It could not be inspected because the check needed certificate validation turned off, which was not done. The practice or its former web agency should take it down or redirect it.
+
+## 16. Step 8 notes (5 Nov 2026): mobile conversion
+
+Measured in a real browser at 375 x 812 on a local production build (lab data, not field data), after the fixes below:
+
+| Page | Layout shift (CLS) | Horizontal scroll | Last footer line clear of the call bar | Standalone links under 44 px |
+|---|---|---|---|---|
+| `/` | 0 | none | yes (716 px, bar top 740 px) | none |
+| `/family-physician-elk-grove` | 0 | none | yes | none |
+| `/dr-paramjit-panesar` | 0 | none | yes | none |
+
+Fixed during the check:
+- The body reserved 64 px under the page but the bar is 72 px, so 8 px of footer sat behind it. Both are now 4.5 rem, locked together by a test.
+- Footer links (24 px), the header phone and logo (32 and 28 px), the breadcrumb "Home" link (38 px wide), and three standalone links on the home page were under 44 px. All raised to 44 px.
+- Inline links inside a sentence stay as they are (the WCAG 2.2 target-size exception), but the Elk Grove "Booking" sentence now also has a full-size Call button, because the phone number is the main action.
+- `scroll-padding-bottom` keeps keyboard focus and in-page jumps clear of the bar on phones.
+
+The mobile bar is a single Call button because there is no booking URL; it adds "Book online" the moment `BOOKING_URL` is set. Insurance pills were already above the fold on `/` and `/family-physician-elk-grove` (Step 3). Click events are built but have no destination: see `docs/seo/analytics-decision.md`.

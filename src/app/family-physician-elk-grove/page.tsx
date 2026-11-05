@@ -92,6 +92,12 @@ export default function ElkGrovePage() {
           </Link>{' '}
           for more about the practice.
         </p>
+        <div className="mt-6">
+          <ButtonLink href={telHref(PHONES.main.tel)} variant="primary">
+            <Phone className="h-5 w-5" aria-hidden="true" />
+            Call {PHONES.main.display}
+          </ButtonLink>
+        </div>
       </Section>
 
       <Section id="insurance" headingId="elk-insurance-heading" title="Insurance for Elk Grove patients">

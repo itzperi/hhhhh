@@ -13,6 +13,13 @@
     scroll-padding-top: 6rem;
   }
 
+  /* On phones the fixed 4.5rem call bar sits at the bottom: keep keyboard focus and in-page jumps clear of it. */
+  @media (max-width: 767px) {
+    html {
+      scroll-padding-bottom: 5.5rem;
+    }
+  }
+
   body {
     @apply bg-warm-50 text-navy-900 antialiased;
     min-height: 100dvh;

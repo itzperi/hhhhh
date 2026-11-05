@@ -12,7 +12,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-navy-900 text-navy-100" aria-labelledby="footer-heading">
+    <footer data-placement="footer" className="bg-navy-900 text-navy-100" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Site footer
       </h2>
@@ -32,12 +32,12 @@ export function Footer() {
             </p>
             <p className="flex items-center gap-2">
               <Phone className="h-4 w-4 shrink-0 text-teal-300" aria-hidden="true" />
-              <a href={telHref(PHONES.main.tel)} className="inline-flex min-h-[24px] items-center rounded font-semibold text-white hover:underline">
+              <a href={telHref(PHONES.main.tel)} className="inline-flex min-h-[44px] items-center rounded font-semibold text-white hover:underline">
                 {PHONES.main.display}
               </a>
             </p>
           </address>
-          <a href={mapsDirectionsUrl(OFFICE.line)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-[24px] items-center text-sm font-semibold text-teal-200 hover:underline">
+          <a href={mapsDirectionsUrl(OFFICE.line)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-[44px] items-center text-sm font-semibold text-teal-200 hover:underline">
             Get directions to the office<span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
@@ -45,15 +45,15 @@ export function Footer() {
         {FOOTER_COLUMNS.map((column) => (
           <nav key={column.title} aria-label={column.title}>
             <h3 className="text-sm font-bold text-white">{column.title}</h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-2 text-sm">
               {column.links.map((link) => (
                 <li key={link.href + link.label}>
                   {link.href.startsWith('tel:') ? (
-                    <a href={link.href} className="inline-flex min-h-[24px] items-center rounded hover:text-white hover:underline">
+                    <a href={link.href} className="inline-flex min-h-[44px] items-center rounded hover:text-white hover:underline">
                       {link.label}
                     </a>
                   ) : (
-                    <Link href={link.href} className="inline-flex min-h-[24px] items-center rounded hover:text-white hover:underline">
+                    <Link href={link.href} className="inline-flex min-h-[44px] items-center rounded hover:text-white hover:underline">
                       {link.label}
                     </Link>
                   )}

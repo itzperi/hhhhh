@@ -12,7 +12,7 @@ import { mapsDirectionsUrl, telHref } from '@/lib/utils';
  */
 export function HomeHero() {
   return (
-    <section aria-labelledby="hero-heading" className="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-teal-800 text-white">
+    <section data-placement="hero" aria-labelledby="hero-heading" className="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-teal-800 text-white">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 sm:px-6 md:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <div className="hero-rise">
           <p className="eyebrow text-teal-200">Apollo Physicians</p>

@@ -33,7 +33,7 @@ export function HomeSections() {
             </p>
             <p className="flex items-center gap-2 font-semibold text-navy-900">
               <Phone className="h-5 w-5 text-teal-700" aria-hidden="true" />
-              <a href={telHref(PHONES.main.tel)} className="hover:underline">
+              <a href={telHref(PHONES.main.tel)} className="inline-flex min-h-[44px] items-center hover:underline">
                 {PHONES.main.display}
               </a>
             </p>
@@ -65,7 +65,7 @@ export function HomeSections() {
           </div>
           <div className="space-y-1">
             <h3 className="text-xl font-bold text-navy-900">
-              <Link href="/dr-paramjit-panesar" className="hover:underline">
+              <Link href="/dr-paramjit-panesar" className="inline-flex min-h-[44px] items-center hover:underline">
                 {PROVIDER.name}
               </Link>
             </h3>
@@ -100,7 +100,7 @@ export function HomeSections() {
             Apollo Physicians has one office, in South Sacramento. Elk Grove patients are seen there, and our Elk Grove page explains
             how to get here and what to expect.
           </p>
-          <Link href="/family-physician-elk-grove" className="inline-flex items-center gap-2 font-semibold text-teal-800 hover:underline">
+          <Link href="/family-physician-elk-grove" className="inline-flex min-h-[44px] items-center gap-2 font-semibold text-teal-800 hover:underline">
             <MapPin className="h-5 w-5" aria-hidden="true" />
             Family Physician in Elk Grove
           </Link>
