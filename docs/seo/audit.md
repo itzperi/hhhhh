@@ -191,3 +191,11 @@ Added after the audit, found while building Step 3:
 Built from confirmed facts only: plain primary navigation (no Locations menu), visible breadcrumbs that feed the BreadcrumbList schema, plan pills above the fold on `/` and `/family-physician-elk-grove`, a click-to-load map (nothing is requested from Google until the visitor presses the button), "Directions from Elk Grove" (a Google Maps link, so no drive time is stated by us), access-led Elk Grove copy that states one office and never an absence, and a neutral link to the state license lookup on the physician page.
 
 Not built, blocked on `client-confirmations.md`: services list, hours, first-visit content, physician bio, photo, credentials, drive time, parking, `/insurance-and-pricing` (needs verified-date, plan restrictions and what the $65 covers) and `/same-day-appointments` (needs the policy and cut-off times).
+
+## 12. Step 4 notes (5 Nov 2026): direct-answer copy
+
+- Each core page opens with a complete, quotable sentence (`HOME_LEAD`, `PANESAR_LEAD`, and the Elk Grove opening from the brief's sample sentence without a drive time). FAQ answers lead with the answer, name the practice, and use only facts already in `src/data/`.
+- FAQs: home 7 questions (location, booking, insurance, initial-visit price, same-day or next-day, Elk Grove, Dr. Panesar), Elk Grove 5, physician page 3 (new). The FAQPage schema is built from the same arrays, and a test checks it equals the visible text exactly.
+- **Deliberately not answered, because the facts are unconfirmed:** "Is Apollo Physicians accepting new patients?" (item 8) and "What are the office hours?" (item 6). A hedge such as "call to ask" would soften an unknown, so the questions are left out until the practice answers.
+- **Still published from the previous site, unconfirmed:** the plan list (item 23), the $65 starting price (item 24) and the same-day and next-day wording (item 7). Answers state them as the practice listed them ("lists same-day and next-day appointments") and add "confirm your plan". If the practice says any is wrong, change `src/data/practice.ts` and the answers update everywhere.
+- The home and Elk Grove pages share the plan pills and the map control, so the build's duplicate-content check (5-word shingles) reads 11.6%, under the 15% limit. Elk Grove FAQ wording was varied from the home page's on purpose.

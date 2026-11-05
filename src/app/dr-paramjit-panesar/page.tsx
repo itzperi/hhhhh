@@ -6,11 +6,11 @@ import { JsonLd } from '@/components/ui/JsonLd';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { BREADCRUMBS } from '@/data/navigation';
-import { PROVIDER, SPECIALTY } from '@/data/practice';
+import { PANESAR_FAQS, PANESAR_LEAD, PROVIDER, SPECIALTY } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
 import { NPI, OFFICE, PHONES } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
-import { breadcrumbNode, clinicNode, graph, physicianNode, websiteNode } from '@/lib/structured-data';
+import { breadcrumbNode, clinicNode, faqNode, graph, physicianNode, websiteNode } from '@/lib/structured-data';
 import { telHref } from '@/lib/utils';
 
 /** Official state license lookup. A neutral consumer resource: it asserts nothing about Dr. Panesar's license. */
@@ -30,13 +30,14 @@ export default function PanesarPage() {
           websiteNode(),
           clinicNode(),
           physicianNode(),
+          faqNode('/dr-paramjit-panesar#faq', PANESAR_FAQS),
           breadcrumbNode('/dr-paramjit-panesar#breadcrumb', BREADCRUMBS.panesar),
         )}
       />
 
       <Breadcrumbs items={BREADCRUMBS.panesar} />
 
-      <PageHero title={PROVIDER.name} eyebrow="Apollo Physicians" subtitle={`${SPECIALTY} at Apollo Physicians, ${OFFICE.line}.`}>
+      <PageHero title={PROVIDER.name} eyebrow="Apollo Physicians" subtitle={PANESAR_LEAD}>
         <ButtonLink href={telHref(PHONES.main.tel)} variant="light">
           <Phone className="h-5 w-5" aria-hidden="true" />
           Call {PHONES.main.display}
@@ -68,7 +69,18 @@ export default function PanesarPage() {
         </dl>
       </Section>
 
-      <Section headingId="panesar-verify-heading" title="Check a physician's license" tone="muted">
+      <Section headingId="panesar-faq-heading" title="Questions about Dr. Panesar" tone="muted">
+        <dl className="space-y-6">
+          {PANESAR_FAQS.map((faq) => (
+            <div key={faq.question}>
+              <dt className="text-lg font-semibold text-navy-900">{faq.question}</dt>
+              <dd className="mt-2 text-navy-800">{faq.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      <Section headingId="panesar-verify-heading" title="Check a physician's license">
         <p className="max-w-3xl text-navy-800">
           California physicians are licensed by the Medical Board of California. You can look up any California physician, including
           license status, with the{' '}
@@ -79,7 +91,7 @@ export default function PanesarPage() {
         </p>
       </Section>
 
-      <Section headingId="panesar-links-heading" title="Related">
+      <Section headingId="panesar-links-heading" title="Related" tone="muted">
         <p className="max-w-3xl text-navy-800">
           Read about{' '}
           <Link href="/" className="font-semibold text-teal-800 hover:underline">

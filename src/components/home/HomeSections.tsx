@@ -15,8 +15,7 @@ export function HomeSections() {
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-lg leading-relaxed text-navy-800">
-              Apollo Physicians is a family medicine practice in South Sacramento at {OFFICE.line}. {APPOINTMENT_AVAILABILITY}{' '}
-              {INITIAL_VISIT_PRICE}
+              The Apollo Physicians office is in South Sacramento. {APPOINTMENT_AVAILABILITY} {INITIAL_VISIT_PRICE}
             </p>
             <p className="text-lg leading-relaxed text-navy-800">
               Looking for a family doctor or a primary care doctor in Sacramento? Family medicine is a primary care specialty, and

@@ -8,13 +8,7 @@ import { MapEmbed } from '@/components/ui/MapEmbed';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { BREADCRUMBS } from '@/data/navigation';
-import {
-  APPOINTMENT_AVAILABILITY,
-  ELK_GROVE_FAQS,
-  ELK_GROVE_NOTE,
-  INITIAL_VISIT_PRICE,
-  INSURANCE_ACCEPTED,
-} from '@/data/practice';
+import { ELK_GROVE_FAQS, ELK_GROVE_NOTE } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
 import { OFFICE, PHONES } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
@@ -45,7 +39,7 @@ export default function ElkGrovePage() {
       <PageHero
         title="Family Physician for Elk Grove Patients"
         eyebrow="Elk Grove patients"
-        subtitle={`Apollo Physicians is a family medicine practice in South Sacramento at ${OFFICE.line}, and it serves Elk Grove families. ${APPOINTMENT_AVAILABILITY}`}
+        subtitle={`Apollo Physicians is in South Sacramento at ${OFFICE.line}, and serves Elk Grove families with same-day and next-day appointments.`}
       >
         <ButtonLink href={telHref(PHONES.main.tel)} variant="light">
           <Phone className="h-5 w-5" aria-hidden="true" />
@@ -85,7 +79,7 @@ export default function ElkGrovePage() {
           <a href={telHref(PHONES.main.tel)} className="font-semibold text-teal-800 hover:underline">
             {PHONES.main.display}
           </a>{' '}
-          before you travel to confirm your appointment. {APPOINTMENT_AVAILABILITY} See the{' '}
+          before you travel to confirm your appointment. See the{' '}
           <Link href="/" className="font-semibold text-teal-800 hover:underline">
             family physician page
           </Link>{' '}
@@ -94,9 +88,10 @@ export default function ElkGrovePage() {
       </Section>
 
       <Section id="insurance" headingId="elk-insurance-heading" title="Insurance for Elk Grove patients">
-        <p className="max-w-3xl text-navy-800">The same plans apply to every patient: {INSURANCE_ACCEPTED.join(', ')}.</p>
-        <p className="mt-4 text-navy-800">{INITIAL_VISIT_PRICE}</p>
-        <p className="mt-4 text-navy-800">Call {PHONES.main.display} to confirm your plan before your visit.</p>
+        <p className="max-w-3xl text-navy-800">
+          Elk Grove patients use the same plans as every patient, shown above. Call {PHONES.main.display} to confirm your plan before you
+          travel.
+        </p>
       </Section>
 
       <Section headingId="elk-faq-heading" title="Elk Grove questions" tone="muted">

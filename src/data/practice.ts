@@ -27,7 +27,8 @@ export const INSURANCE_ACCEPTED: readonly string[] = [
 ];
 
 /** CLIENT: apollophysicians.com/content/insurance. */
-export const INITIAL_VISIT_PRICE = 'Initial doctor visits start at $65.';
+export const INITIAL_VISIT_FROM = '$65';
+export const INITIAL_VISIT_PRICE = `Initial doctor visits start at ${INITIAL_VISIT_FROM}.`;
 
 /** CLIENT: apollophysicians.com homepage, wording used exactly. */
 export const APPOINTMENT_AVAILABILITY = 'Same-day and next-day appointments.';
@@ -58,44 +59,86 @@ export function insuranceSentence(): string {
   return `${list.join(', ')}, and ${last}`;
 }
 
+/**
+ * Direct-answer copy (Step 4). Each answer opens with a complete sentence that names the practice and
+ * can be quoted on its own, then adds detail. Only facts already in this file are used. Questions whose
+ * facts are not confirmed (office hours and new-patient status) are deliberately not asked here:
+ * see docs/seo/client-confirmations.md, items 6 and 8.
+ */
+
+/** First sentence under the home page H1. Quotable on its own. */
+export const HOME_LEAD = `Apollo Physicians is a family medicine practice at ${OFFICE.line}.`;
+
+/** First sentence under the physician page H1. */
+export const PANESAR_LEAD = `${PROVIDER.name}, practices family medicine at Apollo Physicians, ${OFFICE.line}.`;
+
+const CALL_TO_CONFIRM_PLAN = `Call ${PHONES.main.display} to confirm your plan before your visit.`;
+
 export const HOME_FAQS: readonly FaqItem[] = [
   {
-    question: 'Where is Apollo Physicians?',
-    answer: `Apollo Physicians is at ${OFFICE.line}.`,
+    question: 'Where is Apollo Physicians located?',
+    answer: `${HOME_LEAD} Dr. Paramjit Panesar, MD, sees patients at this office.`,
   },
   {
-    question: 'How do I make an appointment?',
-    answer: `Call ${PHONES.main.display}. ${APPOINTMENT_AVAILABILITY}`,
+    question: 'How do I book an appointment?',
+    answer: `Call Apollo Physicians at ${PHONES.main.display} to book an appointment.`,
   },
   {
     question: 'What insurance does Apollo Physicians accept?',
-    answer: `Apollo Physicians accepts ${insuranceSentence()}.`,
+    answer: `Apollo Physicians accepts ${insuranceSentence()}. ${CALL_TO_CONFIRM_PLAN}`,
   },
   {
     question: 'How much is an initial visit?',
-    answer: INITIAL_VISIT_PRICE,
+    answer: `Initial doctor visits at Apollo Physicians start at ${INITIAL_VISIT_FROM}.`,
+  },
+  {
+    question: 'Can I get a same-day or next-day appointment?',
+    answer: `Apollo Physicians lists same-day and next-day appointments. Call ${PHONES.main.display} to ask about the next available slot.`,
+  },
+  {
+    question: 'Does Apollo Physicians serve patients from Elk Grove?',
+    answer: `Yes. Elk Grove patients are seen at the Apollo Physicians office at ${OFFICE.line}.`,
+  },
+  {
+    question: 'Who is Dr. Paramjit Panesar?',
+    answer: `${PROVIDER.name}, practices family medicine at Apollo Physicians in Sacramento.`,
+  },
+];
+
+export const PANESAR_FAQS: readonly FaqItem[] = [
+  {
+    question: 'Who is Dr. Paramjit Panesar?',
+    answer: `${PROVIDER.name}, is a family medicine physician at Apollo Physicians in Sacramento.`,
+  },
+  {
+    question: 'Where does Dr. Panesar see patients?',
+    answer: `Dr. Panesar sees patients at Apollo Physicians, ${OFFICE.line}.`,
+  },
+  {
+    question: 'How do I book an appointment with Dr. Panesar?',
+    answer: `Call Apollo Physicians at ${PHONES.main.display} to book an appointment.`,
   },
 ];
 
 export const ELK_GROVE_FAQS: readonly FaqItem[] = [
   {
     question: 'Does Apollo Physicians serve patients from Elk Grove?',
-    answer: `Yes. Elk Grove patients are seen at the Apollo Physicians office at ${OFFICE.line}.`,
+    answer: 'Yes. Apollo Physicians serves Elk Grove families from its single office in South Sacramento.',
   },
   {
     question: 'Where should Elk Grove patients go for their visit?',
-    answer: `Visit the Sacramento office at ${OFFICE.line}. Call ${PHONES.main.display} before you travel to confirm your appointment.`,
+    answer: `Elk Grove patients visit the Apollo Physicians office in South Sacramento. Before you travel, call ${PHONES.main.display} to confirm your appointment.`,
   },
   {
     question: 'Which insurance plans are accepted for Elk Grove patients?',
-    answer: `The same plans as every patient: ${insuranceSentence()}.`,
+    answer: `Elk Grove patients use the same plans as every Apollo Physicians patient: ${insuranceSentence()}. Confirm your plan with the office at ${PHONES.main.display} before you travel.`,
   },
   {
     question: 'How much does an initial visit cost?',
-    answer: INITIAL_VISIT_PRICE,
+    answer: `An initial doctor visit at Apollo Physicians starts at ${INITIAL_VISIT_FROM}.`,
   },
   {
-    question: 'How soon can I be seen?',
-    answer: `${APPOINTMENT_AVAILABILITY} Call ${PHONES.main.display} to ask about the next available slot.`,
+    question: 'Can Elk Grove patients get a same-day or next-day appointment?',
+    answer: `Apollo Physicians lists same-day and next-day appointments, and Elk Grove patients book the same way as every other patient. To find the next available time, call ${PHONES.main.display}.`,
   },
 ];

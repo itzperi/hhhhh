@@ -1,7 +1,7 @@
 import { CheckCircle2, MapPin, Phone, Stethoscope } from 'lucide-react';
 import { ButtonLink } from '@/components/ui/Button';
 import { InsurancePills } from '@/components/ui/InsurancePills';
-import { APPOINTMENT_AVAILABILITY, INITIAL_VISIT_PRICE, PROVIDER } from '@/data/practice';
+import { APPOINTMENT_AVAILABILITY, HOME_LEAD, INITIAL_VISIT_PRICE, PROVIDER } from '@/data/practice';
 import { OFFICE, PHONES } from '@/data/site';
 import { mapsDirectionsUrl, telHref } from '@/lib/utils';
 
@@ -21,7 +21,7 @@ export function HomeHero() {
           </h1>
           <h2 className="mt-3 text-2xl font-semibold text-teal-100 md:text-3xl">{APPOINTMENT_AVAILABILITY}</h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-navy-100">
-            Family medicine at {OFFICE.line}. Call to book your visit.
+            {HOME_LEAD} Call {PHONES.main.display} to book your visit.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
