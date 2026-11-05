@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { MobileCallBar } from '@/components/layout/MobileCallBar';
-import { BRAND, SITE_URL } from '@/data/site';
+import { BRAND, OFFICE, SITE_URL } from '@/data/site';
 import './globals.css';
 
 /** Body and UI text. A clean, open sans with good numerals for phone numbers and prices. */
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: `${BRAND.name} | Sacramento`,
     template: '%s',
   },
-  description: 'Apollo Physicians, family medicine at 8191 Timberlake Way, Suite 200, Sacramento, CA 95823.',
+  description: `${BRAND.name}, family medicine at ${OFFICE.line}.`,
   applicationName: BRAND.name,
   formatDetection: { telephone: true },
   openGraph: {

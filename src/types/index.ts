@@ -2,9 +2,9 @@
 
 export interface PhoneNumber {
   label: string;
-  /** Printed form, e.g. "916-236-5800". */
+  /** Printed form shown to visitors. */
   display: string;
-  /** E.164 value used for tel: links, e.g. "+19162365800". */
+  /** E.164 value used for tel: links. */
   tel: string;
 }
 

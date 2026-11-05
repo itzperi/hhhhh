@@ -5,7 +5,7 @@ export function cn(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(' ');
 }
 
-/** Formats a postal address on one line, e.g. "8191 Timberlake Way, Suite 200, Sacramento, CA 95823". */
+/** Formats a postal address on one line: street, city, state and ZIP. */
 export function formatAddress(address: PostalAddress): string {
   return `${address.street}, ${address.city}, ${address.state} ${address.postalCode}`;
 }
@@ -20,7 +20,7 @@ export function mapsDirectionsUrl(query: string): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
 }
 
-/** Builds a tel: href from an E.164 value such as "+12094418383". */
+/** Builds a tel: href from an E.164 value (see PHONES in src/data/site.ts). */
 export function telHref(tel: string): string {
   return `tel:${tel}`;
 }
@@ -33,7 +33,7 @@ export function truncate(text: string, maxLength: number): string {
   return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
 }
 
-/** Returns up to two initials for an avatar fallback, e.g. "Maninder Aulakh" -> "MA". */
+/** Returns up to two initials for an avatar fallback, e.g. "Paramjit Panesar" -> "PP". */
 export function initialsOf(name: string): string {
   const parts = name.replace(/[^\p{L}\s]/gu, '').trim().split(/\s+/).filter(Boolean);
   const first = parts[0]?.[0] ?? '';

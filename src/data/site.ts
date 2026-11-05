@@ -36,25 +36,39 @@ export const SAME_AS_PROFILES: readonly string[] = [
   'https://www.sharecare.com/doctor/dr-paramjit-s-panesar',
 ];
 
-export const BRAND = {
-  /** Public-facing brand. */
+export const BRAND: { readonly name: string; readonly legalName: string | null } = {
+  /** Public-facing brand. Confirmed by the practice. */
   name: 'Apollo Physicians',
-  /** Legal name exactly as it appears in the NPI registry. Used in schema markup only. */
-  legalName: 'APOLLO PHYSICANS MEDICAL GROUP',
-} as const;
+  /**
+   * Legal business name. NOT CONFIRMED (docs/seo/client-confirmations.md, item 4): the NPI registry
+   * spells it "APOLLO PHYSICANS MEDICAL GROUP", which may be a registry typo. Leave null until the
+   * practice supplies the filed name. While null, the footer shows the brand name and the schema
+   * omits legalName, so nothing unconfirmed is published.
+   */
+  legalName: null,
+};
 
+/** The only public phone number. Confirmed by the practice. Single source of truth, like OFFICE. */
 export const PHONES = {
   main: { label: 'Main', display: '916-236-5800', tel: '+19162365800' } satisfies PhoneNumber,
 } as const;
 
-/** Office address from NPPES NPI 1124405584 (ZIP+4 95823-5418). */
-export const OFFICE = {
+const OFFICE_PARTS = {
   street: '8191 Timberlake Way, Suite 200',
   city: 'Sacramento',
   state: 'CA',
   postalCode: '95823',
+} as const;
+
+/**
+ * The only office. Confirmed by the practice; matches the NPPES location record (NPI 1124405584).
+ * This is the single source of truth: every page, meta description, schema block and llms.txt reads
+ * the address from here (a unit test fails if a literal copy appears elsewhere in src/).
+ */
+export const OFFICE = {
+  ...OFFICE_PARTS,
   /** Full single-line form used in visible copy and map links. */
-  line: '8191 Timberlake Way, Suite 200, Sacramento, CA 95823',
+  line: `${OFFICE_PARTS.street}, ${OFFICE_PARTS.city}, ${OFFICE_PARTS.state} ${OFFICE_PARTS.postalCode}`,
 } as const;
 
 /** NPI identifiers from the NPPES registry. */

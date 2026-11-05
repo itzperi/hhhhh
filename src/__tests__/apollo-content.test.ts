@@ -42,8 +42,8 @@ describe('verified facts', () => {
     ]);
   });
 
-  it('uses the NPI registry legal name and the registry phone and address', () => {
-    expect(BRAND.legalName).toBe('APOLLO PHYSICANS MEDICAL GROUP');
+  it('uses the confirmed phone and address, and no unconfirmed legal name', () => {
+    expect(BRAND.legalName).toBeNull();
     expect(OFFICE.line).toBe('8191 Timberlake Way, Suite 200, Sacramento, CA 95823');
     expect(PHONES.main.display).toBe('916-236-5800');
     expect(NPI.organization).toBe('1124405584');
@@ -88,7 +88,7 @@ describe('structured data graph', () => {
   it('gives the clinic the verified fields and no unverified ones', () => {
     const clinic = clinicNode();
     expect(clinic.name).toBe('Apollo Physicians');
-    expect(clinic.legalName).toBe('APOLLO PHYSICANS MEDICAL GROUP');
+    expect(clinic).not.toHaveProperty('legalName');
     expect(clinic.telephone).toBe('+19162365800');
     expect(clinic.medicalSpecialty).toEqual(['FamilyPractice']);
     expect(clinic.identifier).toEqual({ '@type': 'PropertyValue', propertyID: 'NPI', value: '1124405584' });

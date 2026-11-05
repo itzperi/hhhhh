@@ -1,5 +1,5 @@
 import type { FaqItem } from '@/types';
-import { OFFICE } from './site';
+import { OFFICE, PHONES } from './site';
 
 /**
  * Every claim the pages make, with its source.
@@ -62,7 +62,7 @@ export const HOME_FAQS: readonly FaqItem[] = [
   },
   {
     question: 'How do I make an appointment?',
-    answer: `Call 916-236-5800. ${APPOINTMENT_AVAILABILITY}`,
+    answer: `Call ${PHONES.main.display}. ${APPOINTMENT_AVAILABILITY}`,
   },
   {
     question: 'What insurance does Apollo Physicians accept?',
@@ -81,7 +81,7 @@ export const ELK_GROVE_FAQS: readonly FaqItem[] = [
   },
   {
     question: 'Where should Elk Grove patients go for their visit?',
-    answer: `Visit the Sacramento office at ${OFFICE.line}. Call 916-236-5800 before you travel to confirm your appointment.`,
+    answer: `Visit the Sacramento office at ${OFFICE.line}. Call ${PHONES.main.display} before you travel to confirm your appointment.`,
   },
   {
     question: 'Which insurance plans are accepted for Elk Grove patients?',
@@ -93,6 +93,6 @@ export const ELK_GROVE_FAQS: readonly FaqItem[] = [
   },
   {
     question: 'How soon can I be seen?',
-    answer: `${APPOINTMENT_AVAILABILITY} Call 916-236-5800 to ask about the next available slot.`,
+    answer: `${APPOINTMENT_AVAILABILITY} Call ${PHONES.main.display} to ask about the next available slot.`,
   },
 ];

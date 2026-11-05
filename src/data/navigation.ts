@@ -1,4 +1,5 @@
 import type { NavGroup, NavLink } from '@/types';
+import { PHONES } from './site';
 
 /**
  * Navigation for the Apollo Physicians site. Every href resolves to a route in src/app.
@@ -36,6 +37,6 @@ export const FOOTER_COLUMNS: readonly { title: string; links: readonly NavLink[]
   },
   {
     title: 'Booking',
-    links: [{ label: 'Call 916-236-5800', href: 'tel:+19162365800' }],
+    links: [{ label: `Call ${PHONES.main.display}`, href: `tel:${PHONES.main.tel}` }],
   },
 ];

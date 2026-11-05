@@ -31,7 +31,8 @@ export function clinicNode(): Node {
     '@type': ['MedicalClinic', 'LocalBusiness'],
     '@id': CLINIC_ID,
     name: BRAND.name,
-    legalName: BRAND.legalName,
+    // Only when the practice has confirmed the legal name (BRAND.legalName is null until then).
+    ...(BRAND.legalName ? { legalName: BRAND.legalName } : {}),
     url: SITE_URL,
     logo: { '@type': 'ImageObject', url: ASSETS.logo },
     image: ASSETS.shareCard,

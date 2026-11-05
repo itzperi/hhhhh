@@ -89,7 +89,7 @@ export function Footer() {
       <div className="border-t border-navy-700">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <p>
-            &copy; {year} {BRAND.legalName}. All Rights Reserved.
+            &copy; {year} {BRAND.legalName ?? BRAND.name}. All Rights Reserved.
           </p>
         </div>
       </div>

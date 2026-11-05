@@ -98,7 +98,7 @@ const sitemap = read('sitemap.xml.body');
 check('sitemap.xml exists in the build output', sitemap !== null);
 if (sitemap) {
   const locs = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-  const expected = PAGES.map((p) => `https://www.apollophysicians.com${p.path === '/' ? '/' : p.path}`);
+  const expected = PAGES.map((p) => `https://www.apollophysicians.com${p.path === '/' ? '' : p.path}` /* home has no trailing slash, matching its canonical */);
   check('sitemap lists exactly the three indexable pages', JSON.stringify(locs.sort()) === JSON.stringify(expected.sort()), locs.join(', '));
   const legacy = LEGACY_TOKENS.filter((t) => sitemap.toLowerCase().includes(t.toLowerCase()));
   check('sitemap has no legacy tokens', legacy.length === 0, legacy.join(', '));
@@ -148,7 +148,7 @@ for (const page of PAGES) {
   const ids = new Set(nodes.map((n) => n['@id']).filter(Boolean));
   const serialised = JSON.stringify(nodes);
   check(`${page.path} JSON-LD names Apollo Physicians`, serialised.includes('"name":"Apollo Physicians"'));
-  check(`${page.path} JSON-LD carries the registry legal name`, serialised.includes('APOLLO PHYSICANS MEDICAL GROUP'));
+  check(`${page.path} JSON-LD omits the unconfirmed legal name`, !serialised.includes('legalName'));
   check(`${page.path} JSON-LD carries the office address`, serialised.includes('8191 Timberlake Way, Suite 200'));
   check(`${page.path} JSON-LD carries the phone`, serialised.includes('+1-916-236-5800') || serialised.includes('+19162365800'));
   check(`${page.path} JSON-LD carries the NPI`, serialised.includes('"value":"1124405584"'));
