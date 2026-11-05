@@ -52,6 +52,22 @@ export const PROVIDER = {
  */
 export const ELK_GROVE_NOTE = `Apollo Physicians has one office, in South Sacramento at ${OFFICE.line}. Elk Grove patients are seen there.`;
 
+/**
+ * Which published facts the practice has confirmed (docs/seo/client-confirmations.md). Page copy still
+ * shows these as listed on the previous site; /llms.txt, a file meant to be quoted by AI systems,
+ * includes each one only when its flag is true. Flip a flag after the practice signs off the item.
+ */
+export const LLMS_CONFIRMED = {
+  /** Item 23: accepted plans, with the date last verified. */
+  insurance: false,
+  /** Item 24: what the starting price covers. */
+  price: false,
+  /** Item 7: the same-day and next-day policy. */
+  appointmentAvailability: false,
+  /** Item 13: the physician NPI the practice wants shown. */
+  physicianNpi: false,
+} as const;
+
 /** Printed insurance list in reading order, e.g. "Aetna, Cigna, and Medicare". */
 export function insuranceSentence(): string {
   const list = [...INSURANCE_ACCEPTED];

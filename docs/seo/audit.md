@@ -203,3 +203,11 @@ Not built, blocked on `client-confirmations.md`: services list, hours, first-vis
 ## 13. Step 5 notes (5 Nov 2026): structured data
 
 Details and results are in `docs/seo/schema-validation.md`. One finding was missing from section 5: schema.org defines `Physician` as a medical organization, not a person, so `honorificPrefix`, `honorificSuffix` and `worksFor` were invalid on the physician node. It is now typed `["Physician", "Person"]`. The new `scripts/validate-schema.mjs` found it, and it would also have caught the `FamilyPractice` error.
+
+## 14. Step 6 notes (5 Nov 2026): crawling, sitemap, AI access, legacy redirects
+
+- `robots.txt`: the `/_next/` block (finding 2) and the unused `/api/` rule are removed. AI crawler rules are driven by one constant and are **pending the owner's decision** (`docs/seo/ai-crawler-policy.md`); the default is unchanged.
+- `sitemap.xml`: three canonical URLs, `YYYY-MM-DD` lastmod, no changefreq or priority.
+- `llms.txt`: confirmed facts only; unconfirmed facts are gated behind `LLMS_CONFIRMED`.
+- Legacy redirects (finding 4) implemented from the approved map: 301s for the unconditional rows, 410 Gone for cosmetic services, testimonials and the blog, and 404 kept for the on-hold rows. Checked against a local production server. The map was approved on 5 Nov 2026 but was not implemented until this step.
+- Still open for the owner: the `drparamjitpanesar.com` DNS (finding 5), submission of the sitemap to Google and Bing (`docs/seo/search-engine-submission.md`), and the AI crawler decision.
