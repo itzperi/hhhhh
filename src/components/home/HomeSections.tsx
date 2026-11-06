@@ -1,52 +1,85 @@
 import Link from 'next/link';
-import { Calendar, CheckCircle2, MapPin, Phone, Stethoscope, Wallet } from 'lucide-react';
+import { CheckCircle2, MapPin, Phone, Star, Stethoscope } from 'lucide-react';
+import { FaqList } from '@/components/page/FaqList';
 import { ButtonLink } from '@/components/ui/Button';
 import { MapEmbed } from '@/components/ui/MapEmbed';
 import { Section } from '@/components/ui/Section';
-import { APPOINTMENT_AVAILABILITY, HOME_FAQS, INITIAL_VISIT_PRICE, INSURANCE_ACCEPTED, PROVIDER, SPECIALTY } from '@/data/practice';
-import { OFFICE, PHONES } from '@/data/site';
-import { mapsDirectionsUrl, telHref } from '@/lib/utils';
+import { livePages, PAGE_META, type PageKey } from '@/data/pages';
+import { CREDENTIALS, HOME_FAQS, INITIAL_VISIT_PRICE, INSURANCE_ACCEPTED, PROVIDER, SPECIALTY } from '@/data/practice';
+import { AREAS_SERVED, LOCATION, OFFICE, PHONES } from '@/data/site';
+import { mapsDirectionsUrl, mapsPlaceUrl, telHref } from '@/lib/utils';
 
-/** Everything below the hero on the home page. Each block uses only facts from src/data/practice.ts. */
+/** Cards that point visitors to the right next page. A card appears only when its page is live. */
+const HELP_CARDS: readonly { key: PageKey; title: string; text: string }[] = [
+  { key: 'newPatients', title: 'New patients', text: 'Apollo Physicians is accepting new patients. See how to book and what to bring.' },
+  { key: 'annualPhysical', title: 'Annual physical', text: 'A yearly preventive visit with a physical exam. See what to expect and bring.' },
+  { key: 'services', title: 'Services', text: 'Family medicine services, from physicals and vaccinations to ongoing care.' },
+  { key: 'immigration', title: 'Immigration medical exam', text: 'USCIS immigration medical exams with a designated civil surgeon (Form I-693).' },
+  { key: 'insurance', title: 'Insurance accepted', text: 'Medicare and several major health plans, plus self-pay visits from $65.' },
+  { key: 'elkGrove', title: 'Elk Grove patients', text: 'About 12 minutes from Elk Grove by car, with drive times and routes.' },
+  { key: 'contact', title: 'Contact and directions', text: 'Address, phone, a map and directions to the South Sacramento office.' },
+];
+
+/** Everything below the hero and Quick Facts on the home page. Each block uses only facts from the data files. */
 export function HomeSections() {
+  const live = new Set(livePages().map((page) => page.path));
+  const cards = HELP_CARDS.filter((card) => live.has(PAGE_META[card.key].path));
+  const neighborhoods = AREAS_SERVED.neighborhoods;
+
   return (
     <>
-      <Section headingId="home-about-heading" title="About Apollo Physicians" eyebrow="Family medicine in Sacramento">
-        <div className="grid gap-8 lg:grid-cols-2">
+      <Section id="how-we-help" headingId="home-help-heading" title="How we can help" eyebrow="Family medicine in Sacramento">
+        <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-lg leading-relaxed text-navy-800">
-              The Apollo Physicians office is in South Sacramento. {APPOINTMENT_AVAILABILITY} {INITIAL_VISIT_PRICE}
+              Looking for a family doctor near you in South Sacramento? Family medicine is a primary care specialty, and {PROVIDER.name}, practices it here at
+              a single office on {OFFICE.streetName}. Same-day and next-day appointments are offered, new patients are welcome, and {INITIAL_VISIT_PRICE.toLowerCase()}
             </p>
             <p className="text-lg leading-relaxed text-navy-800">
-              Looking for a family doctor or a primary care doctor in Sacramento? Family medicine is a primary care specialty, and
-              Dr. Paramjit Panesar, MD, practices it here.
+              A family physician cares for people of all ages and is often the first doctor you call. If you are searching for a primary care physician in
+              Sacramento, start by checking that the office accepts your insurance, then call {PHONES.main.display} to book.
             </p>
           </div>
-          <div className="card space-y-4">
-            <p className="flex items-center gap-2 font-semibold text-navy-900">
-              <Calendar className="h-5 w-5 text-teal-700" aria-hidden="true" />
-              {APPOINTMENT_AVAILABILITY}
-            </p>
-            <p className="flex items-center gap-2 font-semibold text-navy-900">
-              <Wallet className="h-5 w-5 text-teal-700" aria-hidden="true" />
-              {INITIAL_VISIT_PRICE}
-            </p>
-            <p className="flex items-center gap-2 font-semibold text-navy-900">
-              <Phone className="h-5 w-5 text-teal-700" aria-hidden="true" />
-              <a href={telHref(PHONES.main.tel)} className="inline-flex min-h-[44px] items-center hover:underline">
-                {PHONES.main.display}
-              </a>
-            </p>
-          </div>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {cards.map((card) => (
+              <li key={card.key} className="card !p-4">
+                <h3 className="text-lg font-bold text-navy-900">
+                  <Link href={PAGE_META[card.key].path} className="inline-flex min-h-[44px] items-center hover:underline">
+                    {card.title}
+                  </Link>
+                </h3>
+                <p className="text-sm text-navy-800">{card.text}</p>
+              </li>
+            ))}
+          </ul>
         </div>
+      </Section>
+
+      <Section headingId="home-provider-heading" title="Our physician" tone="muted">
+        <article className="card flex max-w-3xl flex-col gap-4 sm:flex-row sm:items-start">
+          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-800" aria-hidden="true">
+            <Stethoscope className="h-9 w-9" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-navy-900">
+              <Link href={PAGE_META.panesar.path} className="inline-flex min-h-[44px] items-center hover:underline">
+                {PROVIDER.name}
+              </Link>
+            </h3>
+            <p className="text-navy-800">
+              {SPECIALTY} at Apollo Physicians. Board certified by the {CREDENTIALS.boardBody}. Medical degree from {CREDENTIALS.medicalSchool}, {CREDENTIALS.medicalSchoolYear};
+              residency at UAMS, {CREDENTIALS.residencyYears}. A USCIS-designated civil surgeon for immigration medical exams.
+            </p>
+            <p className="text-sm text-navy-700">California medical license {CREDENTIALS.licenseNumber}. You can check it on the Medical Board of California license search.</p>
+          </div>
+        </article>
       </Section>
 
       <Section
         id="insurance"
         headingId="home-insurance-heading"
         title="Insurance we accept"
-        tone="muted"
-        description={`Accepted plans, as listed by the practice. Call ${PHONES.main.display} to confirm your plan before your visit.`}
+        description={`Medicare and several major health plans. Call ${PHONES.main.display} to confirm your plan before your visit.`}
       >
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {INSURANCE_ACCEPTED.map((plan) => (
@@ -56,29 +89,36 @@ export function HomeSections() {
             </li>
           ))}
         </ul>
+        <p className="mt-6">
+          <Link href={PAGE_META.insurance.path} className="inline-flex min-h-[44px] items-center font-semibold text-teal-800 hover:underline">
+            See insurance and pricing details
+          </Link>
+        </p>
       </Section>
 
-      <Section headingId="home-provider-heading" title="Our provider">
-        <article className="card flex max-w-2xl flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-800" aria-hidden="true">
-            <Stethoscope className="h-9 w-9" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-xl font-bold text-navy-900">
-              <Link href="/dr-paramjit-panesar" className="inline-flex min-h-[44px] items-center hover:underline">
-                {PROVIDER.name}
-              </Link>
-            </h3>
-            <p className="text-navy-800">{SPECIALTY} at Apollo Physicians</p>
-          </div>
-        </article>
+      <Section id="areas" headingId="home-areas-heading" title="Areas we serve" tone="muted">
+        <div className="card max-w-3xl space-y-3">
+          <p className="text-navy-800">
+            Apollo Physicians has one office, in South Sacramento. Patients come from {neighborhoods.slice(0, -1).join(', ')} and {neighborhoods[neighborhoods.length - 1]}, and from Elk Grove.
+          </p>
+          <p className="text-navy-800">
+            Sacramento ZIP codes: {AREAS_SERVED.zipSacramento.join(' and ')}. Elk Grove ZIP codes: {AREAS_SERVED.zipElkGrove.join(', ')}. Elk Grove patients are seen at the South Sacramento
+            office, about 12 minutes away by car.
+          </p>
+          <Link href={PAGE_META.elkGrove.path} className="inline-flex min-h-[44px] items-center gap-2 font-semibold text-teal-800 hover:underline">
+            <MapPin className="h-5 w-5" aria-hidden="true" />
+            Family Physician in Elk Grove
+          </Link>
+        </div>
       </Section>
 
-      <Section id="location" headingId="home-location-heading" title="Find the office" tone="muted">
+      <Section id="location" headingId="home-location-heading" title="Find the office">
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-4">
             <address className="text-lg not-italic leading-relaxed text-navy-800">{OFFICE.line}</address>
-            <p className="text-navy-800">The office is the only Apollo Physicians location.</p>
+            <p className="text-navy-800">
+              The office is next to {LOCATION.highway} and about {LOCATION.hospitalDistance} from {LOCATION.nearHospital}. It is the only Apollo Physicians location.
+            </p>
             <div className="flex flex-wrap gap-3">
               <ButtonLink href={mapsDirectionsUrl(OFFICE.line)} variant="outline" external>
                 <MapPin className="h-5 w-5" aria-hidden="true" />
@@ -94,38 +134,31 @@ export function HomeSections() {
         </div>
       </Section>
 
-      <Section headingId="home-communities-heading" title="Communities we serve">
-        <div className="card max-w-3xl space-y-3">
-          <p className="text-navy-800">
-            Apollo Physicians has one office, in South Sacramento. Elk Grove patients are seen there, and our Elk Grove page explains
-            how to get here and what to expect.
+      <Section id="reviews" headingId="home-reviews-heading" title="Patient reviews" tone="muted">
+        <div className="card flex max-w-3xl flex-col gap-3">
+          <p className="flex items-center gap-2 font-semibold text-navy-900">
+            <Star className="h-5 w-5 text-teal-700" aria-hidden="true" />
+            Read what patients say on Google
           </p>
-          <Link href="/family-physician-elk-grove" className="inline-flex min-h-[44px] items-center gap-2 font-semibold text-teal-800 hover:underline">
-            <MapPin className="h-5 w-5" aria-hidden="true" />
-            Family Physician in Elk Grove
-          </Link>
+          <p className="text-navy-800">
+            Patients share their experience on Google. Read the reviews there, and if you have been to the office you are welcome to leave one of your own. Reviews are
+            written by patients, and the office does not choose or edit them.
+          </p>
+          <p>
+            <a
+              href={mapsPlaceUrl(`Apollo Physicians, ${OFFICE.line}`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center font-semibold text-teal-800 hover:underline"
+            >
+              Read and write reviews on Google
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
         </div>
       </Section>
 
-      <Section headingId="home-faq-heading" title="Frequently asked questions" tone="muted">
-        <dl className="space-y-6">
-          {HOME_FAQS.map((faq) => (
-            <div key={faq.question} className="card">
-              <dt className="text-lg font-semibold text-navy-900">{faq.question}</dt>
-              <dd className="mt-2 text-navy-800">{faq.answer}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href={telHref(PHONES.main.tel)} variant="primary">
-            <Phone className="h-5 w-5" aria-hidden="true" />
-            Call {PHONES.main.display}
-          </ButtonLink>
-          <ButtonLink href={mapsDirectionsUrl(OFFICE.line)} variant="outline" external>
-            Get directions
-          </ButtonLink>
-        </div>
-      </Section>
+      <FaqList idPrefix="home" faqs={HOME_FAQS} />
     </>
   );
 }

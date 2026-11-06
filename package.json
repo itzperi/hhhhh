@@ -10,7 +10,10 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "validate:schema": "node scripts/validate-schema.mjs"
+    "validate:schema": "node scripts/validate-schema.mjs",
+    "generate:og": "node scripts/generate-og.mjs",
+    "export:review": "node scripts/export-review-packet.mjs",
+    "crawl:check": "node scripts/crawl-check.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",

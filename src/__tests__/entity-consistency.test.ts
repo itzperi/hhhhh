@@ -71,9 +71,14 @@ describe('one source of truth for phone and address', () => {
 });
 
 describe('page meta reads the shared data', () => {
-  it.each(Object.values(PAGE_META).map((p) => [p.path, p] as const))('%s description carries the office street and phone', (_path, page) => {
-    expect(page.description).toContain(OFFICE.street);
+  it.each(Object.values(PAGE_META).map((p) => [p.path, p] as const))('%s description carries the phone', (_path, page) => {
     expect(page.description).toContain(PHONES.main.display);
+  });
+
+  it('puts the office street in the descriptions of the pages about the office and its physician', () => {
+    for (const key of ['home', 'newPatients', 'annualPhysical', 'elkGrove', 'panesar'] as const) {
+      expect(PAGE_META[key].description, key).toContain(OFFICE.street);
+    }
   });
 
   it('footer call link is built from the shared phone', () => {
@@ -83,14 +88,19 @@ describe('page meta reads the shared data', () => {
 });
 
 describe('business name', () => {
-  it('does not publish the unconfirmed legal name in any form', () => {
-    expect(BRAND.legalName).toBeNull();
+  it('uses the confirmed legal name and never the registry typo', () => {
+    expect(BRAND.legalName).toBe('Apollo Physicians Medical Group');
     const hits: string[] = [];
     for (const file of PUBLISHED_FILES.filter((f) => f !== SITE_DATA)) {
       const text = readFileSync(file, 'utf8');
-      if (/PHYSICANS|PHYSICIANS MEDICAL GROUP|Medical Group/i.test(text)) hits.push(relative('.', file).split(sep).join('/'));
+      if (/PHYSICANS/i.test(text)) hits.push(relative('.', file).split(sep).join('/'));
     }
     expect(hits).toEqual([]);
+  });
+
+  it('shows the legal name in the footer and the schema only', () => {
+    expect(clinicNode().legalName).toBe(BRAND.legalName);
+    expect(readFileSync('src/components/layout/Footer.tsx', 'utf8')).toContain('BRAND.legalName');
   });
 
   it('keeps the brand name identical in schema and llms.txt', () => {

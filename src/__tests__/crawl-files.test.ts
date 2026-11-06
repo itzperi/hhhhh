@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import robots, { buildRobotsRules } from '@/app/robots';
 import sitemap from '@/app/sitemap';
 import { AI_CRAWLER_POLICY, AI_SEARCH_AND_USER_AGENTS, AI_TRAINING_AGENTS } from '@/data/crawlers';
-import { PAGE_META } from '@/data/pages';
+import { CLINICAL_REVIEW, livePages, PAGE_META } from '@/data/pages';
 import { INITIAL_VISIT_PRICE, INSURANCE_ACCEPTED } from '@/data/practice';
 import { NPI, OFFICE, PHONES, absoluteUrl } from '@/data/site';
 import { buildLlmsTxt } from '@/lib/llms';
@@ -23,9 +23,15 @@ describe('robots.txt', () => {
     expect(live.sitemap).toBe(absoluteUrl('/sitemap.xml'));
   });
 
-  it('keeps the owner-decision default of no AI-specific rules until a decision is made', () => {
+  it('applies the owner decision (allow all) and names the AI crawlers with an explicit Allow', () => {
     expect(AI_CRAWLER_POLICY).toBe('allow-all');
-    expect(groups(live.rules)).toEqual([{ userAgent: '*', allow: '/' }]);
+    const g = groups(live.rules);
+    expect(g[0]).toEqual({ userAgent: '*', allow: '/' });
+    const named = g.slice(1).flatMap(agentsOf);
+    for (const agent of ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'anthropic-ai', 'Google-Extended', 'Applebot-Extended', ...AI_SEARCH_AND_USER_AGENTS, ...AI_TRAINING_AGENTS]) {
+      expect(named, agent).toContain(agent);
+    }
+    for (const group of g) expect([group.disallow ?? []].flat()).toEqual([]);
   });
 
   it('search-only allows search and user-fetch agents and disallows training agents', () => {
@@ -57,8 +63,16 @@ describe('robots.txt', () => {
 describe('sitemap.xml', () => {
   const entries = sitemap();
 
-  it('lists exactly the indexable pages at their canonical URLs', () => {
-    expect(entries.map((e) => e.url).sort()).toEqual(Object.values(PAGE_META).map((p) => absoluteUrl(p.path)).sort());
+  it('lists exactly the live pages at their canonical URLs', () => {
+    expect(entries.map((e) => e.url).sort()).toEqual(livePages().map((p) => absoluteUrl(p.path)).sort());
+  });
+
+  it('leaves out health pages that Dr. Panesar has not reviewed, and nothing else', () => {
+    const urls = entries.map((e) => e.url);
+    for (const page of Object.values(PAGE_META)) {
+      const clinical = 'clinical' in page && page.clinical;
+      expect(urls.includes(absoluteUrl(page.path)), page.path).toBe(!clinical || CLINICAL_REVIEW.reviewedOn !== null);
+    }
   });
 
   it('gives every URL a real, non-future YYYY-MM-DD lastmod', () => {
@@ -87,31 +101,43 @@ describe('llms.txt', () => {
   const none = { insurance: false, price: false, appointmentAvailability: false, physicianNpi: false };
   const all = { insurance: true, price: true, appointmentAvailability: true, physicianNpi: true };
 
-  it('contains only confirmed facts by default', () => {
+  it('carries the confirmed facts', () => {
     const text = buildLlmsTxt();
     expect(text).toContain(OFFICE.line);
     expect(text).toContain(PHONES.main.display);
+    expect(text).toContain('Apollo Physicians Medical Group');
     expect(text).toContain('Dr. Paramjit Panesar, MD');
-    expect(text).not.toContain('$');
-    expect(text).not.toContain(NPI.panesar);
-    expect(text).not.toMatch(/same-day|next-day/i);
-    for (const plan of INSURANCE_ACCEPTED) expect(text).not.toContain(plan);
-  });
-
-  it('never states hours or new-patient status', () => {
-    for (const flags of [none, all]) expect(buildLlmsTxt(flags)).not.toMatch(/\bhours? (are|is|:)|accepting|new patients/i);
-  });
-
-  it('adds each section only when the practice has confirmed it', () => {
-    const text = buildLlmsTxt(all);
-    expect(text).toContain(INITIAL_VISIT_PRICE);
+    expect(text).toContain('American Board of Family Medicine');
     expect(text).toContain(NPI.panesar);
-    expect(text).toContain('## Insurance');
-    expect(text).toContain('Same-day and next-day appointments.');
-    expect(buildLlmsTxt(none)).not.toContain('## Insurance');
+    expect(text).toContain(INITIAL_VISIT_PRICE);
+    for (const plan of INSURANCE_ACCEPTED) expect(text).toContain(plan);
   });
 
-  it('links only to pages in the sitemap', () => {
+  it('never states hours, languages or telehealth, which are not confirmed', () => {
+    for (const flags of [none, all]) {
+      const text = buildLlmsTxt(flags);
+      expect(text).not.toMatch(/\bopen (mon|tue|wed|thu|fri|sat|sun)|\d{1,2}(:\d\d)? ?(am|pm)\b|bilingual|speaks|spanish|punjabi|hindi|telehealth|24\/7/i);
+    }
+  });
+
+  it('lets each owner-confirmed fact be switched off', () => {
+    const text = buildLlmsTxt(none);
+    expect(text).not.toContain(NPI.panesar);
+    expect(text).not.toContain('## Insurance');
+    expect(text).not.toContain('## Pricing');
+    expect(text).not.toContain('Same-day and next-day appointments.');
+  });
+
+  it('lists only live pages, so it never points at a page that answers 404', () => {
+    const text = buildLlmsTxt();
+    for (const page of Object.values(PAGE_META)) {
+      const clinical = 'clinical' in page && page.clinical;
+      const listed = text.includes(`- ${absoluteUrl(page.path)}\n`) || text.includes(`- ${absoluteUrl(page.path)}`);
+      expect(listed, page.path).toBe(!clinical || CLINICAL_REVIEW.reviewedOn !== null);
+    }
+  });
+
+  it('links only to the site pages that exist', () => {
     const urls = buildLlmsTxt().match(/https:\/\/www\.apollophysicians\.com[^\s;]*/g) ?? [];
     const allowed = new Set([absoluteUrl('/'), ...Object.values(PAGE_META).map((p) => absoluteUrl(p.path))]);
     for (const url of urls) expect(allowed.has(url.replace(/\/$/, '')) || allowed.has(url), url).toBe(true);

@@ -58,3 +58,50 @@ Status key:
 - No "accepting new patients", no hours, no credentials, no affiliations, no services beyond "family medicine", no drive time, no languages.
 - No Elk Grove office wording of any kind.
 - Fax number 916-266-7473 must not appear as a phone number on the site, schema or llms.txt.
+
+## Update 6 Nov 2026: the owner's brief
+
+The owner supplied a block of "business facts" and a separate list of "open facts to confirm". This section records what changed. Where an item above says "Not confirmed", this section overrides it.
+
+### Now confirmed (owner, 6 Nov 2026) and published
+
+| Item | Fact | Published as |
+|---|---|---|
+| 4 | Legal name: Apollo Physicians Medical Group (the NPI registry spelling "PHYSICANS" is a registry typo) | Footer, schema `legalName`, `llms.txt` |
+| 7 | Same-day and next-day appointments | Pages, FAQs, meta, schema-free |
+| 8 | New patients accepted | Home, new-patients page, schema `isAcceptingNewPatients: true` |
+| 9 | Board certified in family medicine, American Board of Family Medicine | Physician page, home, FAQs, schema `hasCredential` |
+| 10, 11 | Medical school: Dayanand Medical College, 2004. Residency: UAMS, 2007 to 2010 (written out as University of Arkansas for Medical Sciences, please confirm the expansion) | Physician page, schema `alumniOf` |
+| 12 | California license A 114684, active since 2010 (matches the NPI registry) | Physician page, with a link to the Medical Board of California search |
+| 13 | Physician NPI 1982892659 | Physician page, schema, `llms.txt` |
+| 23 | Accepted: Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net, UnitedHealthcare, Sutter Health, Hill Physicians, Medicare | Insurance page, home, FAQs. Sutter Health and Hill Physicians are shown as medical groups. |
+| 24 | Initial self-pay visits start at $65 | Home, insurance page, FAQs, schema `priceRange` |
+| 26 (part) | USCIS-designated civil surgeon (Form I-693) | Physician page, schema, immigration page (held for review) |
+| area | Areas served: South Sacramento, Valley Hi, Laguna, Florin, Meadowview, Parkway and Elk Grove; ZIP codes 95823, 95828, 95624, 95757, 95758 | Home, contact, Elk Grove, schema `areaServed` |
+
+### Verified by us in Google Maps, 6 Nov 2026
+
+| Item | Result |
+|---|---|
+| 19 | The office is 0.4 mile (about a 9-minute walk, 2 minutes by car) from Methodist Hospital of Sacramento, 7500 Hospital Dr, and next to Highway 99. Described as "near", never as part of the hospital. Cosumnes River Blvd, named by the owner, is further south and is not described as adjacent. |
+| 20 | About 12 minutes by car from Elk Grove ZIP codes 95758 (6.6 miles via Laguna Blvd and Franklin Blvd) and 95624 (6.8 miles via Bond Rd and CA-99 North), usual traffic. 95757 did not return a result, so no claim is made for it. |
+| 39 | Google's pin for Suite 200 is 38.460217, -121.4131326, matching the coordinates in the schema. |
+
+### STILL OPEN: not published until the owner answers (the TODO list)
+
+| # | Open fact | What the owner said or what we found | Where it goes when confirmed |
+|---|---|---|---|
+| 6 | **Office hours** | The owner lists two conflicting sets: Mon to Fri 8:30 to 5:30 and Sat 9 to 2 on one site, Mon to Fri 8:30 to 5:00 with Saturday closed on WebMD and Vitals. Google Business Profile shows Mon to Fri 8:30 to 5:00, weekends closed. | `OFFICE_HOURS` in `src/data/site.ts`: the contact page, Quick Facts and schema `openingHoursSpecification` all appear from that one value |
+| 30 | **Phone variants** | Superpages shows 916-655-9883. 916-266-7473 is the fax. 916-824-3278 was not found anywhere. | Directory corrections only; the site uses 916-236-5800 |
+| 17 | **Other clinicians** (Dr. Tiwana, Dr. Dhaliwal and others) | Not stated | A team page and `Physician` nodes |
+| 27 | **Telehealth, 24/7 phone support** | Not stated (a Tebra page claims both) | Services and FAQ |
+| 28 | **Online booking** | None known | `BOOKING_URL` in `src/data/site.ts` adds "Book online" to the mobile bar |
+| 16 | **Languages spoken** (English and Spanish proposed) | The owner asked to confirm first | Physician page, schema `knowsLanguage`, a Spanish page if staff confirm |
+| 22 | **Parking and walk-in policy** | Not stated | Contact page |
+| 23 (part) | **Nivano Physicians, Medi-Cal, Brand New Day, Imperial, Western Health Advantage** | Listed as "on the site now" and also as "to confirm", so held out | `INSURANCE_ACCEPTED` and the insurance page |
+| 24 (part) | What the $65 covers and excludes | Not stated | Insurance page, FAQs |
+| 33 | Real Google review count and rating | 4.4 stars from 101 reviews was read on 5 Nov; the owner asked for the live numbers | Not displayed anywhere, and never marked up in schema |
+| 26 (rest) | Each service the practice offers: annual physicals, school and sports physicals, vaccinations, diabetes and high blood pressure care. Ages seen. | Needs Dr. Panesar's review | The health pages, held until `CLINICAL_REVIEW.reviewedOn` is set |
+| 37 | Dr. Panesar's clinical review of the health content | Not done | Set `CLINICAL_REVIEW.reviewedOn` in `src/data/pages.ts`, using `docs/clinical-review/review-packet.md` |
+| 40 | Relationship to CHCA Health or another "community health clinic" | Unanswered | Resolve before changing any directory listing |
+| 41 | Google Business Profile website field still shows drparamjitpanesar.com | Needs the owner | Profile edit |

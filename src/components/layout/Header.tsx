@@ -67,7 +67,7 @@ export function Header() {
         </Link>
 
         {/* Desktop menu */}
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="hidden items-center gap-1 xl:flex">
           {MAIN_NAV.map((item) => (
             <li key={item.href}>
               <NavAnchor href={item.href} pathname={pathname}>
@@ -78,7 +78,7 @@ export function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <a href={telHref(PHONES.main.tel)} className="btn btn-primary hidden md:inline-flex">
+          <a href={telHref(PHONES.main.tel)} className="btn btn-primary hidden whitespace-nowrap md:inline-flex">
             <Phone className="h-4 w-4" aria-hidden="true" />
             Call {PHONES.main.display}
           </a>
@@ -89,7 +89,7 @@ export function Header() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
             onClick={() => setMobileOpen((open) => !open)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-navy-900 hover:bg-navy-50 lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-navy-900 hover:bg-navy-50 xl:hidden"
           >
             {mobileOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
             <span className="sr-only">{mobileOpen ? 'Close menu' : 'Open menu'}</span>
@@ -98,7 +98,7 @@ export function Header() {
       </nav>
 
       {/* Mobile menu */}
-      <div id="mobile-menu" hidden={!mobileOpen} className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-warm-200 bg-white lg:hidden">
+      <div id="mobile-menu" hidden={!mobileOpen} className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-warm-200 bg-white xl:hidden">
         <div className="space-y-1 px-4 py-4">
           {MAIN_NAV.map((item) => (
             <MobileNavLink key={item.href} href={item.href} pathname={pathname}>
@@ -123,7 +123,7 @@ function NavAnchor({ href, pathname, children }: { href: string; pathname: strin
       href={href}
       aria-current={current ? 'page' : undefined}
       className={cn(
-        'inline-flex min-h-[44px] items-center rounded-md px-3 text-base font-semibold text-navy-800 hover:bg-navy-50',
+        'inline-flex min-h-[44px] items-center whitespace-nowrap rounded-md px-3 text-base font-semibold text-navy-800 hover:bg-navy-50',
         current && 'bg-teal-50 text-teal-900',
       )}
     >

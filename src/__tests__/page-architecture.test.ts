@@ -2,9 +2,9 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { BREADCRUMBS, FOOTER_COLUMNS, MAIN_NAV } from '@/data/navigation';
-import { PAGE_META } from '@/data/pages';
+import { livePages, PAGE_META } from '@/data/pages';
 import { ELK_GROVE_FAQS, ELK_GROVE_NOTE } from '@/data/practice';
-import { OFFICE } from '@/data/site';
+import { ELK_GROVE_DRIVE, OFFICE } from '@/data/site';
 import { buildLlmsTxt } from '@/lib/llms';
 import { breadcrumbNode } from '@/lib/structured-data';
 
@@ -29,8 +29,17 @@ describe('navigation', () => {
     for (const href of hrefs) expect(KNOWN_PATHS.has(href), href).toBe(true);
   });
 
-  it('puts every indexable page in the primary navigation', () => {
-    expect(new Set(MAIN_NAV.map((l) => l.href))).toEqual(KNOWN_PATHS);
+  it('puts every live page that has a nav label in the primary navigation, in the owner-specified order', () => {
+    const expected = livePages().filter((p) => p.navLabel).map((p) => p.path);
+    expect(new Set(MAIN_NAV.map((l) => l.href))).toEqual(new Set(expected));
+    const order = ['/', '/new-patients', '/annual-physical-sacramento', '/family-physician-elk-grove', '/dr-paramjit-panesar-md', '/services', '/insurance-accepted', '/contact'];
+    expect(MAIN_NAV.map((l) => l.href)).toEqual(order.filter((path) => expected.includes(path)));
+  });
+
+  it('never links to a page that answers 404 (health pages wait for Dr. Panesar)', () => {
+    const live = new Set(livePages().map((p) => p.path));
+    const hrefs = [...MAIN_NAV, ...FOOTER_COLUMNS.flatMap((c) => c.links)].map((l) => l.href).filter((h) => !h.startsWith('tel:'));
+    for (const href of hrefs) expect(live.has(href), href).toBe(true);
   });
 });
 
@@ -70,8 +79,10 @@ describe('Elk Grove copy states one office and implies no Elk Grove office', () 
     expect(copy).not.toMatch(/does not (operate|have)|no Elk Grove|not (have )?an office/i);
   });
 
-  it('states no drive time until one has been measured', () => {
-    const copy = [ELK_GROVE_NOTE, ...ELK_GROVE_FAQS.map((f) => f.answer)].join('\n');
-    expect(copy).not.toMatch(/\d+\s*(-|to)?\s*\d*\s*(min|minute|mile)/i);
+  it('states only the drive times read from Google Maps on 6 Nov 2026', () => {
+    const copy = [ELK_GROVE_NOTE, ...ELK_GROVE_FAQS.map((f) => f.answer), buildLlmsTxt()].join('\n');
+    const minutes = [...copy.matchAll(/(\d+) minutes?/g)].map((m) => Number(m[1]));
+    expect(minutes.length).toBeGreaterThan(0);
+    for (const value of minutes) expect([ELK_GROVE_DRIVE.minutes, 9]).toContain(value);
   });
 });

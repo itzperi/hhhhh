@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { ELK_GROVE_FAQS, HOME_FAQS, INSURANCE_ACCEPTED, INITIAL_VISIT_PRICE } from '@/data/practice';
+import { ELK_GROVE_FAQS, HOME_FAQS, INSURANCE_ACCEPTED, INSURANCE_GROUPS, INITIAL_VISIT_PRICE } from '@/data/practice';
 import { PAGE_META } from '@/data/pages';
-import { BRAND, GEO, NPI, OFFICE, PHONES, PHYSICIAN_PROFILES, SITE_URL } from '@/data/site';
+import { BRAND, GEO, NPI, OFFICE, OFFICE_HOURS, PHONES, PHYSICIAN_PROFILES, SITE_URL } from '@/data/site';
 import { DESCRIPTION_MAX, DESCRIPTION_MIN, TITLE_MAX, TITLE_MIN } from '@/lib/seo-fit';
 import { CLINIC_ID, PHYSICIAN_ID, WEBSITE_ID, clinicNode, faqNode, graph, physicianNode, webPageNode, websiteNode } from '@/lib/structured-data';
 
@@ -28,29 +28,41 @@ describe('page titles and descriptions', () => {
 });
 
 describe('verified facts', () => {
-  it('lists exactly the insurance plans the practice supplied', () => {
+  it('lists exactly the insurance the owner supplied on 6 Nov 2026', () => {
     expect([...INSURANCE_ACCEPTED]).toEqual([
       'Aetna',
       'Anthem Blue Cross',
-      'Blue Shield',
+      'Blue Shield of California',
       'Cigna',
       'Health Net',
-      'United Healthcare',
-      'Sutter',
+      'UnitedHealthcare',
+      'Sutter Health',
       'Hill Physicians',
       'Medicare',
     ]);
   });
 
-  it('uses the confirmed phone and address, and no unconfirmed legal name', () => {
-    expect(BRAND.legalName).toBeNull();
+  it('does not list plans the owner still has to confirm', () => {
+    const all = JSON.stringify([INSURANCE_ACCEPTED, INSURANCE_GROUPS]);
+    for (const plan of ['Nivano', 'Medi-Cal', 'Medicaid', 'Brand New Day', 'Imperial', 'Western Health Advantage']) {
+      expect(all).not.toContain(plan);
+    }
+  });
+
+  it('uses the confirmed phone, address and legal name', () => {
+    expect(BRAND.name).toBe('Apollo Physicians');
+    expect(BRAND.legalName).toBe('Apollo Physicians Medical Group');
     expect(OFFICE.line).toBe('8191 Timberlake Way, Suite 200, Sacramento, CA 95823');
     expect(PHONES.main.display).toBe('916-236-5800');
     expect(NPI.organization).toBe('1124405584');
   });
 
-  it('states the initial visit price exactly as supplied', () => {
-    expect(INITIAL_VISIT_PRICE).toBe('Initial doctor visits start at $65.');
+  it('states the initial self-pay price as supplied', () => {
+    expect(INITIAL_VISIT_PRICE).toBe('Initial self-pay visits start at $65.');
+  });
+
+  it('keeps the unconfirmed facts out: no hours until the owner chooses a set', () => {
+    expect(OFFICE_HOURS).toBeNull();
   });
 });
 
@@ -96,23 +108,25 @@ describe('structured data graph', () => {
     for (const ref of refs) expect(ids.has(ref), `unresolved ${ref}`).toBe(true);
   });
 
-  it('gives the clinic the verified fields and no unverified ones', () => {
+  it('gives the clinic the confirmed fields and no unconfirmed ones', () => {
     const clinic = clinicNode();
     expect(clinic['@type']).toBe('MedicalClinic');
     expect(clinic.name).toBe('Apollo Physicians');
+    expect(clinic.legalName).toBe('Apollo Physicians Medical Group');
     expect(clinic.telephone).toBe('+19162365800');
     expect(clinic.medicalSpecialty).toBe('https://schema.org/PrimaryCare');
     expect(clinic.geo).toEqual({ '@type': 'GeoCoordinates', latitude: GEO.latitude, longitude: GEO.longitude });
+    expect(clinic.isAcceptingNewPatients).toBe(true);
+    expect(clinic.priceRange).toBe('From $65');
+    expect(clinic.paymentAccepted).toBe('Health insurance, self-pay');
+    expect(JSON.stringify(clinic.areaServed)).toContain('Elk Grove');
     for (const field of [
-      'legalName',
       'identifier',
-      'paymentAccepted',
       'sameAs',
-      'isAcceptingNewPatients',
-      'areaServed',
       'openingHoursSpecification',
       'openingHours',
-      'priceRange',
+      'knowsLanguage',
+      'hospitalAffiliation',
       'aggregateRating',
       'review',
     ]) {
@@ -194,7 +208,7 @@ describe('source tree is free of the previous organisation', () => {
   });
 
   it('makes no unverified claims in the copy', () => {
-    const UNVERIFIED = ['Medi-Cal', 'Nivano', 'Rivercity', 'River City', 'female', 'Wikidata', 'minutes', 'Board-certified', 'accepting new patients'];
+    const UNVERIFIED = ['Medi-Cal', 'Medicaid', 'Nivano', 'Rivercity', 'River City', 'female', 'Wikidata', 'Brand New Day', 'Western Health Advantage', 'telehealth', 'walk-in', '24/7', 'bilingual', 'Spanish', 'Punjabi', 'Hindi'];
     const hits: string[] = [];
     for (const file of files('src/data').concat(files('src/app'), files('src/components'))) {
       const text = readFileSync(file, 'utf8');

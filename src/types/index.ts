@@ -33,4 +33,9 @@ export interface NavGroup {
 export interface FaqItem {
   question: string;
   answer: string;
+  /**
+   * True for general health information. Such items are published only after Dr. Panesar's review
+   * (CLINICAL_REVIEW in src/data/pages.ts); until then they are neither shown nor in the FAQ schema.
+   */
+  clinical?: boolean;
 }

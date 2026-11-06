@@ -19,11 +19,13 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const APP = join(ROOT, '.next', 'server', 'app');
-const PAGES = [
-  ['/', 'index.html'],
-  ['/family-physician-elk-grove', 'family-physician-elk-grove.html'],
-  ['/dr-paramjit-panesar', 'dr-paramjit-panesar.html'],
-];
+/** The live pages, read from the build's own sitemap, so new pages are validated automatically. */
+const SITE = 'https://www.apollophysicians.com';
+const PAGES = existsSync(join(APP, 'sitemap.xml.body'))
+  ? [...readFileSync(join(APP, 'sitemap.xml.body'), 'utf8').matchAll(/<loc>(.*?)<\/loc>/g)]
+      .map((m) => m[1].replace(SITE, '') || '/')
+      .map((route) => [route, route === '/' ? 'index.html' : `${route.slice(1)}.html`])
+  : [];
 
 async function loadVocabulary() {
   const arg = process.argv[2];

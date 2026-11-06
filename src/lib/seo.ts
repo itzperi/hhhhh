@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PAGE_META } from '@/data/pages';
 import { ASSETS, BRAND, absoluteUrl } from '@/data/site';
 
 interface PageMetaInput {
@@ -7,7 +8,7 @@ interface PageMetaInput {
   description: string;
   /** Path beginning with "/". Used for the canonical URL and OpenGraph URL. */
   path: string;
-  /** Absolute or site-relative image URL. Omitted when the site has no share image. */
+  /** Absolute or site-relative image URL. Defaults to the page's own generated image (/og/<page>.png). */
   image?: string;
   /** Set to true for pages that must not be indexed. */
   noIndex?: boolean;
@@ -17,8 +18,10 @@ interface PageMetaInput {
  * Builds the Metadata object for a route. The root layout sets metadataBase, so the
  * relative canonical and OpenGraph URLs resolve against SITE_URL.
  */
-export function buildMetadata({ title, description, path, image = ASSETS.shareCard, noIndex = false }: PageMetaInput): Metadata {
+export function buildMetadata({ title, description, path, image, noIndex = false }: PageMetaInput): Metadata {
   const canonicalUrl = absoluteUrl(path);
+  const key = Object.entries(PAGE_META).find(([, page]) => page.path === path)?.[0];
+  image = image ?? (key ? absoluteUrl(`/og/${key}.png`) : ASSETS.shareCard);
 
   return {
     title: { absolute: title },

@@ -1,30 +1,45 @@
 import type { NavLink } from '@/types';
-import { PAGE_META } from './pages';
+import { PAGE_META, isLive, type PageKey } from './pages';
 import { PROVIDER } from './practice';
 import { PHONES } from './site';
 
 /**
- * Navigation for the Apollo Physicians site. Every href resolves to a route in src/app.
- * The header and footer use these lists; no other routes exist. There is one office, so there is
- * no "Locations" menu: Elk Grove patients have their own page, linked like any other.
+ * Navigation for the Apollo Physicians site. Every href resolves to a route in src/app. The header and
+ * footer use these lists. Pages that are not live yet (health-information pages awaiting Dr. Panesar's
+ * review, see CLINICAL_REVIEW in pages.ts) are left out automatically, so no link ever points at a 404.
+ * There is one office, so there is no "Locations" menu.
  */
 
+/** Order of the primary navigation. */
+const NAV_ORDER: readonly PageKey[] = ['home', 'newPatients', 'annualPhysical', 'elkGrove', 'panesar', 'services', 'insurance', 'contact'];
+
 /** Primary navigation, shared by the header (desktop and mobile). */
-export const MAIN_NAV: readonly NavLink[] = [
-  { label: 'Home', href: PAGE_META.home.path },
-  { label: 'Elk Grove patients', href: PAGE_META.elkGrove.path },
-  { label: PROVIDER.shortName, href: PAGE_META.panesar.path },
-];
+export const MAIN_NAV: readonly NavLink[] = NAV_ORDER.filter((key) => isLive(PAGE_META[key])).map((key) => ({
+  label: (PAGE_META[key] as { navLabel: string }).navLabel,
+  href: PAGE_META[key].path,
+}));
+
+/** Footer labels: longer than the navigation labels, and they include pages that are not in the navigation. */
+const FOOTER_LABELS: Record<PageKey, string> = {
+  home: 'Family Physician in Sacramento',
+  newPatients: 'New patients',
+  annualPhysical: 'Annual physical',
+  elkGrove: 'Family Physician in Elk Grove',
+  panesar: PROVIDER.name,
+  services: 'Services',
+  immigration: 'Immigration medical exam',
+  insurance: 'Insurance accepted',
+  contact: 'Contact and directions',
+  faq: 'Questions and answers',
+};
 
 /** Footer link columns. */
 export const FOOTER_COLUMNS: readonly { title: string; links: readonly NavLink[] }[] = [
   {
     title: 'Pages',
-    links: [
-      { label: 'Family Physician in Sacramento', href: PAGE_META.home.path },
-      { label: 'Family Physician in Elk Grove', href: PAGE_META.elkGrove.path },
-      { label: PROVIDER.name, href: PAGE_META.panesar.path },
-    ],
+    links: (Object.keys(FOOTER_LABELS) as PageKey[])
+      .filter((key) => isLive(PAGE_META[key]))
+      .map((key) => ({ label: FOOTER_LABELS[key], href: PAGE_META[key].path })),
   },
   {
     title: 'Booking',
@@ -37,17 +52,28 @@ export interface Crumb {
   path: string;
 }
 
+const HOME_CRUMB: Crumb = { name: 'Home', path: PAGE_META.home.path };
+
+/** Name shown in the breadcrumb for each inner page. */
+const CRUMB_NAMES: Record<Exclude<PageKey, 'home'>, string> = {
+  newPatients: 'New patients',
+  annualPhysical: 'Annual physical',
+  elkGrove: 'Family Physician in Elk Grove',
+  panesar: PROVIDER.name,
+  services: 'Services',
+  immigration: 'Immigration medical exam',
+  insurance: 'Insurance accepted',
+  contact: 'Contact',
+  faq: 'Questions and answers',
+};
+
 /**
  * Breadcrumb trails. The visible breadcrumb component and the BreadcrumbList JSON-LD both read these,
  * so the markup always matches what the page shows. The home page has no trail.
  */
-export const BREADCRUMBS = {
-  elkGrove: [
-    { name: 'Home', path: PAGE_META.home.path },
-    { name: 'Family Physician in Elk Grove', path: PAGE_META.elkGrove.path },
-  ],
-  panesar: [
-    { name: 'Home', path: PAGE_META.home.path },
-    { name: PROVIDER.name, path: PAGE_META.panesar.path },
-  ],
-} as const satisfies Record<string, readonly Crumb[]>;
+export const BREADCRUMBS = Object.fromEntries(
+  (Object.keys(CRUMB_NAMES) as Exclude<PageKey, 'home'>[]).map((key) => [
+    key,
+    [HOME_CRUMB, { name: CRUMB_NAMES[key], path: PAGE_META[key].path }] as const,
+  ]),
+) as { readonly [K in Exclude<PageKey, 'home'>]: readonly [Crumb, Crumb] };

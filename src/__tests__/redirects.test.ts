@@ -2,7 +2,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { GET as gone } from '@/app/gone/route';
-import { PAGE_META } from '@/data/pages';
+import { livePages, PAGE_META } from '@/data/pages';
 
 type Redirect = { source: string; destination: string; permanent?: boolean; statusCode?: number; has?: unknown[] };
 type Rewrite = { source: string; destination: string };
@@ -53,11 +53,20 @@ describe('legacy redirects', () => {
     for (const r of pathRedirects) expect(livePaths.has(r.source), r.source).toBe(false);
   });
 
-  it('send the old physician profile to the physician page, and old insurance and pricing URLs to the home page', () => {
+  it('send every old URL of the physician, insurance, booking and contact pages to the matching new page', () => {
     const map = new Map(pathRedirects.map((r) => [r.source, r.destination]));
-    expect(map.get('/provider/paramjit-panesar-md')).toBe('/dr-paramjit-panesar');
-    expect(map.get('/content/insurance')).toBe('/');
-    expect(map.get('/content/cash-prices')).toBe('/');
+    for (const old of ['/provider/paramjit-panesar-md', '/providers/paramjit-panesar', '/dr-paramjit-panesar']) {
+      expect(map.get(old), old).toBe('/dr-paramjit-panesar-md');
+    }
+    expect(map.get('/content/insurance')).toBe('/insurance-accepted');
+    expect(map.get('/content/cash-prices')).toBe('/insurance-accepted');
+    for (const old of ['/content/new-patients', '/schedule', '/registration']) expect(map.get(old), old).toBe('/new-patients');
+    for (const old of ['/contact-us', '/visit', '/location/sacramento-ca']) expect(map.get(old), old).toBe('/contact');
+  });
+
+  it('does not send visitors to a page that answers 404 (health pages wait for Dr. Panesar)', () => {
+    const live = new Set(livePages().map((p) => p.path));
+    for (const r of pathRedirects) expect(live.has(r.destination), `${r.source} -> ${r.destination}`).toBe(true);
   });
 
   it('leave unconfirmed providers, the portal and unconfirmed services alone', () => {

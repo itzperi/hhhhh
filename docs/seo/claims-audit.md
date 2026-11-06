@@ -1,58 +1,63 @@
 # Claims audit: every fact the site publishes, checked against client-confirmations.md
 
-Prepared 5 Nov 2026 (Step 9). Sources: the three built pages, `sitemap.xml`, `llms.txt` and the JSON-LD. "Confirmed" means stated in the project brief or confirmed by the practice. A claim that is **not confirmed but still published** was carried over from the previous site (or the NPI registry) and was left in place on instruction. Each can be removed by editing the file in the last column.
+Updated 6 Nov 2026 after the owner's brief. Sources: the built pages, `sitemap.xml`, `llms.txt` and the JSON-LD. "Confirmed" means stated by the owner on 6 Nov 2026 (or earlier in the project brief) or checked by us in a public tool. Each claim lists the file to edit if it ever has to change.
 
 ## A. Published and confirmed
 
-| Claim | Where it appears | Item |
-|---|---|---|
-| Brand name "Apollo Physicians" | everywhere | 3 |
-| Address 8191 Timberlake Way, Suite 200, Sacramento, CA 95823 | everywhere, schema | 1 |
-| Phone 916-236-5800 | everywhere, schema | 2 |
-| Dr. Paramjit Panesar, MD practices family medicine at this office | home, physician page, FAQs, schema | 5 |
-| One office; Elk Grove patients are seen there; Apollo "serves Elk Grove families" | Elk Grove page, home, FAQs, `llms.txt` | the brief's own wording |
-| "South Sacramento" as the office's area | home, Elk Grove page | the brief's own wording |
-
-## B. Published but NOT confirmed (the practice must answer, or the claim should come down)
-
-| Claim | Where it appears | Item | Edit here to remove or change |
+| Claim | Where it appears | Source | Edit here |
 |---|---|---|---|
-| **Same-day and next-day appointments** | home H2, hero list and About; meta descriptions and Open Graph text on all three pages; home and Elk Grove FAQs; Elk Grove hero | 7 | `APPOINTMENT_AVAILABILITY`, `HOME_FAQS`, `ELK_GROVE_FAQS`, `src/data/pages.ts`, Elk Grove hero text |
-| **Initial doctor visits start at $65** | home hero, About, FAQ; Elk Grove FAQ | 24 | `INITIAL_VISIT_PRICE`, `INITIAL_VISIT_FROM`, both FAQ arrays |
-| **Nine accepted plans** (Aetna, Anthem Blue Cross, Blue Shield, Cigna, Health Net, United Healthcare, Sutter, Hill Physicians, Medicare) | home pills, section and FAQ; Elk Grove pills and FAQ | 23, 23a | `INSURANCE_ACCEPTED` and the two FAQ arrays. Sutter and Hill Physicians are networks, not insurers. |
-| Dr. Panesar's NPI 1982892659 | physician page, schema | 13 | `NPI.panesar` and the NPI card in the physician page |
-| Profile links to Doximity and WebMD | physician page, schema `sameAs` | 32 | `PHYSICIAN_PROFILE_LIST`. Verified by us on 5 Nov 2026; the practice has not confirmed them. |
-| Map pin 38.46019, -121.41317 | schema `geo` only | 39 | `GEO` in `src/data/site.ts`. Taken from the practice's own Google listing. |
+| Brand "Apollo Physicians"; legal name "Apollo Physicians Medical Group" | Footer, schema, `llms.txt` | Owner | `BRAND` in `src/data/site.ts` |
+| Address 8191 Timberlake Way, Suite 200, Sacramento, CA 95823; phone 916-236-5800 | Everywhere | Owner | `OFFICE`, `PHONES` in `site.ts` |
+| Family medicine practice; Dr. Paramjit Panesar, MD, sees patients at this one office | Everywhere | Owner | `PROVIDER` in `practice.ts` |
+| Board certified in family medicine (American Board of Family Medicine) | Home, physician page, FAQs, schema | Owner | `CREDENTIALS` in `practice.ts` |
+| California medical license A 114684, active since 2010 | Physician page, FAQs, schema | Owner; matches the NPI registry | `CREDENTIALS` |
+| Medical degree Dayanand Medical College 2004; residency UAMS 2007 to 2010 | Physician page, FAQs, schema | Owner (UAMS is written out in full, please confirm) | `CREDENTIALS` |
+| USCIS-designated civil surgeon (Form I-693) | Physician page, FAQs, schema; the immigration page waits for review | Owner | `CREDENTIALS` |
+| NPI 1982892659 | Physician page, Quick facts, schema, `llms.txt` | Owner; NPI registry | `NPI` in `site.ts` |
+| Same-day and next-day appointments | Pages, FAQs, meta | Owner | `APPOINTMENT_AVAILABILITY` in `practice.ts` |
+| New patients accepted | Home, new-patients page, FAQs, schema | Owner | `practice.ts`, `content.ts` |
+| Accepts Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net, UnitedHealthcare, Sutter Health, Hill Physicians, Medicare (the last two groups shown as medical groups) | Insurance page, home, FAQs | Owner | `INSURANCE_ACCEPTED`, `INSURANCE_GROUPS` |
+| Initial self-pay visits start at $65 | Home, insurance page, FAQs, schema `priceRange` | Owner | `INITIAL_VISIT_FROM` |
+| One office; Elk Grove patients are seen there; areas served and ZIP codes | Home, contact, Elk Grove, schema `areaServed` | Owner | `AREAS_SERVED` in `site.ts` |
+| 0.4 mile (about a 9-minute walk) from Methodist Hospital of Sacramento, next to Highway 99 | Home, contact, Elk Grove, FAQs | **Checked in Google Maps, 6 Nov 2026**; described as "near", never as affiliated | `LOCATION` in `site.ts` |
+| About 12 minutes by car from Elk Grove ZIP codes 95758 and 95624; routes | Elk Grove, contact, FAQs, `llms.txt` | **Checked in Google Maps, 6 Nov 2026** ("usual traffic"); 95757 not claimed | `ELK_GROVE_DRIVE` in `site.ts` |
+| Map pin 38.46019, -121.41317 | Schema `geo` | Google's own listing pin | `GEO` in `site.ts` |
+| Links to Doximity and WebMD profiles | Physician page, schema `sameAs` | Opened and read by us | `PHYSICIAN_PROFILE_LIST` |
 
-**Kept out of `llms.txt`:** items 7, 13, 23 and 24 are gated by `LLMS_CONFIRMED` and appear in `llms.txt` only after sign-off.
+## B. Left out on purpose (the open facts: not confirmed, so not published anywhere)
 
-## C. Left out on purpose (unconfirmed, so not published anywhere)
+| Not published | Why | Where it will go |
+|---|---|---|
+| **Office hours** | Two conflicting sets from the owner; Google and WebMD agree on Mon to Fri 8:30 to 5:00 but the practice has not chosen | `OFFICE_HOURS` in `site.ts` (contact page, Quick facts, schema appear together) |
+| Languages spoken (English and Spanish proposed) | The owner asked to confirm first | Physician page, schema `knowsLanguage` |
+| Telehealth, 24/7 phone support, walk-in policy, parking | Not stated | Contact page, services |
+| Other clinicians (Dr. Tiwana, Dr. Dhaliwal and others) | Not stated | A team page |
+| Online booking and patient portal | None known | `BOOKING_URL` in `site.ts` |
+| Nivano Physicians, Medi-Cal, Brand New Day, Imperial, Western Health Advantage | Listed as both "on the site now" and "to confirm" | `INSURANCE_ACCEPTED` |
+| What the $65 includes | Not stated | Insurance page |
+| Google rating and review count | The owner asked for live numbers; counts change | Not shown. A link to the Google reviews is shown instead. Never marked up in schema. |
+| Years in practice, hospital affiliations, awards, the organisation NPI | Not stated | n/a |
+| Optional pages: vaccinations, Medicare Annual Wellness, well-child exam | Need confirmed services and ages | After Dr. Panesar's review |
 
-| Not published | Item |
+## C. Held for Dr. Paramjit Panesar's clinical review
+
+These contain general health information. Until `CLINICAL_REVIEW.reviewedOn` is set in `src/data/pages.ts`, they answer 404, are not in the sitemap, navigation or `llms.txt`, and no page claims a medical review. Everything to review is in `docs/clinical-review/review-packet.md`.
+
+| Held | Contains |
 |---|---|
-| Office hours (Google shows Mon to Fri 8:30 to 5:00, WebMD agrees; not confirmed by the practice) | 6 |
-| "Accepting new patients" (WebMD and Vitals say yes; not confirmed) | 8 |
-| Board certification, medical school, residency, license number, years in practice, languages | 9 to 12, 15, 16 |
-| Other providers at the practice | 17 |
-| Hospital affiliations; "Methodist Hospital Medical Plaza" | 18, 19 |
-| Drive time from Elk Grove, Hwy 99 or Bruceville Rd directions, parking | 20 to 22 |
-| On-site lab, services list beyond family medicine, telehealth | 25 to 27 |
-| Online booking, patient portal | 28, 29 |
-| Staff and clinic photos | 31 |
-| Legal business name (the NPI registry spelling "PHYSICANS" may be a typo) | 4 |
-| Organisation NPI | 14 |
-| Accepted insurance in the schema (no valid property), `openingHours`, `priceRange`, `isAcceptingNewPatients`, credentials, languages, `AggregateRating`, `Review` | various |
-| Neighborhood names (Valley Hi, Meadowview, Land Park) and ZIPs 95828 and 95831 | not requested as facts |
-| Pages `/insurance-and-pricing` and `/same-day-appointments` | 7, 23, 24 |
-| Google rating and reviews (4.4 stars, 101 reviews) | not used anywhere |
+| `/annual-physical-sacramento` | What an annual physical includes, what to bring, school and sports physicals, how often |
+| `/immigration-medical-exam-sacramento` | Form I-693, who needs the exam, vaccines, what to bring (defers to USCIS for rules and fees) |
+| `/services` | The list of services offered, including diabetes and high blood pressure care |
+| Health FAQs on `/faq` | Family physician vs primary care physician, choosing a physician, family vs internal medicine vs pediatrics, and the comparison table |
 
-## D. Checks run on 5 Nov 2026
+## D. Checks
 
-| Check | Result |
+| Check | Result (local production build, 6 Nov 2026) |
 |---|---|
-| Spell-check of the visible text of all three pages and `llms.txt` (cspell, US English, with the names Paramjit, Panesar, Timberlake and the insurers added) | 0 issues |
-| One phone number, one address, one brand name across pages, meta tags, schema and `llms.txt` | Pass (`entity-consistency.test.ts`) |
-| No fax or legacy number anywhere | Pass |
-| No "Elk Grove office, clinic or location" wording; no absence framing | Pass (`page-architecture.test.ts`) |
-| No unsupported superlative or comparison ("best", "top", "leading", "#1", "only", "fastest", wait-time claims) in the copy | Pass (see test) |
-| FAQ schema equals visible text | Pass (`aeo-copy.test.ts`) |
+| One phone number, one address, one brand name and the correct legal name everywhere; no fax or legacy number | Pass (`entity-consistency.test.ts`) |
+| No "Elk Grove office" wording; no absence framing; every drive time matches the Google Maps reading | Pass (`page-architecture.test.ts`) |
+| No unsupported superlative, comparison, outcome promise, competitor mention or personal medical advice | Pass (`claims-guard.test.ts`) |
+| Direct answer under each H1 is 40 to 60 words; FAQ answers are 40 to 60 words; FAQ schema equals the visible text | Pass (`aeo-copy.test.ts`, build checks) |
+| Health pages, answers and the review claim appear only after the review date is set (tested in both states) | Pass (`clinical-gate.test.ts`) |
+| No hours, languages, telehealth or unconfirmed plans anywhere, in copy or schema | Pass |
+| Share images: one per page, 1200 x 630, matching the page title | Pass (`og-images.test.ts`) |

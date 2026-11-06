@@ -22,27 +22,25 @@ const SITE_HOST = 'www.apollophysicians.com';
  *   /provider/jaspreet-tiwana-md, /provider/ramandeep-dhaliwal-md, /provider/ethelyne-j-acebedo-fnp-bc (item 17),
  *   /pay-now (item 29), /service/telemedicine (item 27), and the services that are not confirmed:
  *   chronic-disease-management, immunizations, pediatrics, mental-health, immigration-exams, women's-health (item 26).
- * Re-point /content/insurance and /content/cash-prices to /insurance-and-pricing if that page is ever built.
+ * After Dr. Panesar's review, re-point /service/primary-care to /services and /service/immigration-exams to
+ * /immigration-medical-exam-sacramento.
  */
 const LEGACY_REDIRECTS = [
   // Generic pages of the old site: the home page is the closest equivalent.
-  ...['/about', '/contact-us', '/visit', '/location/sacramento-ca', '/index', '/contents', '/providers'].map((source) => ({
+  ...['/about', '/index', '/contents', '/providers'].map((source) => ({ source, destination: '/' })),
+  // Contact and visit pages now have an equivalent.
+  ...['/contact-us', '/visit', '/location/sacramento-ca'].map((source) => ({ source, destination: '/contact' })),
+  // The same physician, now at /dr-paramjit-panesar-md (the previous URL of this site is redirected too).
+  ...['/provider/paramjit-panesar-md', '/providers/paramjit-panesar', '/dr-paramjit-panesar'].map((source) => ({
     source,
-    destination: '/',
+    destination: '/dr-paramjit-panesar-md',
   })),
-  // The same physician.
-  { source: '/provider/paramjit-panesar-md', destination: '/dr-paramjit-panesar' },
-  // Insurance, pricing, scheduling and the confirmed service (family medicine is primary care).
-  ...[
-    '/content/insurance',
-    '/content/cash-prices',
-    '/content/new-patients',
-    '/schedule',
-    '/registration',
-    '/services',
-    '/service/primary-care',
-    '/service/same-day-visits',
-  ].map((source) => ({ source, destination: '/' })),
+  // Insurance and pricing.
+  ...['/content/insurance', '/content/cash-prices'].map((source) => ({ source, destination: '/insurance-accepted' })),
+  // Becoming a patient and booking.
+  ...['/content/new-patients', '/schedule', '/registration'].map((source) => ({ source, destination: '/new-patients' })),
+  // Family medicine as a service: the services page waits for Dr. Panesar's review, so these go to the home page.
+  ...['/service/primary-care', '/service/same-day-visits'].map((source) => ({ source, destination: '/' })),
   // No privacy, terms or accessibility pages exist yet. Re-point when they do.
   ...['/accessibility-statement', '/your-privacy', '/our-terms'].map((source) => ({ source, destination: '/' })),
 ].map((rule) => ({ ...rule, permanent: true, statusCode: 301 }));
@@ -67,7 +65,14 @@ const GONE_PATHS = [
   '/post',
 ];
 
+/**
+ * Optional: NEXT_BUILD_CPUS=1 runs the production build in one worker. Use it on a machine with little free memory,
+ * because each build worker loads the image renderer used for the share images. Unset on Vercel (the default is fine).
+ */
+const buildCpus = Number(process.env.NEXT_BUILD_CPUS ?? 0);
+
 const nextConfig = {
+  ...(buildCpus > 0 ? { experimental: { cpus: buildCpus } } : {}),
   reactStrictMode: true,
   poweredByHeader: false,
   trailingSlash: false,
@@ -103,7 +108,6 @@ const nextConfig = {
       { source: '/family-physician-sacramento', destination: '/', permanent: true, statusCode: 301 },
       { source: '/locations', destination: '/', permanent: true, statusCode: 301 },
       { source: '/locations/:slug*', destination: '/', permanent: true, statusCode: 301 },
-      { source: '/providers/paramjit-panesar', destination: '/dr-paramjit-panesar', permanent: true, statusCode: 301 },
       ...LEGACY_REDIRECTS,
     ];
   },

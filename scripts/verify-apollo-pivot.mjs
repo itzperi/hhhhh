@@ -15,11 +15,18 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const APP = join(ROOT, '.next', 'server', 'app');
 
-const PAGES = [
-  { path: '/', file: 'index.html', titleIncludes: 'Family Physician in Sacramento' },
-  { path: '/family-physician-elk-grove', file: 'family-physician-elk-grove.html' },
-  { path: '/dr-paramjit-panesar', file: 'dr-paramjit-panesar.html' },
-];
+const SITE = 'https://www.apollophysicians.com';
+
+/** The pages in the build's own sitemap (the live pages). Health pages held for review are not in it. */
+function pagesFromSitemap() {
+  const path = join(APP, 'sitemap.xml.body');
+  if (!existsSync(path)) return [];
+  return [...readFileSync(path, 'utf8').matchAll(/<loc>(.*?)<\/loc>/g)]
+    .map((m) => m[1].replace(SITE, '') || '/')
+    .map((route) => ({ path: route, file: route === '/' ? 'index.html' : `${route.slice(1)}.html` }));
+}
+const PAGES = pagesFromSitemap();
+const REQUIRED = ['/', '/new-patients', '/insurance-accepted', '/contact', '/faq', '/family-physician-elk-grove', '/dr-paramjit-panesar-md'];
 
 const TITLE = [50, 60];
 const DESCRIPTION = [140, 160];
@@ -98,8 +105,10 @@ const sitemap = read('sitemap.xml.body');
 check('sitemap.xml exists in the build output', sitemap !== null);
 if (sitemap) {
   const locs = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-  const expected = PAGES.map((p) => `https://www.apollophysicians.com${p.path === '/' ? '' : p.path}` /* home has no trailing slash, matching its canonical */);
-  check('sitemap lists exactly the three indexable pages', JSON.stringify(locs.sort()) === JSON.stringify(expected.sort()), locs.join(', '));
+  const missing = REQUIRED.filter((route) => !locs.includes(`${SITE}${route === '/' ? '' : route}`));
+  check('sitemap lists every page that carries no health information', missing.length === 0, missing.join(', '));
+  check('sitemap has no duplicate URLs', new Set(locs).size === locs.length);
+  check('sitemap has a YYYY-MM-DD lastmod for every URL', [...sitemap.matchAll(/<lastmod>(.*?)<\/lastmod>/g)].length === locs.length && [...sitemap.matchAll(/<lastmod>(.*?)<\/lastmod>/g)].every((m) => /^\d{4}-\d{2}-\d{2}$/.test(m[1])));
   const legacy = LEGACY_TOKENS.filter((t) => sitemap.toLowerCase().includes(t.toLowerCase()));
   check('sitemap has no legacy tokens', legacy.length === 0, legacy.join(', '));
 }
@@ -148,18 +157,25 @@ for (const page of PAGES) {
   const ids = new Set(nodes.map((n) => n['@id']).filter(Boolean));
   const serialised = JSON.stringify(nodes);
   check(`${page.path} JSON-LD names Apollo Physicians`, serialised.includes('"name":"Apollo Physicians"'));
-  check(`${page.path} JSON-LD omits the unconfirmed legal name`, !serialised.includes('legalName'));
+  check(`${page.path} JSON-LD carries the confirmed legal name`, serialised.includes('"legalName":"Apollo Physicians Medical Group"'));
+  check(`${page.path} JSON-LD never spells the legal name with the registry typo`, !/PHYSICANS/i.test(html));
   check(`${page.path} JSON-LD carries the office address`, serialised.includes('8191 Timberlake Way, Suite 200'));
   check(`${page.path} JSON-LD carries the phone`, serialised.includes('+1-916-236-5800') || serialised.includes('+19162365800'));
   check(`${page.path} JSON-LD carries the physician NPI shown on the page`, serialised.includes('"value":"1982892659"'));
   check(`${page.path} JSON-LD omits the organisation NPI, which no page shows`, !serialised.includes('1124405584'));
-  check(`${page.path} JSON-LD omits paymentAccepted (insurers are not payment methods)`, !serialised.includes('paymentAccepted'));
+  check(`${page.path} JSON-LD lists payment as insurance and self-pay, not insurer names`, serialised.includes('"paymentAccepted":"Health insurance, self-pay"'));
   check(`${page.path} JSON-LD uses no invalid FamilyPractice specialty`, !serialised.includes('FamilyPractice') && serialised.includes('https://schema.org/PrimaryCare'));
   check(`${page.path} JSON-LD @ids are all absolute`, [...ids].every((id) => String(id).startsWith('https://www.apollophysicians.com/')), [...ids].join(', '));
-  check(`${page.path} JSON-LD has a WebPage-type node for this page`, nodes.some((n) => ['WebPage', 'ProfilePage'].includes(n['@type']) && n.url === expectedCanonical));
+  const pageNode = nodes.find((n) => ['WebPage', 'ProfilePage', 'MedicalWebPage'].includes(n['@type']) && n.url === expectedCanonical);
+  check(`${page.path} JSON-LD has a WebPage-type node for this page`, Boolean(pageNode));
+  check(`${page.path} JSON-LD marks the direct answer as speakable`, JSON.stringify(pageNode?.speakable ?? '').includes('[data-speakable]'));
+  check(`${page.path} JSON-LD has no reviewed-by claim until Dr. Panesar reviews`, !serialised.includes('lastReviewed') || html.includes('Medical review'));
 
   // Deliberate deviations from the brief: these were not verified, so they must be absent.
-  check(`${page.path} omits unverified isAcceptingNewPatients`, !serialised.includes('isAcceptingNewPatients'));
+  check(`${page.path} states new patients are accepted (owner confirmed)`, serialised.includes('"isAcceptingNewPatients":true'));
+  check(`${page.path} lists the areas served, including Elk Grove and the ZIP codes`, serialised.includes('"Elk Grove"') && serialised.includes('ZIP code 95823') && serialised.includes('ZIP code 95758'));
+  check(`${page.path} states no opening hours until the owner confirms them`, !serialised.includes('openingHours'));
+  check(`${page.path} states no languages until the owner confirms them`, !serialised.includes('knowsLanguage'));
   check(`${page.path} omits unverified Wikidata areaServed`, !serialised.includes('wikidata.org'));
   check(`${page.path} carries the geo coordinates`, serialised.includes('"latitude":38.46019') && serialised.includes('"longitude":-121.41317'));
 
@@ -176,6 +192,20 @@ for (const page of PAGES) {
   const unresolved = refs.filter((r) => !ids.has(r));
   check(`${page.path} @id references resolve`, unresolved.length === 0, unresolved.join(', '));
 
+  // Direct answer, quick facts, breadcrumb, share image and alt text.
+  const speakable = [...html.matchAll(/<p[^>]*data-speakable="direct-answer"[^>]*>([\s\S]*?)<\/p>/g)].map((m) => visibleText(m[1]));
+  const words = speakable[0] ? speakable[0].split(/\s+/).filter(Boolean).length : 0;
+  check(`${page.path} has one direct-answer paragraph of 40 to 60 words`, speakable.length === 1 && words >= 40 && words <= 60, `${speakable.length} paragraph(s), ${words} words`);
+  check(`${page.path} shows the Quick facts table`, html.includes('Quick facts') && html.includes('Same-day and next-day appointments'));
+  check(`${page.path} has a visible breadcrumb ${page.path === '/' ? '(none on the home page)' : ''}`, page.path === '/' ? !html.includes('aria-label="Breadcrumb"') : html.includes('aria-label="Breadcrumb"'));
+  const ogImage = meta(html, /<meta[^>]+property="og:image"[^>]+content="([^"]*)"/);
+  const key = page.path === '/' ? 'home' : null;
+  check(`${page.path} has its own generated og:image`, ogImage !== null && ogImage.startsWith(`${SITE}/og/`) && ogImage.endsWith('.png'), `${ogImage}`);
+  report.at(-1).ogImage = ogImage;
+  void key;
+  const imagesWithoutAlt = [...html.matchAll(/<img\b[^>]*>/g)].filter((m) => !/\balt=/.test(m[0]));
+  check(`${page.path} has no image without alt text`, imagesWithoutAlt.length === 0);
+
   // Visible text for the shingle check: main content only, so shared header and footer text is excluded.
   const main = html.match(/<main[\s\S]*?<\/main>/);
   pageText[page.path] = main ? visibleText(main[0]) : '';
@@ -190,12 +220,31 @@ const targeting = PAGES.filter((page) => {
   return (row.title ?? '').toLowerCase().includes(phrase) || row.h1.some((h) => h.toLowerCase().includes(phrase));
 });
 check('only the home page targets "Family Physician in Sacramento" in title or H1', targeting.length === 1 && targeting[0].path === '/', targeting.map((t) => t.path).join(', '));
+const ogImages = report.map((r) => r.ogImage).filter(Boolean);
+check('every page has a different og:image', new Set(ogImages).size === ogImages.length, ogImages.join(', '));
+const titles = report.map((r) => r.title);
+check('every page has a different title', new Set(titles).size === titles.length);
+const descriptions = report.map((r) => r.description);
+check('every page has a different meta description', new Set(descriptions).size === descriptions.length);
 
 // ---- 4. Anti-doorway shingle check ----
 const home = pageText['/'] ?? '';
 const elk = pageText['/family-physician-elk-grove'] ?? '';
 const similarity = jaccard(shingles(home), shingles(elk));
-check('5-word shingle overlap between / and /family-physician-elk-grove is under 15%', similarity < 0.15, `${(similarity * 100).toFixed(1)}%`);
+check('5-word shingle overlap between / and /family-physician-elk-grove is under 25%', similarity < 0.25, `${(similarity * 100).toFixed(1)}%`);
+
+// Highest overlap between any two live pages. The Quick facts table, FAQ answers and the call-to-action
+// repeat on purpose, so the limit is looser than for the two pages that target nearby keywords.
+let worst = { pair: '', value: 0 };
+const paths = Object.keys(pageText);
+for (let i = 0; i < paths.length; i += 1) {
+  for (let j = i + 1; j < paths.length; j += 1) {
+    const value = jaccard(shingles(pageText[paths[i]]), shingles(pageText[paths[j]]));
+    if (value > worst.value) worst = { pair: `${paths[i]} vs ${paths[j]}`, value };
+  }
+}
+check('no two live pages share more than 30% of their 5-word shingles', worst.value < 0.3, `${worst.pair}: ${(worst.value * 100).toFixed(1)}%`);
+console.log(`Highest page-to-page overlap: ${worst.pair} ${(worst.value * 100).toFixed(1)}%`);
 
 // ---- Report ----
 console.log('\nApollo Physicians pivot verification (compiled .next output)\n');

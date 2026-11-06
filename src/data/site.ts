@@ -58,15 +58,60 @@ export const BRAND: { readonly name: string; readonly legalName: string | null }
   /** Public-facing brand. Confirmed by the practice. */
   name: 'Apollo Physicians',
   /**
-   * Legal business name. NOT CONFIRMED (docs/seo/client-confirmations.md, item 4): the NPI registry
-   * spells it "APOLLO PHYSICANS MEDICAL GROUP", which may be a registry typo. Leave null until the
-   * practice supplies the filed name. While null, the footer shows the brand name and the schema
-   * omits legalName, so nothing unconfirmed is published.
+   * Legal business name, confirmed by the owner on 6 Nov 2026 (docs/seo/client-confirmations.md, item 4).
+   * The "PHYSICANS" spelling in the NPI registry is a registry typo. Shown in the footer and the schema.
    */
-  legalName: null,
+  legalName: 'Apollo Physicians Medical Group',
 };
 
-/** The only public phone number. Confirmed by the practice. Single source of truth, like OFFICE. */
+/**
+ * Office hours. NOT CONFIRMED (item 6): the owner lists two conflicting sets (Mon to Fri 8:30 to 5:30 and
+ * Sat 9 to 2 on one site, Mon to Fri 8:30 to 5:00 with Saturday closed on WebMD and Vitals). Until the
+ * owner decides, this stays null: no hours are shown on any page or in the schema. When set, the contact
+ * page, quick facts and schema `openingHoursSpecification` all appear from this one value.
+ */
+export interface OfficeHoursRow {
+  /** schema.org day names, for example ["Monday", "Tuesday"]. */
+  days: readonly string[];
+  /** 24-hour HH:MM. */
+  opens: string;
+  closes: string;
+}
+export const OFFICE_HOURS: readonly OfficeHoursRow[] | null = null;
+
+/** Areas served, as given by the owner on 6 Nov 2026. Shown on the home and contact pages and in the schema. */
+export const AREAS_SERVED = {
+  cities: ['Sacramento', 'Elk Grove'],
+  neighborhoods: ['South Sacramento', 'Valley Hi', 'Laguna', 'Florin', 'Meadowview', 'Parkway'],
+  zipSacramento: ['95823', '95828'],
+  zipElkGrove: ['95624', '95757', '95758'],
+} as const;
+
+/**
+ * Location facts checked in Google Maps on 6 Nov 2026: the office is 0.4 mile (about a 9-minute walk, 2 minutes
+ * by car) from Methodist Hospital of Sacramento, 7500 Hospital Dr, beside Highway 99. Cosumnes River Blvd, named
+ * by the owner, is further south and is not described as adjacent. Being near a hospital is not an affiliation.
+ */
+export const LOCATION = {
+  nearHospital: 'Methodist Hospital of Sacramento',
+  hospitalDistance: '0.4 mile',
+  highway: 'Highway 99',
+  crossStreet: 'Bruceville Road',
+} as const;
+
+/**
+ * Drive times from Elk Grove, read from Google Maps on 6 Nov 2026 ("leave now", usual traffic). Both origins gave
+ * about 12 minutes. The 95757 search did not return a result, so no claim is made for it.
+ */
+export const ELK_GROVE_DRIVE = {
+  minutes: 12,
+  milesFrom95758: '6.6',
+  routeFrom95758: 'Laguna Blvd and Franklin Blvd',
+  altRouteFrom95758: 'Laguna Blvd and Bruceville Rd',
+  routeFrom95624: 'Bond Rd and CA-99 North',
+  checked: 'November 2026',
+} as const;
+
 /**
  * Online booking URL. The practice has none (docs/seo/client-confirmations.md, item 28), so this is null
  * and the mobile bar shows a single Call button. Set it to the booking page URL to add "Book online"
@@ -74,11 +119,14 @@ export const BRAND: { readonly name: string; readonly legalName: string | null }
  */
 export const BOOKING_URL: string | null = null;
 
+/** The only public phone number. Confirmed by the practice. Single source of truth, like OFFICE. */
 export const PHONES = {
   main: { label: 'Main', display: '916-236-5800', tel: '+19162365800' } satisfies PhoneNumber,
 } as const;
 
 const OFFICE_PARTS = {
+  /** Street name alone, for sentences such as "on Timberlake Way". */
+  streetName: 'Timberlake Way',
   street: '8191 Timberlake Way, Suite 200',
   city: 'Sacramento',
   state: 'CA',
