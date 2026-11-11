@@ -53,6 +53,13 @@ export const PAGE_META = {
     clinical: true,
     navLabel: 'Annual physical',
   },
+  sameDay: {
+    path: '/same-day-appointments-sacramento',
+    lastModified: '2026-11-11',
+    title: 'Same-Day Doctor Appointments Sacramento | Apollo Physicians',
+    description: `Same-day and next-day doctor appointments in Sacramento with Dr. Paramjit Panesar, MD, at ${OFFICE.street}. Call ${PHONES.main.display} early to book.`,
+    clinical: true,
+  },
   elkGrove: {
     path: '/family-physician-elk-grove',
     lastModified: TODAY,

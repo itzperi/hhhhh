@@ -12,6 +12,7 @@ import { mapsDirectionsUrl, mapsPlaceUrl, telHref } from '@/lib/utils';
 /** Cards that point visitors to the right next page. A card appears only when its page is live. */
 const HELP_CARDS: readonly { key: PageKey; title: string; text: string }[] = [
   { key: 'newPatients', title: 'New patients', text: 'Apollo Physicians is accepting new patients. See how to book and what to bring.' },
+  { key: 'sameDay', title: 'Same-day appointments', text: 'Same-day and next-day visits. See how to ask for one, and when to call 911 instead.' },
   { key: 'annualPhysical', title: 'Annual physical', text: 'A yearly preventive visit with a physical exam. See what to expect and bring.' },
   { key: 'services', title: 'Services', text: 'Family medicine services, from physicals and vaccinations to ongoing care.' },
   { key: 'immigration', title: 'Immigration medical exam', text: 'USCIS immigration medical exams with a designated civil surgeon (Form I-693).' },

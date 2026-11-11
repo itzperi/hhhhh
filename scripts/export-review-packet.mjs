@@ -74,6 +74,7 @@ function blocks(block) {
 
 const PAGES = [
   ['annualPhysical', 'ANNUAL_DIRECT_ANSWER', 'ANNUAL_PHYSICAL', '/annual-physical-sacramento', 'Annual physical'],
+  ['sameDay', 'SAME_DAY_DIRECT_ANSWER', 'SAME_DAY', '/same-day-appointments-sacramento', 'Same-day appointments'],
   ['immigration', 'IMMIGRATION_DIRECT_ANSWER', 'IMMIGRATION', '/immigration-medical-exam-sacramento', 'Immigration medical exam'],
   ['services', 'SERVICES_DIRECT_ANSWER', 'SERVICES', '/services', 'Services'],
   ['faq', 'FAQ_DIRECT_ANSWER', 'FAQ_HUB', '/faq', 'Questions hub (only the items marked HEALTH are held back)'],
@@ -98,6 +99,7 @@ lines.push('- Which ages the office sees (the school and sports physical text as
 lines.push('- "UAMS" is written as University of Arkansas for Medical Sciences, as the owner gave only the abbreviation.');
 lines.push('- Languages spoken, telehealth and walk-in policy are NOT on the pages, because they were not confirmed.');
 lines.push('- The general health statements (what an annual physical includes, fasting, Medicare Annual Wellness Visit, the three primary care specialties, vaccines for Form I-693 follow USCIS rules).');
+lines.push('- The same-day page: the emergency examples (chest pain, trouble breathing, signs of a stroke, severe bleeding, serious injury) and the 988 crisis line. It states no call-by time, slot count or visit types; send those if you want them published.');
 lines.push('- The immigration page defers to USCIS for who needs the exam, vaccine requirements and how to submit the form. It gives no fee. Add a fee only if you want one published.');
 lines.push('');
 lines.push('Not medical advice line shown on every health page: "This page is general information, not medical advice. For advice about your own health, talk to a clinician or call 916-236-5800. In an emergency, call 911."');
