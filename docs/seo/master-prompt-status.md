@@ -40,7 +40,7 @@ Legend: **Done** in code and tested. **Changed** deliberately, reason given. **H
 |---|---|
 | Homepage rebuild (600+ words) | **Done.** Hero with direct answer, Quick facts, help cards, physician with credentials, insurance, areas served, lazy map, reviews link, 8 FAQs. **Changed:** no hours table (hours conflict) and no review text or stars (the owner asked for live numbers; a link to the Google reviews is shown). Cards link only to live pages. |
 | Direct answer 40 to 60 words under every H1, then Quick facts | **Done**, tested on all ten pages. |
-| New pages | **Done and live:** `/new-patients`, `/insurance-accepted`, `/contact`, `/faq`. **Held for review:** `/annual-physical-sacramento`, `/immigration-medical-exam-sacramento`, `/services`. **Not built:** vaccinations, Medicare Annual Wellness and well-child pages (they need confirmed services and ages first). |
+| New pages | **Done and live:** `/new-patients`, `/insurance-accepted`, `/contact`, `/faq`. **Held for review:** `/annual-physical-sacramento`, `/same-day-appointments-sacramento` (added 11 Nov), `/immigration-medical-exam-sacramento`, `/services`. **Not built:** vaccinations, Medicare Annual Wellness and well-child pages (they need confirmed services and ages first). |
 | Immigration page: what an I-693 is, who needs it, what to bring, vaccines, timing, cost, uscis.gov link | **Held.** Written without a cost or timing: USCIS sets the rules and the fee was not supplied, so the page points to uscis.gov. |
 | Elk Grove page with drive times, routes, 8+ unique FAQs | **Done.** Times and routes read from Google Maps; the ZIP 95757 search failed, so no claim is made for it. |
 | Spanish pages and forms | **Open.** Languages are unconfirmed. |

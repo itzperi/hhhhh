@@ -24,6 +24,7 @@ const FOOTER_LABELS: Record<PageKey, string> = {
   home: 'Family Physician in Sacramento',
   newPatients: 'New patients',
   annualPhysical: 'Annual physical',
+  sameDay: 'Same-day appointments',
   elkGrove: 'Family Physician in Elk Grove',
   panesar: PROVIDER.name,
   services: 'Services',
@@ -58,6 +59,7 @@ const HOME_CRUMB: Crumb = { name: 'Home', path: PAGE_META.home.path };
 const CRUMB_NAMES: Record<Exclude<PageKey, 'home'>, string> = {
   newPatients: 'New patients',
   annualPhysical: 'Annual physical',
+  sameDay: 'Same-day appointments',
   elkGrove: 'Family Physician in Elk Grove',
   panesar: PROVIDER.name,
   services: 'Services',

@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
  * and the published state (after the owner sets one date).
  */
 
-const CLINICAL_PATHS = ['/annual-physical-sacramento', '/immigration-medical-exam-sacramento', '/services'];
+const CLINICAL_PATHS = ['/annual-physical-sacramento', '/same-day-appointments-sacramento', '/immigration-medical-exam-sacramento', '/services'];
 
 async function load(reviewedOn: string | null) {
   vi.resetModules();
@@ -76,6 +76,7 @@ describe('before Dr. Panesar has reviewed the health content (the state we ship 
     expect(pages.isLive(pages.PAGE_META.annualPhysical)).toBe(false);
     expect(pages.isLive(pages.PAGE_META.immigration)).toBe(false);
     expect(pages.isLive(pages.PAGE_META.services)).toBe(false);
+    expect(pages.isLive(pages.PAGE_META.sameDay)).toBe(false);
     expect(pages.isLive(pages.PAGE_META.contact)).toBe(true);
   });
 });
@@ -127,7 +128,7 @@ describe('every health page names its reviewer', () => {
     expect(template).toContain('NOT_MEDICAL_ADVICE');
     expect(template).toContain('CLINICAL_REVIEW.reviewer');
     expect(template).toContain('Last reviewed');
-    for (const route of ['annual-physical-sacramento', 'immigration-medical-exam-sacramento', 'services']) {
+    for (const route of ['annual-physical-sacramento', 'same-day-appointments-sacramento', 'immigration-medical-exam-sacramento', 'services']) {
       expect(readFileSync(`src/app/${route}/page.tsx`, 'utf8'), route).toContain('assertLive(');
     }
   });

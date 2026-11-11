@@ -60,6 +60,7 @@ export const NEW_PATIENTS: PageContent = {
         'Bring a photo ID, your insurance card and a list of your current medicines.',
         `Come to ${ADDRESS}.`,
       ],
+      links: [{ label: 'How same-day appointments work', href: '/same-day-appointments-sacramento' }],
     },
     {
       id: 'what-to-bring',
@@ -369,6 +370,119 @@ export const ANNUAL_PHYSICAL: PageContent = {
     },
   ],
   sources: [VERIFY_LINKS.medicare],
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Same-day appointments (clinical: held until Dr. Panesar's review, because it carries emergency guidance)
+ * Owner-confirmed: same-day and next-day appointments are offered. NOT confirmed, so not stated: a call-by
+ * time, the number of slots, which visit types qualify, office hours, or any other visit option.
+ * ----------------------------------------------------------------------------------------------- */
+
+export const SAME_DAY_DIRECT_ANSWER = `Apollo Physicians offers same-day and next-day appointments at ${ADDRESS}, with ${DOC}. Availability depends on the schedule each day, so call ${CALL} as early as you can and ask for the next opening. New patients can ask too. In an emergency, call 911 instead of the office.`;
+
+export const SAME_DAY: PageContent = {
+  h1: 'Same-Day Doctor Appointments in Sacramento',
+  eyebrow: 'Same-day appointments',
+  blocks: [
+    {
+      id: 'how-to-book',
+      heading: 'How to get a same-day or next-day appointment',
+      steps: [
+        `Call ${CALL} as early in the day as you can.`,
+        'Say whether you are a new or returning patient, and ask for a same-day or next-day appointment.',
+        'Tell the office your insurance plan, or that you will pay yourself.',
+        'Confirm the appointment time before you leave home.',
+        `Come to ${ADDRESS} with a photo ID, your insurance card and a list of your medicines.`,
+      ],
+    },
+    {
+      id: 'what-to-expect',
+      heading: 'What to expect',
+      paragraphs: [
+        `A same-day or next-day appointment is a scheduled office visit with ${DOC}. Times depend on the schedule that day, so the next opening may be later today or tomorrow. Ask the office which time works when you call.`,
+      ],
+    },
+    {
+      id: 'emergency',
+      heading: 'When to call 911 instead',
+      clinical: true,
+      paragraphs: [
+        'A same-day appointment is not emergency care. Call 911 or go to the nearest emergency room for a medical emergency, such as chest pain, trouble breathing, signs of a stroke, severe bleeding or a serious injury. If you are not sure whether it is an emergency, call 911.',
+        'In a mental health crisis, call or text 988, the Suicide and Crisis Lifeline.',
+      ],
+    },
+    {
+      id: 'who-can-book',
+      heading: 'Who can ask for one',
+      paragraphs: [
+        `New and returning patients can ask for a same-day or next-day appointment. Patients come from South Sacramento and from Elk Grove, ${DRIVE} away by car with usual traffic.`,
+      ],
+      links: [
+        { label: 'New patients', href: '/new-patients' },
+        { label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' },
+      ],
+    },
+    {
+      id: 'paying',
+      heading: 'Insurance and cost',
+      paragraphs: [
+        `Apollo Physicians accepts ${insuranceSentence()}. Call ${CALL} to confirm your plan. Initial self-pay visits start at ${INITIAL_VISIT_FROM}; ask what the visit includes when you call.`,
+      ],
+      links: [{ label: 'See the insurance page', href: '/insurance-accepted' }],
+    },
+    {
+      id: 'find-the-office',
+      heading: 'Finding the office',
+      paragraphs: [
+        `The office is at ${ADDRESS}, next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}.`,
+      ],
+      links: [{ label: 'Directions and contact details', href: '/contact' }],
+    },
+  ],
+  faqs: [
+    {
+      question: 'Does Apollo Physicians offer same-day appointments?',
+      answer: `Yes. Apollo Physicians offers same-day and next-day appointments with ${DOC}, at ${OFFICE.street} in South Sacramento. Availability depends on the schedule each day, so call ${CALL} as early as you can and ask for the next opening. In an emergency, call 911 instead of the office.`,
+    },
+    {
+      question: 'How do I book a same-day appointment?',
+      answer: `Call Apollo Physicians at ${CALL} as early in the day as you can and ask for a same-day appointment with ${DOC}. Say whether you are a new or returning patient and give your insurance plan, or say you will pay yourself. If no time is left today, ask for the next-day opening.`,
+    },
+    {
+      question: 'Can new patients get a same-day appointment?',
+      answer: `Yes. New patients at Apollo Physicians can ask for a same-day or next-day appointment, the same way returning patients do. Call ${CALL}, say you are new, and bring a photo ID, your insurance card and a list of your medicines. Initial self-pay visits start at ${INITIAL_VISIT_FROM} if you do not use insurance.`,
+    },
+    {
+      question: 'Is a same-day appointment emergency care?',
+      clinical: true,
+      answer: `No. A same-day appointment at Apollo Physicians is a scheduled office visit with ${DOC}. It is not emergency care. For a medical emergency, such as chest pain, trouble breathing or signs of a stroke, call 911 or go to the nearest emergency room instead of calling the office.`,
+    },
+    {
+      question: 'What if no same-day appointment is left?',
+      answer: `Ask Apollo Physicians for the next-day opening. Same-day times depend on the schedule, so they may fill early in the day. Call ${CALL} as early as you can, and confirm your appointment time before you leave home. If your problem becomes an emergency while you wait, call 911.`,
+    },
+    {
+      question: 'What should I bring to a same-day appointment?',
+      answer: `Bring a photo ID, your insurance card if you have one, and a list of your current medicines and supplements to Apollo Physicians. Bring any past records that relate to the visit, plus your questions. If you are unsure what applies, call ${CALL} before you leave home.`,
+    },
+    {
+      question: 'Does insurance cover a same-day appointment?',
+      answer: `Apollo Physicians accepts ${insuranceSentence()}. Coverage and copays depend on your plan, so call ${CALL} with your plan name before you come in. Initial self-pay visits start at ${INITIAL_VISIT_FROM} if you do not use insurance.`,
+    },
+    {
+      question: 'Where is the office for same-day appointments?',
+      answer: `Apollo Physicians has one office, at ${ADDRESS}, next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. Patients from Elk Grove ZIP codes 95758 and 95624 drive ${DRIVE} with usual traffic, according to Google Maps. Confirm your appointment time by calling ${CALL} before you leave home.`,
+    },
+    {
+      question: 'What should I do in a mental health crisis?',
+      clinical: true,
+      answer: `In a mental health crisis, call or text 988, the Suicide and Crisis Lifeline, at any time of day. If someone is in immediate danger, call 911. A same-day appointment at Apollo Physicians is a scheduled office visit, not crisis care, so do not wait for an appointment in a crisis.`,
+    },
+  ],
+  sources: [
+    { label: 'MedlinePlus: Recognizing medical emergencies', href: 'https://medlineplus.gov/ency/article/001927.htm' },
+    { label: '988 Suicide and Crisis Lifeline', href: 'https://988lifeline.org/' },
+  ],
 };
 
 /* -------------------------------------------------------------------------------------------------

@@ -12,6 +12,8 @@ import {
   INSURANCE_DIRECT_ANSWER,
   NEW_PATIENTS,
   NEW_PATIENTS_DIRECT_ANSWER,
+  SAME_DAY,
+  SAME_DAY_DIRECT_ANSWER,
   SERVICES,
   SERVICES_DIRECT_ANSWER,
 } from '@/data/content';
@@ -43,6 +45,7 @@ const ALL_SETS = [
   ['insurance', INSURANCE.faqs],
   ['contact', CONTACT.faqs],
   ['annual-physical', ANNUAL_PHYSICAL.faqs],
+  ['same-day', SAME_DAY.faqs],
   ['immigration', IMMIGRATION.faqs],
   ['services', SERVICES.faqs],
   ['faq-hub', FAQ_HUB.faqs],
@@ -56,6 +59,7 @@ const DIRECT_ANSWERS = [
   ['insurance', INSURANCE_DIRECT_ANSWER],
   ['contact', CONTACT_DIRECT_ANSWER],
   ['annual-physical', ANNUAL_DIRECT_ANSWER],
+  ['same-day', SAME_DAY_DIRECT_ANSWER],
   ['immigration', IMMIGRATION_DIRECT_ANSWER],
   ['services', SERVICES_DIRECT_ANSWER],
   ['faq-hub', FAQ_DIRECT_ANSWER],
@@ -122,6 +126,7 @@ describe('every key page has 8 or more questions', () => {
     ['new-patients', NEW_PATIENTS.faqs],
     ['insurance', INSURANCE.faqs],
     ['annual-physical', ANNUAL_PHYSICAL.faqs],
+    ['same-day', SAME_DAY.faqs],
     ['immigration', IMMIGRATION.faqs],
   ] as const)('%s', (_name, faqs) => {
     expect(faqs.length).toBeGreaterThanOrEqual(8);
