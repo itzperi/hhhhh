@@ -87,6 +87,21 @@ The owner supplied a block of "business facts" and a separate list of "open fact
 | 20 | About 12 minutes by car from Elk Grove ZIP codes 95758 (6.6 miles via Laguna Blvd and Franklin Blvd) and 95624 (6.8 miles via Bond Rd and CA-99 North), usual traffic. 95757 did not return a result, so no claim is made for it. |
 | 39 | Google's pin for Suite 200 is 38.460217, -121.4131326, matching the coordinates in the schema. |
 
+### Update 11 Nov 2026: confirmed by the practice (relayed by the site owner in the Claude Code session)
+
+The site owner stated that the practice confirmed these facts. They replace the "STILL OPEN" entries below for the same items.
+
+| Item | Fact | Published as |
+|---|---|---|
+| 6 | Office hours: Monday to Friday 8:30 a.m. to 5:30 p.m., Saturday 9:00 a.m. to 2:00 p.m. Pacific, Sunday closed | `OFFICE_HOURS` in `src/data/site.ts`: Quick Facts, contact page, schema `openingHoursSpecification`, `llms.txt` |
+| 23 (part) | Medi-Cal accepted ("most plans"; the plan names were not supplied) | Insurance list, Medi-Cal page (held for review). Copy says "most Medi-Cal plans" and tells people to call to verify |
+| 23 (part) | Nivano Physicians accepted (shown as a medical group) | Insurance list, Nivano page (held for review) |
+| 27 | Telemedicine for patients in California (visit types and platform not supplied) | Quick Facts, FAQ hub, `llms.txt` |
+
+Google Business Profile, WebMD and Vitals still show Mon-Fri 8:30-5:00 with Saturday closed. Those listings must be corrected to match (Local plan).
+
+**Still open after this update:** Vivant Health (River City Medical Group) contract; the names of the Medi-Cal plans; what Nivano is and which plans route through it; Medicare assignment and Medicare Advantage plan names; what the $65 covers; payment methods; sliding scale; languages; real photos with permission (item 31); item 40 (community health center link); account access.
+
 ### STILL OPEN: not published until the owner answers (the TODO list)
 
 | # | Open fact | What the owner said or what we found | Where it goes when confirmed |

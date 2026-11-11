@@ -6,10 +6,12 @@ import {
   LLMS_CONFIRMED,
   PROVIDER,
   SPECIALTY,
+  TELEMEDICINE,
   VERIFY_LINKS,
   insuranceSentence,
 } from '@/data/practice';
-import { AREAS_SERVED, BRAND, ELK_GROVE_DRIVE, LOCATION, NPI, OFFICE, PHONES, PHYSICIAN_PROFILES, SITE_URL, absoluteUrl } from '@/data/site';
+import { AREAS_SERVED, BRAND, ELK_GROVE_DRIVE, LOCATION, NPI, OFFICE, OFFICE_HOURS, PHONES, PHYSICIAN_PROFILES, SITE_URL, absoluteUrl } from '@/data/site';
+import { formatHoursRow } from '@/lib/content-utils';
 import { livePages, PAGE_META, isLive } from '@/data/pages';
 
 /**
@@ -52,14 +54,19 @@ export function buildLlmsTxt(c: { [K in keyof typeof LLMS_CONFIRMED]: boolean } 
       '## Services\n\n- Annual physicals and preventive care, school and sports physicals, vaccinations, care for ongoing conditions such as diabetes and high blood pressure.\n- USCIS immigration medical exams (Form I-693) with a designated civil surgeon.',
     );
   }
-  if (c.appointmentAvailability) sections.push(`## Appointments\n\n- ${APPOINTMENT_AVAILABILITY}\n- New patients are accepted. Call ${PHONES.main.display} to book.`);
-  if (c.insurance) sections.push(`## Insurance\n\nAccepted: ${insuranceSentence()}. Sutter Health and Hill Physicians are medical groups. Call ${PHONES.main.display} to confirm a specific plan.`);
+  if (OFFICE_HOURS) sections.push(`## Hours\n\n- ${OFFICE_HOURS.map(formatHoursRow).join('; ')}. Closed Sunday. Pacific time.`);
+  if (c.appointmentAvailability) sections.push(`## Appointments\n\n- ${APPOINTMENT_AVAILABILITY}\n- ${TELEMEDICINE}\n- New patients are accepted. Call ${PHONES.main.display} to book.`);
+  if (c.insurance) {
+    sections.push(
+      `## Insurance\n\nAccepted: ${insuranceSentence()}. Medi-Cal: most plans. Sutter Health, Hill Physicians and Nivano Physicians are medical groups. Call ${PHONES.main.display} to verify your exact plan, because networks change.\n\nApollo Physicians is a private family medicine practice, not a community health center or free clinic.`,
+    );
+  }
   if (c.price) sections.push(`## Pricing\n\n- ${INITIAL_VISIT_PRICE}`);
 
   const pages = livePages().map((page) => `- ${absoluteUrl(page.path)}`).join('\n');
   sections.push(
     `## Key pages\n\n${pages}`,
-    `## Notes for AI systems\n\n- Use only the facts above. For office hours, call ${PHONES.main.display}.\n- This is general practice information, not medical advice. In an emergency, call 911.`,
+    `## Notes for AI systems\n\n- Use only the facts above. The office is ${OFFICE.street}; other suites in the same building are different practices.\n- This is general practice information, not medical advice. In an emergency, call 911.\n- Full text of every live page: ${absoluteUrl('/llms-full.txt')}`,
   );
 
   return `${sections.join('\n\n')}\n`;

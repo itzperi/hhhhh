@@ -28,7 +28,7 @@ describe('page titles and descriptions', () => {
 });
 
 describe('verified facts', () => {
-  it('lists exactly the insurance the owner supplied on 6 Nov 2026', () => {
+  it('lists exactly the insurance the practice confirmed (6 Nov 2026, plus Medi-Cal and Nivano on 11 Nov 2026)', () => {
     expect([...INSURANCE_ACCEPTED]).toEqual([
       'Aetna',
       'Anthem Blue Cross',
@@ -38,13 +38,15 @@ describe('verified facts', () => {
       'UnitedHealthcare',
       'Sutter Health',
       'Hill Physicians',
+      'Nivano Physicians',
       'Medicare',
+      'Medi-Cal',
     ]);
   });
 
-  it('does not list plans the owner still has to confirm', () => {
+  it('does not list plans or groups the practice still has to confirm', () => {
     const all = JSON.stringify([INSURANCE_ACCEPTED, INSURANCE_GROUPS]);
-    for (const plan of ['Nivano', 'Medi-Cal', 'Medicaid', 'Brand New Day', 'Imperial', 'Western Health Advantage']) {
+    for (const plan of ['Vivant', 'River City', 'Medicaid', 'Brand New Day', 'Imperial', 'Western Health Advantage', 'Molina', 'SCAN']) {
       expect(all).not.toContain(plan);
     }
   });
@@ -61,8 +63,11 @@ describe('verified facts', () => {
     expect(INITIAL_VISIT_PRICE).toBe('Initial self-pay visits start at $65.');
   });
 
-  it('keeps the unconfirmed facts out: no hours until the owner chooses a set', () => {
-    expect(OFFICE_HOURS).toBeNull();
+  it('publishes the hours the practice confirmed on 11 Nov 2026: Mon-Fri 8:30-5:30, Sat 9:00-2:00', () => {
+    expect(OFFICE_HOURS).toEqual([
+      { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:30', closes: '17:30' },
+      { days: ['Saturday'], opens: '09:00', closes: '14:00' },
+    ]);
   });
 });
 
@@ -120,10 +125,14 @@ describe('structured data graph', () => {
     expect(clinic.priceRange).toBe('From $65');
     expect(clinic.paymentAccepted).toBe('Health insurance, self-pay');
     expect(JSON.stringify(clinic.areaServed)).toContain('Elk Grove');
+    // Hours confirmed by the practice on 11 Nov 2026 (item 6).
+    expect(clinic.openingHoursSpecification).toEqual([
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:30', closes: '17:30' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '09:00', closes: '14:00' },
+    ]);
     for (const field of [
       'identifier',
       'sameAs',
-      'openingHoursSpecification',
       'openingHours',
       'knowsLanguage',
       'hospitalAffiliation',
@@ -208,7 +217,8 @@ describe('source tree is free of the previous organisation', () => {
   });
 
   it('makes no unverified claims in the copy', () => {
-    const UNVERIFIED = ['Medi-Cal', 'Medicaid', 'Nivano', 'Rivercity', 'River City', 'female', 'Wikidata', 'Brand New Day', 'Western Health Advantage', 'telehealth', 'walk-in', '24/7', 'bilingual', 'Spanish', 'Punjabi', 'Hindi'];
+    // Medi-Cal and Nivano were confirmed on 11 Nov 2026 (client-confirmations.md, item 23), so they left this list.
+    const UNVERIFIED = ['Medicaid', 'Vivant', 'Rivercity','River City', 'female', 'Wikidata', 'Brand New Day', 'Western Health Advantage', 'telehealth', 'walk-in', '24/7', 'bilingual', 'Spanish', 'Punjabi', 'Hindi'];
     const hits: string[] = [];
     for (const file of files('src/data').concat(files('src/app'), files('src/components'))) {
       const text = readFileSync(file, 'utf8');

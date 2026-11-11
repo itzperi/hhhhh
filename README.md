@@ -19,7 +19,7 @@ This is a medical (YMYL) site. **Publish only confirmed facts.** The list of wha
 | `/dr-paramjit-panesar-md` | Physician: credentials, verification links | Live (`/dr-paramjit-panesar` redirects here) |
 | `/contact` | Address, phone, map, directions, areas served | Live |
 | `/faq` | Common questions (health questions held for review) | Live |
-| `/annual-physical-sacramento`, `/same-day-appointments-sacramento`, `/immigration-medical-exam-sacramento`, `/services` | General health information | **Held until Dr. Panesar reviews** (answer 404) |
+| `/annual-physical-sacramento`, `/same-day-appointments-sacramento`, `/immigration-medical-exam-sacramento`, `/services`, `/medicare-doctor-sacramento`, `/doctor-without-insurance-sacramento` | General health information | **Held until Dr. Panesar reviews** (answer 404) |
 | `/sitemap.xml`, `/robots.txt`, `/llms.txt` | Generated from the data files | Live |
 
 **Clinical review gate.** Pages and answers that contain health information are published only after Dr. Paramjit Panesar, MD, has reviewed them. Until then they answer 404 and are absent from the sitemap, navigation and `llms.txt`, and no page claims a medical review. To publish them, give him `docs/clinical-review/review-packet.md` (regenerate it with `npm run export:review`), then set `CLINICAL_REVIEW.reviewedOn` in `src/data/pages.ts` to the approval date. Everything appears together, with the reviewer name and date.

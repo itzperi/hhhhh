@@ -12,7 +12,11 @@ import { ELK_GROVE_DRIVE, LOCATION, OFFICE, PHONES } from './site';
  *   docs/seo/client-confirmations.md under "open facts".
  */
 
-/** OWNER. The accepted insurance, in the owner's order. Sutter Health and Hill Physicians are medical groups. */
+/**
+ * OWNER. The accepted insurance, in the owner's order. Sutter Health, Hill Physicians and Nivano Physicians are
+ * medical groups. Medi-Cal and Nivano Physicians were confirmed on 11 Nov 2026 (Medi-Cal: "most plans"; the plan
+ * names were not supplied, so the copy says "most Medi-Cal plans" and asks people to call).
+ */
 export const INSURANCE_ACCEPTED: readonly string[] = [
   'Aetna',
   'Anthem Blue Cross',
@@ -22,7 +26,9 @@ export const INSURANCE_ACCEPTED: readonly string[] = [
   'UnitedHealthcare',
   'Sutter Health',
   'Hill Physicians',
+  'Nivano Physicians',
   'Medicare',
+  'Medi-Cal',
 ];
 
 /** The same list split by type, for the insurance page. */
@@ -32,11 +38,15 @@ export const INSURANCE_GROUPS = [
     names: ['Aetna', 'Anthem Blue Cross', 'Blue Shield of California', 'Cigna', 'Health Net', 'UnitedHealthcare'],
   },
   { type: 'Medicare', names: ['Medicare'] },
-  { type: 'Medical group or network', names: ['Sutter Health', 'Hill Physicians'] },
+  { type: 'Medi-Cal', names: ['Medi-Cal (most plans)'] },
+  { type: 'Medical group or network', names: ['Sutter Health', 'Hill Physicians', 'Nivano Physicians'] },
 ] as const;
 
-/** Date the practice supplied the plan list. Shown on the insurance page. */
-export const INSURANCE_LIST_DATE = '6 November 2026';
+/** Date the practice last supplied the plan list. Shown on the insurance page. */
+export const INSURANCE_LIST_DATE = '11 November 2026';
+
+/** CONFIRMED 11 Nov 2026 (item 27): telemedicine for patients in California. Visit types were not supplied. */
+export const TELEMEDICINE = 'Telemedicine visits for patients in California.';
 
 /** OWNER: initial self-pay visits start at $65. What the price includes has not been supplied. */
 export const INITIAL_VISIT_FROM = '$65';
@@ -209,7 +219,7 @@ export const ELK_GROVE_FAQS: readonly FaqItem[] = [
   },
   {
     question: 'Which insurance plans are accepted for Elk Grove patients?',
-    answer: `Elk Grove patients use the same plans as every Apollo Physicians patient: ${insuranceSentence()}. Confirm your plan with the office at ${CALL} before you travel, because plans and networks can change. The insurance page lists each plan and the date the practice provided the list.`,
+    answer: `Elk Grove patients use the same plans as every Apollo Physicians patient: ${insuranceSentence()}. Confirm your plan with the office at ${CALL} before you travel, because plans and networks can change.`,
   },
   {
     question: 'How much does an initial visit cost?',

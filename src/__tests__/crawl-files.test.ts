@@ -6,6 +6,7 @@ import { CLINICAL_REVIEW, livePages, PAGE_META } from '@/data/pages';
 import { INITIAL_VISIT_PRICE, INSURANCE_ACCEPTED } from '@/data/practice';
 import { NPI, OFFICE, PHONES, absoluteUrl } from '@/data/site';
 import { buildLlmsTxt } from '@/lib/llms';
+import { buildLlmsFullTxt } from '@/lib/llms-full';
 
 type Group = { userAgent?: string | string[]; allow?: string | string[]; disallow?: string | string[] };
 const groups = (rules: unknown): Group[] => (Array.isArray(rules) ? (rules as Group[]) : [rules as Group]);
@@ -113,10 +114,14 @@ describe('llms.txt', () => {
     for (const plan of INSURANCE_ACCEPTED) expect(text).toContain(plan);
   });
 
-  it('never states hours, languages or telehealth, which are not confirmed', () => {
+  it('states the confirmed hours and telemedicine, and never languages or 24/7 support', () => {
+    const text = buildLlmsTxt();
+    expect(text).toContain('## Hours');
+    expect(text).toContain('Telemedicine visits for patients in California.');
+    expect(text).toContain('Medi-Cal: most plans.');
+    expect(text).toContain('not a community health center or free clinic');
     for (const flags of [none, all]) {
-      const text = buildLlmsTxt(flags);
-      expect(text).not.toMatch(/\bopen (mon|tue|wed|thu|fri|sat|sun)|\d{1,2}(:\d\d)? ?(am|pm)\b|bilingual|speaks|spanish|punjabi|hindi|telehealth|24\/7/i);
+      expect(buildLlmsTxt(flags)).not.toMatch(/bilingual|speaks|spanish|punjabi|hindi|telehealth|24\/7|sliding|Vivant|River City/i);
     }
   });
 
@@ -139,7 +144,24 @@ describe('llms.txt', () => {
 
   it('links only to the site pages that exist', () => {
     const urls = buildLlmsTxt().match(/https:\/\/www\.apollophysicians\.com[^\s;]*/g) ?? [];
-    const allowed = new Set([absoluteUrl('/'), ...Object.values(PAGE_META).map((p) => absoluteUrl(p.path))]);
+    const allowed = new Set([absoluteUrl('/'), absoluteUrl('/llms-full.txt'), ...Object.values(PAGE_META).map((p) => absoluteUrl(p.path))]);
     for (const url of urls) expect(allowed.has(url.replace(/\/$/, '')) || allowed.has(url), url).toBe(true);
+  });
+});
+
+describe('llms-full.txt', () => {
+  it('carries every live page, with its direct answer and questions', () => {
+    const text = buildLlmsFullTxt();
+    for (const page of livePages()) expect(text, page.path).toContain(`URL: ${absoluteUrl(page.path)}`);
+    expect(text).toContain('Quick facts');
+    expect(text).toContain(OFFICE.line);
+    expect(text).toContain('Q: ');
+  });
+
+  it('leaves out held pages until Dr. Panesar has reviewed them', () => {
+    const text = buildLlmsFullTxt();
+    for (const page of Object.values(PAGE_META)) {
+      if (!livePages().includes(page)) expect(text, page.path).not.toContain(`URL: ${absoluteUrl(page.path)}`);
+    }
   });
 });

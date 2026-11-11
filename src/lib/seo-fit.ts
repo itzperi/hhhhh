@@ -5,7 +5,7 @@
  */
 export const TITLE_MIN = 50;
 export const TITLE_MAX = 60;
-export const DESCRIPTION_MIN = 140;
+export const DESCRIPTION_MIN = 150;
 export const DESCRIPTION_MAX = 160;
 
 /**

@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer data-placement="footer" className="bg-navy-900 text-navy-100" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
-        Site footer
+        Apollo Physicians contact details and pages
       </h2>
 
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
