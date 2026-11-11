@@ -40,6 +40,12 @@ const DRIVE = `about ${ELK_GROVE_DRIVE.minutes} minutes`;
 /** Shown on every page that carries health information. */
 export const NOT_MEDICAL_ADVICE = `This page is general information, not medical advice. For advice about your own health, talk to a clinician or call ${CALL}. In an emergency, call 911.`;
 
+/** Required at the end of every insurance page, word for word (owner brief, 11 Nov 2026, rule 3). */
+export const VERIFY_PLAN_LINE = `Call ${CALL} to verify your exact plan, because networks change.`;
+
+/** Closing block for every insurance page, so each one ends with the verify line. */
+const VERIFY_BLOCK: ContentBlock = { id: 'verify-your-plan', heading: 'Verify your plan', paragraphs: [VERIFY_PLAN_LINE] };
+
 /* -------------------------------------------------------------------------------------------------
  * New patients
  * ----------------------------------------------------------------------------------------------- */
@@ -132,7 +138,7 @@ export const NEW_PATIENTS: PageContent = {
     },
     {
       question: 'What insurance does Apollo Physicians accept for new patients?',
-      answer: `New patients at Apollo Physicians can use ${insuranceSentence()}. Plans and networks can change, so call ${CALL} with your plan name before you book and the office can confirm your coverage. The insurance page shows each plan and the date the practice provided the list.`,
+      answer: `New patients at Apollo Physicians can use ${insuranceSentence()}. Plans and networks can change, so call ${CALL} with your plan name before you book and the office can confirm your coverage.`,
     },
     {
       question: 'How much is a first visit without insurance?',
@@ -153,7 +159,7 @@ export const NEW_PATIENTS: PageContent = {
  * Insurance
  * ----------------------------------------------------------------------------------------------- */
 
-export const INSURANCE_DIRECT_ANSWER = `Apollo Physicians accepts Medicare and these health plans: Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net and UnitedHealthcare. It also accepts patients from the Sutter Health and Hill Physicians medical groups. Patients without insurance can pay themselves; initial self-pay visits start at ${INITIAL_VISIT_FROM}. Call ${CALL} to confirm your plan.`;
+export const INSURANCE_DIRECT_ANSWER = `Apollo Physicians accepts Medicare, most Medi-Cal plans and these health plans: Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net and UnitedHealthcare. It also accepts patients from the Sutter Health, Hill Physicians and Nivano Physicians medical groups. Patients without insurance can pay themselves; initial self-pay visits start at ${INITIAL_VISIT_FROM}. Call ${CALL} to confirm your plan.`;
 
 export const INSURANCE: PageContent = {
   h1: 'Insurance Accepted at Apollo Physicians',
@@ -184,7 +190,12 @@ export const INSURANCE: PageContent = {
       paragraphs: [
         `Plans and networks change. Only the plans above have been confirmed by the practice. If yours is not listed, call ${CALL} and give the office your plan name, or ask about a self-pay visit.`,
       ],
+      links: [
+        { label: 'Medi-Cal patients', href: '/medi-cal-doctor-sacramento' },
+        { label: 'Nivano Physicians patients', href: '/nivano-physicians-doctor-sacramento' },
+      ],
     },
+    VERIFY_BLOCK,
   ],
   faqs: [
     {
@@ -218,6 +229,14 @@ export const INSURANCE: PageContent = {
     {
       question: 'How much is a doctor visit without insurance?',
       answer: `Initial self-pay visits at Apollo Physicians start at ${INITIAL_VISIT_FROM}. Self-pay is for patients who do not use insurance and pay the office directly. Ask when you call ${CALL} what the visit includes, and whether any tests or forms cost extra, so there are no surprises on the day.`,
+    },
+    {
+      question: 'Does Apollo Physicians accept Medi-Cal?',
+      answer: `Yes. Apollo Physicians accepts most Medi-Cal plans for visits with ${DOC}, at ${OFFICE.street} in South Sacramento. If your Medi-Cal plan assigns you a primary care doctor, ask the plan to assign Dr. Panesar. ${VERIFY_PLAN_LINE}`,
+    },
+    {
+      question: 'Does Apollo Physicians accept Nivano Physicians?',
+      answer: `Yes. Apollo Physicians accepts patients from Nivano Physicians, a Sacramento independent physician association that some health plans use to assign doctors. If your card names Nivano Physicians, ask your plan to assign ${DOC}, as your primary care doctor. ${VERIFY_PLAN_LINE}`,
     },
     {
       question: 'Can I see a doctor at Apollo Physicians without insurance?',
@@ -508,9 +527,6 @@ export const SAME_DAY: PageContent = {
   ],
 };
 
-/** Required on every insurance and payment page (owner brief, 11 Nov 2026). */
-export const VERIFY_PLAN_LINE = `Call ${CALL} to verify your exact plan and network, because plans change.`;
-
 /** Shared "how to become a patient" steps for the payment pages. */
 const BECOME_A_PATIENT_STEPS = [
   `Call ${CALL} and say you are a new patient.`,
@@ -584,6 +600,7 @@ export const MEDICARE: PageContent = {
         { label: 'Directions and contact details', href: '/contact' },
       ],
     },
+    VERIFY_BLOCK,
   ],
   faqs: [
     {
@@ -724,6 +741,213 @@ export const SELF_PAY: PageContent = {
   sources: [
     { label: 'BenefitsCal', href: 'https://benefitscal.com/' },
     { label: 'Covered California', href: 'https://www.coveredca.com/' },
+  ],
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Shared answers for the payment pages (hours and telemedicine confirmed 11 Nov 2026, items 6 and 27)
+ * ----------------------------------------------------------------------------------------------- */
+
+export const HOURS_FAQ: FaqItem = {
+  question: 'What are Apollo Physicians\' office hours?',
+  answer: `Apollo Physicians is open Monday to Friday from 8:30 a.m. to 5:30 p.m. and Saturday from 9:00 a.m. to 2:00 p.m. Pacific time, and closed on Sunday. Same-day and next-day appointments are offered, so call ${CALL} early in the day to ask for the next opening.`,
+};
+
+export const TELEMEDICINE_FAQ: FaqItem = {
+  question: 'Does Apollo Physicians offer telemedicine visits?',
+  answer: `Yes. Apollo Physicians offers telemedicine visits for patients in California. Call ${CALL} to ask whether your visit can be done by telemedicine and whether your plan covers it. Some visits, such as a physical exam, need to happen in person at ${OFFICE.street}, Sacramento.`,
+};
+
+const LOCATION_FAQ: FaqItem = {
+  question: 'Where is Apollo Physicians?',
+  answer: `Apollo Physicians is at ${ADDRESS}, in South Sacramento. The office is next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. Google Maps shows ${DRIVE} by car from Elk Grove ZIP codes 95758 and 95624 with usual traffic.`,
+};
+
+const HOURS_SENTENCE = 'The office is open Monday to Friday from 8:30 a.m. to 5:30 p.m. and Saturday from 9:00 a.m. to 2:00 p.m.';
+
+const PLAN_DOCUMENTS = [
+  'A photo ID',
+  'Every insurance card you have, including your health plan card',
+  'A list of your medicines and supplements, with the dose',
+  'Recent test results, records and vaccination records, if you have them',
+  "Your previous doctor's name and phone number",
+  'Any form you need filled out',
+] as const;
+
+/* -------------------------------------------------------------------------------------------------
+ * Medi-Cal (held with the health pages until Dr. Panesar's review)
+ * Confirmed 11 Nov 2026: "most" Medi-Cal plans accepted. The plan names were not supplied, so none is named.
+ * ----------------------------------------------------------------------------------------------- */
+
+const MEDI_CAL_ACCEPT_FAQ: FaqItem = {
+  question: 'Does Apollo Physicians accept Medi-Cal?',
+  answer: `Yes. Apollo Physicians accepts most Medi-Cal plans for visits with ${DOC}, at ${OFFICE.street} in South Sacramento. If your Medi-Cal plan assigns you a primary care doctor, ask the plan to assign Dr. Panesar. ${VERIFY_PLAN_LINE}`,
+};
+
+export const MEDI_CAL_DIRECT_ANSWER = `Apollo Physicians in South Sacramento accepts most Medi-Cal plans for family medicine visits with ${DOC}. If your Medi-Cal plan assigns you a primary care doctor, ask the plan to assign Dr. Panesar. New patients are welcome. ${VERIFY_PLAN_LINE}`;
+
+export const MEDI_CAL: PageContent = {
+  h1: 'Medi-Cal Doctor in South Sacramento',
+  eyebrow: 'Medi-Cal',
+  blocks: [
+    {
+      id: 'medi-cal-at-apollo',
+      heading: 'Medi-Cal at Apollo Physicians',
+      paragraphs: [
+        "Medi-Cal is California's public health coverage program. In Sacramento County, most members belong to a Medi-Cal managed care plan, and the plan assigns each member a primary care doctor.",
+        `Apollo Physicians accepts most Medi-Cal plans. Plan names and networks change, so the office checks your specific plan when you call ${CALL}.`,
+      ],
+    },
+    {
+      id: 'choose-dr-panesar',
+      heading: 'How to choose Dr. Panesar as your Medi-Cal doctor',
+      steps: [
+        "Call the member services number on your Medi-Cal plan card, or use your plan's website.",
+        `Ask to change your primary care doctor to ${DOC}, at Apollo Physicians, ${OFFICE.street}.`,
+        'Ask the date the change starts.',
+        `Call ${CALL} to book your first visit.`,
+      ],
+    },
+    {
+      id: 'documents',
+      heading: 'Documents to bring',
+      bullets: [
+        'A photo ID',
+        'Your Medi-Cal Benefits Identification Card (BIC) and your Medi-Cal plan card',
+        ...PLAN_DOCUMENTS.slice(2),
+      ],
+    },
+    {
+      id: 'not-enrolled-yet',
+      heading: 'Not enrolled in Medi-Cal yet?',
+      paragraphs: [
+        `You can apply for Medi-Cal at BenefitsCal.com or through Sacramento County. While you wait, you can book a self-pay visit at Apollo Physicians. Initial self-pay visits start at ${INITIAL_VISIT_FROM}.`,
+      ],
+      links: [
+        { label: 'BenefitsCal', href: 'https://benefitscal.com/', external: true },
+        { label: 'Seeing a doctor without insurance', href: '/doctor-without-insurance-sacramento' },
+      ],
+    },
+    {
+      id: 'your-doctor',
+      heading: 'Your doctor',
+      paragraphs: [
+        `${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}.`,
+      ],
+      links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
+    },
+    {
+      id: 'find-the-office',
+      heading: 'Finding the office',
+      paragraphs: [
+        `The office is at ${ADDRESS}, next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. ${HOURS_SENTENCE}`,
+      ],
+      links: [
+        { label: 'All insurance and payment options', href: '/insurance-accepted' },
+        { label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' },
+        { label: 'Directions and contact details', href: '/contact' },
+      ],
+    },
+    VERIFY_BLOCK,
+  ],
+  faqs: [
+    MEDI_CAL_ACCEPT_FAQ,
+    {
+      question: 'How do I change my Medi-Cal doctor to Dr. Panesar?',
+      answer: `Ask your Medi-Cal plan to change your primary care doctor. Call the member services number on your plan card, or use the plan's website, and ask for ${DOC}, at Apollo Physicians, ${OFFICE.street}. Ask the date the change starts, then call ${CALL} to book your first visit.`,
+    },
+    {
+      question: 'Which Medi-Cal plans does Apollo Physicians accept?',
+      answer: `Apollo Physicians accepts most Medi-Cal plans. Plan names and networks change, so the office checks your specific plan when you call. Have your Medi-Cal card and plan card ready, give the plan name, and ask whether ${DOC}, can be your primary care doctor. ${VERIFY_PLAN_LINE}`,
+    },
+    {
+      question: 'What should I bring to my first Medi-Cal visit?',
+      answer: `Bring a photo ID, your Medi-Cal Benefits Identification Card and your health plan card to Apollo Physicians. Also bring a list of your medicines and supplements, any recent records or test results, and any forms you need filled out. Call ${CALL} if you are unsure what to bring.`,
+    },
+    {
+      question: 'Can I see a doctor while my Medi-Cal application is pending?',
+      answer: `Yes, as a self-pay patient. Initial self-pay visits at Apollo Physicians start at ${INITIAL_VISIT_FROM}. Ask what the visit includes when you call ${CALL}. You can apply for Medi-Cal at BenefitsCal.com or through Sacramento County, and use your Medi-Cal plan once you are enrolled.`,
+    },
+    HOURS_FAQ,
+    TELEMEDICINE_FAQ,
+    LOCATION_FAQ,
+  ],
+  sources: [{ label: 'BenefitsCal', href: 'https://benefitscal.com/' }],
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Nivano Physicians (held with the health pages until Dr. Panesar's review)
+ * Confirmed 11 Nov 2026: accepted. Public record: a Sacramento independent physician association (IPA).
+ * Which plans route through Nivano at this office was not supplied, so none is named.
+ * ----------------------------------------------------------------------------------------------- */
+
+export const NIVANO_DIRECT_ANSWER = `Apollo Physicians in Sacramento accepts patients from Nivano Physicians, a Sacramento independent physician association. If your health plan assigns your doctor through Nivano Physicians, ask the plan to choose ${DOC}, at Apollo Physicians. ${VERIFY_PLAN_LINE}`;
+
+export const NIVANO: PageContent = {
+  h1: 'Nivano Physicians Doctor in Sacramento',
+  eyebrow: 'Nivano Physicians',
+  blocks: [
+    {
+      id: 'what-is-nivano',
+      heading: 'What is Nivano Physicians?',
+      paragraphs: [
+        'Nivano Physicians is an independent physician association (IPA) based in Sacramento. An IPA is a network of independent doctors that health plans use, mainly HMO plans. If your insurance card names Nivano Physicians, your plan assigns your primary care doctor through that network.',
+        `Apollo Physicians accepts patients from Nivano Physicians. Ask the office which plans that applies to when you call ${CALL}.`,
+      ],
+    },
+    {
+      id: 'choose-dr-panesar',
+      heading: 'How to choose Dr. Panesar through Nivano Physicians',
+      steps: [
+        "Call the member services number on your insurance card, or use your plan's website.",
+        `Ask to change your primary care doctor to ${DOC}, at Apollo Physicians, in the Nivano Physicians network.`,
+        'Ask the date the change starts.',
+        `Call ${CALL} to book your first visit.`,
+      ],
+    },
+    { id: 'documents', heading: 'Documents to bring', bullets: PLAN_DOCUMENTS },
+    {
+      id: 'your-doctor',
+      heading: 'Your doctor',
+      paragraphs: [
+        `${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}.`,
+      ],
+      links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
+    },
+    {
+      id: 'find-the-office',
+      heading: 'Finding the office',
+      paragraphs: [
+        `The office is at ${ADDRESS}, next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. ${HOURS_SENTENCE}`,
+      ],
+      links: [
+        { label: 'All insurance and payment options', href: '/insurance-accepted' },
+        { label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' },
+        { label: 'Directions and contact details', href: '/contact' },
+      ],
+    },
+    VERIFY_BLOCK,
+  ],
+  faqs: [
+    {
+      question: 'Does Apollo Physicians accept Nivano Physicians?',
+      answer: `Yes. Apollo Physicians accepts patients from Nivano Physicians, a Sacramento independent physician association that some health plans use to assign doctors. If your card names Nivano Physicians, ask your plan to assign ${DOC}, as your primary care doctor. ${VERIFY_PLAN_LINE}`,
+    },
+    {
+      question: 'What is an independent physician association?',
+      answer: `An independent physician association, or IPA, is a network of independent doctors that health plans, mainly HMOs, use to provide care. Nivano Physicians is one in Sacramento. Apollo Physicians accepts patients from Nivano Physicians, so your plan can assign ${DOC}, as your doctor.`,
+    },
+    {
+      question: 'How do I choose Dr. Panesar through Nivano Physicians?',
+      answer: `Ask your health plan to change your primary care doctor. Call the member services number on your card, or use the plan's website, and ask for ${DOC}, at Apollo Physicians, in the Nivano Physicians network. Ask the date the change starts, then call ${CALL} to book.`,
+    },
+    {
+      question: 'Can Nivano Physicians patients get a same-day appointment?',
+      answer: `Yes. Apollo Physicians offers same-day and next-day appointments to every patient, including people whose doctor is assigned through Nivano Physicians. Availability depends on the schedule each day, so call ${CALL} as early as you can and ask for the next opening.`,
+    },
+    HOURS_FAQ,
+    TELEMEDICINE_FAQ,
+    LOCATION_FAQ,
   ],
 };
 
@@ -932,6 +1156,8 @@ export const FAQ_HUB: PageContent = {
     },
   ],
   faqs: [
+    HOURS_FAQ,
+    TELEMEDICINE_FAQ,
     {
       question: 'Does Apollo Physicians have more than one office?',
       answer: `No. Apollo Physicians has one office, at ${ADDRESS}. ${DOC}, sees patients there. Patients from Elk Grove, Valley Hi, Laguna, Florin, Meadowview and Parkway travel to this office. Call ${CALL} to book a visit, or see the contact page for directions.`,

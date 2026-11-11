@@ -76,6 +76,8 @@ const PAGES = [
   ['annualPhysical', 'ANNUAL_DIRECT_ANSWER', 'ANNUAL_PHYSICAL', '/annual-physical-sacramento', 'Annual physical'],
   ['sameDay', 'SAME_DAY_DIRECT_ANSWER', 'SAME_DAY', '/same-day-appointments-sacramento', 'Same-day appointments'],
   ['medicare', 'MEDICARE_DIRECT_ANSWER', 'MEDICARE', '/medicare-doctor-sacramento', 'Medicare patients'],
+  ['mediCal', 'MEDI_CAL_DIRECT_ANSWER', 'MEDI_CAL', '/medi-cal-doctor-sacramento', 'Medi-Cal patients'],
+  ['nivano', 'NIVANO_DIRECT_ANSWER', 'NIVANO', '/nivano-physicians-doctor-sacramento', 'Nivano Physicians patients'],
   ['selfPay', 'SELF_PAY_DIRECT_ANSWER', 'SELF_PAY', '/doctor-without-insurance-sacramento', 'Doctor without insurance'],
   ['immigration', 'IMMIGRATION_DIRECT_ANSWER', 'IMMIGRATION', '/immigration-medical-exam-sacramento', 'Immigration medical exam'],
   ['services', 'SERVICES_DIRECT_ANSWER', 'SERVICES', '/services', 'Services'],

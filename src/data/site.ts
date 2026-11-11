@@ -65,10 +65,10 @@ export const BRAND: { readonly name: string; readonly legalName: string | null }
 };
 
 /**
- * Office hours. NOT CONFIRMED (item 6): the owner lists two conflicting sets (Mon to Fri 8:30 to 5:30 and
- * Sat 9 to 2 on one site, Mon to Fri 8:30 to 5:00 with Saturday closed on WebMD and Vitals). Until the
- * owner decides, this stays null: no hours are shown on any page or in the schema. When set, the contact
- * page, quick facts and schema `openingHoursSpecification` all appear from this one value.
+ * Office hours. CONFIRMED by the practice on 11 Nov 2026 (client-confirmations.md, item 6): Monday to Friday
+ * 8:30 to 5:30, Saturday 9:00 to 2:00, Sunday closed. The contact page, Quick Facts, llms.txt and the schema
+ * `openingHoursSpecification` all read this one value. Google Business Profile, WebMD and Vitals still show
+ * 8:30 to 5:00 with Saturday closed and must be corrected to match.
  */
 export interface OfficeHoursRow {
   /** schema.org day names, for example ["Monday", "Tuesday"]. */
@@ -77,7 +77,10 @@ export interface OfficeHoursRow {
   opens: string;
   closes: string;
 }
-export const OFFICE_HOURS: readonly OfficeHoursRow[] | null = null;
+export const OFFICE_HOURS: readonly OfficeHoursRow[] | null = [
+  { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:30', closes: '17:30' },
+  { days: ['Saturday'], opens: '09:00', closes: '14:00' },
+];
 
 /** Areas served, as given by the owner on 6 Nov 2026. Shown on the home and contact pages and in the schema. */
 export const AREAS_SERVED = {

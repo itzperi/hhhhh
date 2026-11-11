@@ -14,6 +14,10 @@ import {
   NEW_PATIENTS_DIRECT_ANSWER,
   MEDICARE,
   MEDICARE_DIRECT_ANSWER,
+  MEDI_CAL,
+  MEDI_CAL_DIRECT_ANSWER,
+  NIVANO,
+  NIVANO_DIRECT_ANSWER,
   SAME_DAY,
   SAME_DAY_DIRECT_ANSWER,
   SELF_PAY,
@@ -52,6 +56,8 @@ const ALL_SETS = [
   ['annual-physical', ANNUAL_PHYSICAL.faqs],
   ['same-day', SAME_DAY.faqs],
   ['medicare', MEDICARE.faqs],
+  ['medi-cal', MEDI_CAL.faqs],
+  ['nivano', NIVANO.faqs],
   ['self-pay', SELF_PAY.faqs],
   ['immigration', IMMIGRATION.faqs],
   ['services', SERVICES.faqs],
@@ -68,6 +74,8 @@ const DIRECT_ANSWERS = [
   ['annual-physical', ANNUAL_DIRECT_ANSWER],
   ['same-day', SAME_DAY_DIRECT_ANSWER],
   ['medicare', MEDICARE_DIRECT_ANSWER],
+  ['medi-cal', MEDI_CAL_DIRECT_ANSWER],
+  ['nivano', NIVANO_DIRECT_ANSWER],
   ['self-pay', SELF_PAY_DIRECT_ANSWER],
   ['immigration', IMMIGRATION_DIRECT_ANSWER],
   ['services', SERVICES_DIRECT_ANSWER],
@@ -101,8 +109,8 @@ describe.each(ALL_SETS)('%s FAQ', (_name, faqs) => {
       expect(faq.question.endsWith('?'), faq.question).toBe(true);
       expect(faq.answer.endsWith('.'), faq.question).toBe(true);
       const words = wordCount(faq.answer);
-      expect(words, `${faq.question} (${words} words)`).toBeGreaterThanOrEqual(38);
-      expect(words, `${faq.question} (${words} words)`).toBeLessThanOrEqual(62);
+      expect(words, `${faq.question} (${words} words)`).toBeGreaterThanOrEqual(40);
+      expect(words, `${faq.question} (${words} words)`).toBeLessThanOrEqual(60);
     }
   });
 
@@ -143,9 +151,17 @@ describe('every key page has 8 or more questions', () => {
 });
 
 describe('payment pages', () => {
-  it('carry the owner-required "verify your plan" line', () => {
-    expect(VERIFY_PLAN_LINE).toBe(`Call ${PHONES.main.display} to verify your exact plan and network, because plans change.`);
-    expect(JSON.stringify(MEDICARE)).toContain(VERIFY_PLAN_LINE);
+  it('end every insurance page with the owner-required "verify your plan" line', () => {
+    expect(VERIFY_PLAN_LINE).toBe(`Call ${PHONES.main.display} to verify your exact plan, because networks change.`);
+    for (const page of [INSURANCE, MEDICARE, MEDI_CAL, NIVANO]) {
+      expect(page.blocks.at(-1)?.paragraphs?.at(-1), page.h1).toBe(VERIFY_PLAN_LINE);
+    }
+  });
+
+  it('never calls the practice a community health center, FQHC or free clinic', () => {
+    const text = JSON.stringify([INSURANCE, MEDICARE, MEDI_CAL, NIVANO, SELF_PAY, MEDI_CAL_DIRECT_ANSWER, NIVANO_DIRECT_ANSWER]);
+    expect(text).not.toMatch(/\b(is|are) (an? )?(FQHC|community health center|free clinic)/i);
+    expect(text).not.toMatch(/Vivant|River City|sliding/i);
   });
 
   it('make no claim the practice has not confirmed (assignment, Advantage plan names, discounts)', () => {
@@ -160,8 +176,13 @@ describe('only confirmed facts are answered', () => {
     .concat(DIRECT_ANSWERS.map(([, answer]) => answer))
     .join('\n');
 
-  it('makes no claim about hours, languages, telehealth, walk-ins or years of experience', () => {
-    expect(text).not.toMatch(/\bhours\b|\bopen\b|languages?|speaks|bilingual|telehealth|walk-in|24\/7|years of experience/i);
+  it('makes no claim about languages, walk-ins, 24/7 support or years of experience (hours and telemedicine are confirmed)', () => {
+    expect(text).not.toMatch(/languages?|speaks|bilingual|telehealth|walk-in|24\/7|years of experience/i);
+  });
+
+  it('states the confirmed hours exactly', () => {
+    expect(text).toContain('Monday to Friday from 8:30 a.m. to 5:30 p.m. and Saturday from 9:00 a.m. to 2:00 p.m.');
+    expect(text).not.toMatch(/5:00 p\.m\.|Saturday closed/i);
   });
 
   it('answers the owner-confirmed questions: new patients, board certification, insurance, price, same-day', () => {

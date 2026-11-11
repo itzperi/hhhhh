@@ -86,7 +86,7 @@ export const PAGE_META = {
     path: '/immigration-medical-exam-sacramento',
     lastModified: TODAY,
     title: 'Immigration Medical Exam in Sacramento | Apollo Physicians',
-    description: `USCIS immigration medical exam (Form I-693) in Sacramento with civil surgeon Dr. Paramjit Panesar, MD. What to bring and how to book: ${PHONES.main.display}.`,
+    description: `USCIS immigration medical exam (Form I-693) in South Sacramento with civil surgeon Dr. Paramjit Panesar, MD. What to bring and how to book: ${PHONES.main.display}.`,
     clinical: true,
   },
   insurance: {
@@ -108,6 +108,20 @@ export const PAGE_META = {
     lastModified: '2026-11-11',
     title: 'Doctor Without Insurance in Sacramento | Apollo Physicians',
     description: `See a family doctor in South Sacramento without insurance. Initial self-pay visits start at $65 with Dr. Paramjit Panesar, MD. Call ${PHONES.main.display} to book.`,
+    clinical: true,
+  },
+  mediCal: {
+    path: '/medi-cal-doctor-sacramento',
+    lastModified: '2026-11-11',
+    title: 'Medi-Cal Doctor in South Sacramento | Apollo Physicians',
+    description: `South Sacramento family doctor who accepts most Medi-Cal plans. How to choose Dr. Paramjit Panesar, MD, as your primary doctor. Call ${PHONES.main.display} to verify.`,
+    clinical: true,
+  },
+  nivano: {
+    path: '/nivano-physicians-doctor-sacramento',
+    lastModified: '2026-11-11',
+    title: 'Nivano Physicians Doctor, Sacramento | Apollo Physicians',
+    description: `Nivano Physicians family doctor in South Sacramento. How to choose Dr. Paramjit Panesar, MD, as your primary care doctor. Call ${PHONES.main.display} to verify.`,
     clinical: true,
   },
   contact: {

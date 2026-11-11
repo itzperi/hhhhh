@@ -112,6 +112,22 @@ Page status: HEALTH PAGE, held until you approve.
 
 > Apollo Physicians in Sacramento accepts Original Medicare for family medicine visits with Dr. Paramjit Panesar, MD, a board-certified family physician. New patients are welcome, and same-day and next-day appointments are offered. Bring your Medicare card to your visit. Call 916-236-5800 to verify your coverage before your first visit.
 
+## Medi-Cal patients  (/medi-cal-doctor-sacramento)
+
+Page status: HEALTH PAGE, held until you approve.
+
+**Direct answer under the heading**
+
+> Apollo Physicians in South Sacramento accepts most Medi-Cal plans for family medicine visits with Dr. Paramjit Panesar, MD. If your Medi-Cal plan assigns you a primary care doctor, ask the plan to assign Dr. Panesar. New patients are welcome. [...]
+
+## Nivano Physicians patients  (/nivano-physicians-doctor-sacramento)
+
+Page status: HEALTH PAGE, held until you approve.
+
+**Direct answer under the heading**
+
+> Apollo Physicians in Sacramento accepts patients from Nivano Physicians, a Sacramento independent physician association. If your health plan assigns your doctor through Nivano Physicians, ask the plan to choose Dr. Paramjit Panesar, MD, at Apollo Physicians. [...]
+
 ## Doctor without insurance  (/doctor-without-insurance-sacramento)
 
 Page status: HEALTH PAGE, held until you approve.

@@ -1,6 +1,6 @@
 import type { ContentBlock } from '@/data/content';
 import { CLINICAL_REVIEW } from '@/data/pages';
-import { INITIAL_VISIT_PRICE, PROVIDER, insuranceSentence } from '@/data/practice';
+import { INITIAL_VISIT_PRICE, PROVIDER, TELEMEDICINE, insuranceSentence } from '@/data/practice';
 import { BRAND, NPI, OFFICE, OFFICE_HOURS, PHONES, type OfficeHoursRow } from '@/data/site';
 import type { FaqItem } from '@/types';
 
@@ -53,6 +53,7 @@ export function quickFacts(): QuickFact[] {
     { label: 'Insurance', value: insuranceSentence(), href: '/insurance-accepted' },
     { label: 'Price', value: INITIAL_VISIT_PRICE },
     { label: 'Appointments', value: 'Same-day and next-day appointments' },
+    { label: 'Telemedicine', value: TELEMEDICINE },
     { label: 'New patients', value: 'Accepted', href: '/new-patients' },
   );
   return facts;

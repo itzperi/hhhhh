@@ -13,6 +13,8 @@ const CLINICAL_PATHS = [
   '/services',
   '/medicare-doctor-sacramento',
   '/doctor-without-insurance-sacramento',
+  '/medi-cal-doctor-sacramento',
+  '/nivano-physicians-doctor-sacramento',
 ];
 
 async function load(reviewedOn: string | null) {
