@@ -40,7 +40,7 @@ export const PAGE_META = {
   },
   newPatients: {
     path: '/new-patients',
-    lastModified: TODAY,
+    lastModified: '2026-11-11',
     title: 'Doctor Accepting New Patients Sacramento | Apollo Physicians',
     description: `Family doctor accepting new patients in Sacramento? Apollo Physicians welcomes new patients at ${OFFICE.street}. Call ${PHONES.main.display} to book.`,
     navLabel: 'New patients',
@@ -91,10 +91,24 @@ export const PAGE_META = {
   },
   insurance: {
     path: '/insurance-accepted',
-    lastModified: TODAY,
+    lastModified: '2026-11-11',
     title: 'Doctor Accepting Medicare in Sacramento | Apollo Physicians',
     description: `Medicare, Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net, UnitedHealthcare accepted in Sacramento. Self-pay from $65. Call ${PHONES.main.display}.`,
     navLabel: 'Insurance',
+  },
+  medicare: {
+    path: '/medicare-doctor-sacramento',
+    lastModified: '2026-11-11',
+    title: 'Medicare Family Doctor in Sacramento | Apollo Physicians',
+    description: `Family doctor in Sacramento who accepts Original Medicare. Dr. Paramjit Panesar, MD, is board certified and taking new patients. Call ${PHONES.main.display} to book.`,
+    clinical: true,
+  },
+  selfPay: {
+    path: '/doctor-without-insurance-sacramento',
+    lastModified: '2026-11-11',
+    title: 'Doctor Without Insurance in Sacramento | Apollo Physicians',
+    description: `See a family doctor in South Sacramento without insurance. Initial self-pay visits start at $65 with Dr. Paramjit Panesar, MD. Call ${PHONES.main.display} to book.`,
+    clinical: true,
   },
   contact: {
     path: '/contact',

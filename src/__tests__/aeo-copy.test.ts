@@ -12,8 +12,13 @@ import {
   INSURANCE_DIRECT_ANSWER,
   NEW_PATIENTS,
   NEW_PATIENTS_DIRECT_ANSWER,
+  MEDICARE,
+  MEDICARE_DIRECT_ANSWER,
   SAME_DAY,
   SAME_DAY_DIRECT_ANSWER,
+  SELF_PAY,
+  SELF_PAY_DIRECT_ANSWER,
+  VERIFY_PLAN_LINE,
   SERVICES,
   SERVICES_DIRECT_ANSWER,
 } from '@/data/content';
@@ -46,6 +51,8 @@ const ALL_SETS = [
   ['contact', CONTACT.faqs],
   ['annual-physical', ANNUAL_PHYSICAL.faqs],
   ['same-day', SAME_DAY.faqs],
+  ['medicare', MEDICARE.faqs],
+  ['self-pay', SELF_PAY.faqs],
   ['immigration', IMMIGRATION.faqs],
   ['services', SERVICES.faqs],
   ['faq-hub', FAQ_HUB.faqs],
@@ -60,6 +67,8 @@ const DIRECT_ANSWERS = [
   ['contact', CONTACT_DIRECT_ANSWER],
   ['annual-physical', ANNUAL_DIRECT_ANSWER],
   ['same-day', SAME_DAY_DIRECT_ANSWER],
+  ['medicare', MEDICARE_DIRECT_ANSWER],
+  ['self-pay', SELF_PAY_DIRECT_ANSWER],
   ['immigration', IMMIGRATION_DIRECT_ANSWER],
   ['services', SERVICES_DIRECT_ANSWER],
   ['faq-hub', FAQ_DIRECT_ANSWER],
@@ -130,6 +139,19 @@ describe('every key page has 8 or more questions', () => {
     ['immigration', IMMIGRATION.faqs],
   ] as const)('%s', (_name, faqs) => {
     expect(faqs.length).toBeGreaterThanOrEqual(8);
+  });
+});
+
+describe('payment pages', () => {
+  it('carry the owner-required "verify your plan" line', () => {
+    expect(VERIFY_PLAN_LINE).toBe(`Call ${PHONES.main.display} to verify your exact plan and network, because plans change.`);
+    expect(JSON.stringify(MEDICARE)).toContain(VERIFY_PLAN_LINE);
+  });
+
+  it('make no claim the practice has not confirmed (assignment, Advantage plan names, discounts)', () => {
+    const text = JSON.stringify([MEDICARE, SELF_PAY, MEDICARE_DIRECT_ANSWER, SELF_PAY_DIRECT_ANSWER]);
+    expect(text).not.toMatch(/accepts? (Medicare )?assignment|sliding|discount|community health|FQHC|free clinic/i);
+    expect(text).not.toMatch(/SCAN|Molina|Humana|Kaiser/);
   });
 });
 

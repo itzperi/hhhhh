@@ -83,6 +83,19 @@ export const NEW_PATIENTS: PageContent = {
       links: [{ label: 'See the insurance page', href: '/insurance-accepted' }],
     },
     {
+      id: 'switch-doctor',
+      heading: 'Switching to Dr. Panesar from another doctor',
+      paragraphs: [
+        `HMO plans usually assign each member a primary care doctor, often through a medical group such as Sutter Health or Hill Physicians. If you have an HMO, change your assigned doctor before your first visit. With other plans, or if you are unsure, call ${CALL} with your plan name and the office will tell you what to do.`,
+      ],
+      steps: [
+        `Call the member services number on your insurance card, or use your plan's website, and ask to change your primary care doctor to ${DOC}, at Apollo Physicians.`,
+        'Ask your plan the date the change takes effect.',
+        `Call ${CALL} to book your first visit, and ask how to have your records sent from your previous doctor.`,
+      ],
+      links: [{ label: 'Plans and medical groups accepted', href: '/insurance-accepted' }],
+    },
+    {
       id: 'who-can-join',
       heading: 'Who can become a patient',
       paragraphs: [
@@ -155,13 +168,15 @@ export const INSURANCE: PageContent = {
         'Ask the office to confirm that your plan and network are accepted.',
         'Ask about any copay or cost you may owe at the visit.',
       ],
+      links: [{ label: 'Medicare patients', href: '/medicare-doctor-sacramento' }],
     },
     {
       id: 'self-pay',
-      heading: 'Paying without insurance',
+      heading: 'Self-pay doctor visits without insurance',
       paragraphs: [
         `Initial self-pay visits start at ${INITIAL_VISIT_FROM}. Self-pay means you pay the office directly instead of billing insurance. When you call ${CALL}, ask what the visit includes and whether any tests or forms cost extra.`,
       ],
+      links: [{ label: 'Seeing a doctor without insurance', href: '/doctor-without-insurance-sacramento' }],
     },
     {
       id: 'plan-not-listed',
@@ -203,6 +218,14 @@ export const INSURANCE: PageContent = {
     {
       question: 'How much is a doctor visit without insurance?',
       answer: `Initial self-pay visits at Apollo Physicians start at ${INITIAL_VISIT_FROM}. Self-pay is for patients who do not use insurance and pay the office directly. Ask when you call ${CALL} what the visit includes, and whether any tests or forms cost extra, so there are no surprises on the day.`,
+    },
+    {
+      question: 'Can I see a doctor at Apollo Physicians without insurance?',
+      answer: `Yes. Apollo Physicians sees patients who pay for their own visit instead of using insurance, and initial self-pay visits start at ${INITIAL_VISIT_FROM}. When you call ${CALL} to book with ${DOC}, say you will pay yourself and ask what the visit includes and whether any tests or forms cost extra.`,
+    },
+    {
+      question: 'How do I make Dr. Panesar my primary care doctor with Hill Physicians or Sutter Health?',
+      answer: `If your health plan is an HMO, it usually assigns you a primary care doctor through a medical group such as Sutter Health or Hill Physicians. To choose ${DOC}, at Apollo Physicians, call the member services number on your insurance card or use your plan's website, then call ${CALL} to book.`,
     },
   ],
   sources: [VERIFY_LINKS.medicare],
@@ -482,6 +505,225 @@ export const SAME_DAY: PageContent = {
   sources: [
     { label: 'MedlinePlus: Recognizing medical emergencies', href: 'https://medlineplus.gov/ency/article/001927.htm' },
     { label: '988 Suicide and Crisis Lifeline', href: 'https://988lifeline.org/' },
+  ],
+};
+
+/** Required on every insurance and payment page (owner brief, 11 Nov 2026). */
+export const VERIFY_PLAN_LINE = `Call ${CALL} to verify your exact plan and network, because plans change.`;
+
+/** Shared "how to become a patient" steps for the payment pages. */
+const BECOME_A_PATIENT_STEPS = [
+  `Call ${CALL} and say you are a new patient.`,
+  'Give your plan name and member ID, or say you will pay for yourself.',
+  `If your plan assigns you a primary care doctor, ask your plan to assign ${DOC}, at Apollo Physicians.`,
+  'Choose a same-day, next-day or later appointment.',
+  'Bring the documents on the checklist to your first visit.',
+] as const;
+
+/* -------------------------------------------------------------------------------------------------
+ * Original Medicare (held with the health pages until Dr. Panesar's review)
+ * Owner-confirmed: Medicare accepted, new patients accepted. NOT stated until confirmed: Medicare assignment,
+ * which Medicare Advantage plans are accepted, office hours, video visits.
+ * ----------------------------------------------------------------------------------------------- */
+
+export const MEDICARE_DIRECT_ANSWER = `Apollo Physicians in Sacramento accepts Original Medicare for family medicine visits with ${DOC}, a board-certified family physician. New patients are welcome, and same-day and next-day appointments are offered. Bring your Medicare card to your visit. Call ${CALL} to verify your coverage before your first visit.`;
+
+export const MEDICARE: PageContent = {
+  h1: 'Medicare Doctor in Sacramento',
+  eyebrow: 'Medicare',
+  blocks: [
+    {
+      id: 'original-medicare',
+      heading: 'Original Medicare at Apollo Physicians',
+      paragraphs: [
+        `Original Medicare is the health insurance program run by the federal government. Part B helps pay for doctor visits. Apollo Physicians accepts Original Medicare for family medicine visits with ${DOC}, at ${ADDRESS}.`,
+        `Medicare.gov explains what Part B covers and what you may pay. ${VERIFY_PLAN_LINE}`,
+      ],
+    },
+    {
+      id: 'medicare-advantage',
+      heading: 'If you have a Medicare Advantage plan',
+      paragraphs: [
+        `Medicare Advantage plans are Medicare plans run by private companies. Many are HMOs that assign each member a primary care doctor, often through a medical group such as Sutter Health or Hill Physicians. Apollo Physicians accepts both of those medical groups. Call ${CALL} with the name of your plan before you book, so the office can confirm that your plan is accepted.`,
+      ],
+      links: [{ label: 'How to switch to Dr. Panesar from another doctor', href: '/new-patients' }],
+    },
+    {
+      id: 'become-a-patient',
+      heading: 'How to become a patient',
+      steps: BECOME_A_PATIENT_STEPS,
+    },
+    {
+      id: 'documents',
+      heading: 'Documents to bring',
+      bullets: [
+        'A photo ID',
+        'Your Medicare card, and any Medicare supplement (Medigap) or Medicare Advantage card',
+        'A list of your medicines and supplements, with the dose',
+        'Recent test results, records and vaccination records, if you have them',
+        "Your previous doctor's name and phone number",
+        'Any form you need filled out',
+      ],
+    },
+    {
+      id: 'your-doctor',
+      heading: 'Your doctor',
+      paragraphs: [
+        `${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}. You can check both online.`,
+      ],
+      links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
+    },
+    {
+      id: 'find-the-office',
+      heading: 'Finding the office',
+      paragraphs: [
+        `The office is at ${ADDRESS}, next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. Patients also come from Elk Grove, ${DRIVE} away by car with usual traffic.`,
+      ],
+      links: [
+        { label: 'All insurance and payment options', href: '/insurance-accepted' },
+        { label: 'Directions and contact details', href: '/contact' },
+      ],
+    },
+  ],
+  faqs: [
+    {
+      question: 'Does Apollo Physicians accept Original Medicare?',
+      answer: `Yes. Apollo Physicians accepts Original Medicare for visits with ${DOC}, at ${OFFICE.street} in South Sacramento. New Medicare patients are welcome. Bring your Medicare card and a photo ID, and call ${CALL} to verify your coverage before your first visit.`,
+    },
+    {
+      question: 'Is Apollo Physicians accepting new Medicare patients?',
+      answer: `Yes. Apollo Physicians welcomes new patients with Original Medicare at its South Sacramento office, ${OFFICE.street}. Same-day and next-day appointments are offered. Call ${CALL}, say you are a new patient with Medicare, and bring your Medicare card and a photo ID to your first visit.`,
+    },
+    {
+      question: 'What if I have a Medicare Advantage plan?',
+      answer: `If you have a Medicare Advantage plan, call Apollo Physicians at ${CALL} before you book to confirm that your specific plan is accepted. Many Medicare Advantage HMOs assign members a doctor through a medical group, such as Sutter Health or Hill Physicians, and Apollo Physicians accepts both of those groups.`,
+    },
+    {
+      question: 'I also have a Medicare supplement plan. What should I bring?',
+      answer: `Bring every card you have to Apollo Physicians: your Medicare card, any Medicare supplement (Medigap) card, and a photo ID. The office uses them to check how your coverage applies to the visit. ${VERIFY_PLAN_LINE}`,
+    },
+    {
+      question: 'How do I check that Medicare covers my visit?',
+      answer: `Have your Medicare card ready, plus any supplement or Medicare Advantage card, and call Apollo Physicians at ${CALL} before your visit. The office can confirm how your coverage applies. Medicare.gov explains what Part B covers and what you may pay. ${VERIFY_PLAN_LINE}`,
+    },
+    {
+      question: 'What does Medicare Part B cover?',
+      clinical: true,
+      answer: `Medicare Part B helps pay for medically necessary doctor visits and many preventive services. What you pay depends on your deductible and coinsurance. Medicare.gov explains Part B coverage and costs in detail. For questions about a visit with ${DOC}, at Apollo Physicians, call ${CALL}.`,
+    },
+    {
+      question: 'Is Dr. Panesar board certified?',
+      answer: `Yes. ${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}. You can check both online. ${DOC}, sees Medicare patients at Apollo Physicians, ${OFFICE.street}, in South Sacramento.`,
+    },
+    {
+      question: 'Where is Apollo Physicians?',
+      answer: `Apollo Physicians is at ${ADDRESS}, in South Sacramento. The office is next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. Google Maps shows ${DRIVE} by car from Elk Grove ZIP codes 95758 and 95624 with usual traffic.`,
+    },
+  ],
+  sources: [VERIFY_LINKS.medicare, VERIFY_LINKS.license],
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Doctor without insurance (held with the health pages until Dr. Panesar's review)
+ * Owner-confirmed: initial self-pay visits start at $65. NOT stated until confirmed: what the $65 covers,
+ * payment methods, any discount.
+ * ----------------------------------------------------------------------------------------------- */
+
+export const SELF_PAY_DIRECT_ANSWER = `Apollo Physicians in South Sacramento sees patients without insurance. Initial self-pay visits start at ${INITIAL_VISIT_FROM} with ${DOC}, a board-certified family physician. Ask what the visit includes and whether tests or forms cost extra. Same-day and next-day appointments are offered. Call ${CALL} to book a self-pay visit.`;
+
+export const SELF_PAY: PageContent = {
+  h1: 'Doctor Without Insurance in Sacramento',
+  eyebrow: 'Paying without insurance',
+  blocks: [
+    {
+      id: 'how-self-pay-works',
+      heading: 'How self-pay visits work',
+      paragraphs: [
+        `Self-pay means you pay the office directly instead of using insurance. Initial self-pay visits at Apollo Physicians start at ${INITIAL_VISIT_FROM}.`,
+        `When you call ${CALL}, say you will pay for yourself. Ask what the visit includes and whether any tests, vaccines or forms cost extra, so you know the total before your appointment.`,
+      ],
+    },
+    {
+      id: 'become-a-patient',
+      heading: 'How to become a patient',
+      steps: BECOME_A_PATIENT_STEPS,
+    },
+    {
+      id: 'documents',
+      heading: 'Documents to bring',
+      bullets: [
+        'A photo ID',
+        'A list of your medicines and supplements, with the dose',
+        'Recent test results, records and vaccination records, if you have them',
+        "Your previous doctor's name and phone number",
+        'Any form you need filled out',
+        'A way to pay for the visit (ask which payment methods are accepted when you call)',
+      ],
+    },
+    {
+      id: 'coverage-help',
+      heading: 'Getting health coverage',
+      paragraphs: [
+        'You may qualify for free or low-cost health coverage from the State of California, or for a plan through Covered California. You can apply at BenefitsCal.com and compare plans at CoveredCA.com. You can book a self-pay visit at Apollo Physicians while you apply.',
+      ],
+      links: [
+        { label: 'BenefitsCal', href: 'https://benefitscal.com/', external: true },
+        { label: 'Covered California', href: 'https://www.coveredca.com/', external: true },
+      ],
+    },
+    {
+      id: 'your-doctor',
+      heading: 'Your doctor',
+      paragraphs: [
+        `${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}.`,
+      ],
+      links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
+    },
+    {
+      id: 'find-the-office',
+      heading: 'Finding the office',
+      paragraphs: [
+        `The office is at ${ADDRESS}, next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}.`,
+      ],
+      links: [
+        { label: 'All insurance and payment options', href: '/insurance-accepted' },
+        { label: 'Directions and contact details', href: '/contact' },
+      ],
+    },
+  ],
+  faqs: [
+    {
+      question: 'Can I see a doctor without insurance in Sacramento?',
+      answer: `Yes. Apollo Physicians in South Sacramento sees patients who pay for their own visit. Initial self-pay visits start at ${INITIAL_VISIT_FROM} with ${DOC}. Say you will pay for yourself when you call ${CALL}, and ask what the visit includes.`,
+    },
+    {
+      question: 'How much does a self-pay visit cost at Apollo Physicians?',
+      answer: `Initial self-pay visits at Apollo Physicians start at ${INITIAL_VISIT_FROM}. Self-pay means you pay the office directly instead of using insurance. Ask what the visit includes and whether any tests, vaccines or forms cost extra, so you know the total before your appointment. Call ${CALL}.`,
+    },
+    {
+      question: 'Can I get a same-day appointment without insurance?',
+      answer: `Yes. Apollo Physicians offers same-day and next-day appointments to self-pay patients, the same as patients with insurance. Availability depends on the schedule each day, so call ${CALL} as early as you can, say you will pay for yourself, and ask for the next opening.`,
+    },
+    {
+      question: 'What should I bring to a self-pay visit?',
+      answer: `Bring a photo ID, a list of your medicines and supplements, and any past records or test results to Apollo Physicians. Bring a way to pay for the visit, and ask which payment methods are accepted when you call ${CALL}. Bring any form you need filled out, too.`,
+    },
+    {
+      question: 'Can I get help with health coverage?',
+      answer: `You may qualify for free or low-cost health coverage from the State of California, or for a Covered California plan. You can apply at BenefitsCal.com and compare plans at CoveredCA.com. Apollo Physicians can see you as a self-pay patient while you apply. Call ${CALL} to book.`,
+    },
+    {
+      question: 'Who will I see at a self-pay visit?',
+      answer: `Self-pay patients at Apollo Physicians see ${DOC}, who is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}. The office is at ${OFFICE.street}, in South Sacramento. Call ${CALL} to book.`,
+    },
+    {
+      question: 'Where is Apollo Physicians?',
+      answer: `Apollo Physicians is at ${ADDRESS}, in South Sacramento. The office is next to ${LOCATION.highway} and about ${LOCATION.hospitalDistance} from ${LOCATION.nearHospital}. Google Maps shows ${DRIVE} by car from Elk Grove ZIP codes 95758 and 95624 with usual traffic.`,
+    },
+  ],
+  sources: [
+    { label: 'BenefitsCal', href: 'https://benefitscal.com/' },
+    { label: 'Covered California', href: 'https://www.coveredca.com/' },
   ],
 };
 

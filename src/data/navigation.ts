@@ -30,6 +30,8 @@ const FOOTER_LABELS: Record<PageKey, string> = {
   services: 'Services',
   immigration: 'Immigration medical exam',
   insurance: 'Insurance accepted',
+  medicare: 'Medicare patients',
+  selfPay: 'Doctor without insurance',
   contact: 'Contact and directions',
   faq: 'Questions and answers',
 };
@@ -65,6 +67,8 @@ const CRUMB_NAMES: Record<Exclude<PageKey, 'home'>, string> = {
   services: 'Services',
   immigration: 'Immigration medical exam',
   insurance: 'Insurance accepted',
+  medicare: 'Medicare',
+  selfPay: 'Paying without insurance',
   contact: 'Contact',
   faq: 'Questions and answers',
 };
