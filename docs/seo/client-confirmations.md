@@ -120,3 +120,9 @@ Google Business Profile, WebMD and Vitals still show Mon-Fri 8:30-5:00 with Satu
 | 37 | Dr. Panesar's clinical review of the health content | Not done | Set `CLINICAL_REVIEW.reviewedOn` in `src/data/pages.ts`, using `docs/clinical-review/review-packet.md` |
 | 40 | Relationship to CHCA Health or another "community health clinic" | Unanswered | Resolve before changing any directory listing |
 | 41 | Google Business Profile website field still shows drparamjitpanesar.com | Needs the owner | Profile edit |
+
+### Update 12 Nov 2026: clinical review (relayed by the site owner in the Claude Code session)
+
+| Item | Fact | Published as |
+|---|---|---|
+| 37 | Dr. Panesar approved all the health content with no edits. The site owner confirmed that the approval date is **12 Nov 2026**. The approval was relayed by the owner; there is no written approval from the doctor in the repo | `CLINICAL_REVIEW.reviewedOn` = `2026-11-12` in `src/data/pages.ts`. Eight pages go live on merge: Medicare, Medi-Cal, Nivano Physicians, no-insurance, same-day, annual physical, immigration, services. Keep the doctor's written approval (email or a signed copy of `docs/clinical-review/review-packet.md`) with the practice's records |
