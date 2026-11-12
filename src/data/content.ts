@@ -162,7 +162,7 @@ export const NEW_PATIENTS: PageContent = {
 export const INSURANCE_DIRECT_ANSWER = `Apollo Physicians accepts Medicare, most Medi-Cal plans and these health plans: Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net and UnitedHealthcare. It also accepts patients from the Sutter Health, Hill Physicians and Nivano Physicians medical groups. Patients without insurance can pay themselves; initial self-pay visits start at ${INITIAL_VISIT_FROM}. Call ${CALL} to confirm your plan.`;
 
 export const INSURANCE: PageContent = {
-  h1: 'Insurance Accepted at Apollo Physicians',
+  h1: 'Insurance and Payment Options',
   eyebrow: 'Insurance and pricing',
   blocks: [
     {

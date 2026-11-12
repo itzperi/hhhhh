@@ -13,7 +13,7 @@ import { OFFICE, PHONES } from './site';
 export const CLINICAL_REVIEW = {
   reviewer: 'Dr. Paramjit Panesar, MD',
   /** PENDING. Set to the date Dr. Panesar approved the health content (see docs/clinical-review/). */
-  reviewedOn: null as string | null,
+  reviewedOn: '2026-11-12' as string | null,
 };
 
 export interface PageMeta {
@@ -91,9 +91,9 @@ export const PAGE_META = {
   },
   insurance: {
     path: '/insurance-accepted',
-    lastModified: '2026-11-11',
-    title: 'Doctor Accepting Medicare in Sacramento | Apollo Physicians',
-    description: `Medicare, Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net, UnitedHealthcare accepted in Sacramento. Self-pay from $65. Call ${PHONES.main.display}.`,
+    lastModified: '2026-11-12',
+    title: 'Insurance & Payment Options, Sacramento | Apollo Physicians',
+    description: `Insurance and payment options in South Sacramento: Medicare, Medi-Cal, Aetna, Anthem, Cigna and more, plus self-pay visits from $65. Call ${PHONES.main.display} now.`,
     navLabel: 'Insurance',
   },
   medicare: {

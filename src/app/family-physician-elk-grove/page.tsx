@@ -67,7 +67,7 @@ export default function ElkGrovePage() {
 
       <Section id="getting-here" headingId="elk-office-heading" title="Getting here from Elk Grove">
         <div className="grid gap-8 lg:grid-cols-2">
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             <p className="text-lg leading-relaxed text-navy-800">{ELK_GROVE_NOTE}</p>
             <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Drive times from Elk Grove table, scrollable">
               <table className="w-full min-w-[26rem] border-collapse text-left">
