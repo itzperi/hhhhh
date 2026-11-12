@@ -13,7 +13,7 @@ import { OFFICE, PHONES } from './site';
 export const CLINICAL_REVIEW = {
   reviewer: 'Dr. Paramjit Panesar, MD',
   /** PENDING. Set to the date Dr. Panesar approved the health content (see docs/clinical-review/). */
-  reviewedOn: null as string | null,
+  reviewedOn: '2026-11-12' as string | null,
 };
 
 export interface PageMeta {
@@ -62,7 +62,7 @@ export const PAGE_META = {
   },
   elkGrove: {
     path: '/family-physician-elk-grove',
-    lastModified: TODAY,
+    lastModified: '2026-11-12',
     title: 'Family Physician for Elk Grove Patients | Apollo Physicians',
     description: `Family physician for Elk Grove patients at Apollo Physicians, ${OFFICE.street}, ${OFFICE.city}. About 12 minutes from Elk Grove. Call ${PHONES.main.display}.`,
     navLabel: 'Elk Grove patients',
@@ -91,35 +91,35 @@ export const PAGE_META = {
   },
   insurance: {
     path: '/insurance-accepted',
-    lastModified: '2026-11-11',
-    title: 'Doctor Accepting Medicare in Sacramento | Apollo Physicians',
-    description: `Medicare, Aetna, Anthem Blue Cross, Blue Shield of California, Cigna, Health Net, UnitedHealthcare accepted in Sacramento. Self-pay from $65. Call ${PHONES.main.display}.`,
+    lastModified: '2026-11-12',
+    title: 'Insurance & Payment Options, Sacramento | Apollo Physicians',
+    description: `Insurance and payment options in South Sacramento: Medicare, Medi-Cal, Aetna, Anthem, Cigna and more, plus self-pay visits from $65. Call ${PHONES.main.display} now.`,
     navLabel: 'Insurance',
   },
   medicare: {
     path: '/medicare-doctor-sacramento',
-    lastModified: '2026-11-11',
+    lastModified: '2026-11-12',
     title: 'Medicare Family Doctor in Sacramento | Apollo Physicians',
     description: `Family doctor in Sacramento who accepts Original Medicare. Dr. Paramjit Panesar, MD, is board certified and taking new patients. Call ${PHONES.main.display} to book.`,
     clinical: true,
   },
   selfPay: {
     path: '/doctor-without-insurance-sacramento',
-    lastModified: '2026-11-11',
+    lastModified: '2026-11-12',
     title: 'Doctor Without Insurance in Sacramento | Apollo Physicians',
     description: `See a family doctor in South Sacramento without insurance. Initial self-pay visits start at $65 with Dr. Paramjit Panesar, MD. Call ${PHONES.main.display} to book.`,
     clinical: true,
   },
   mediCal: {
     path: '/medi-cal-doctor-sacramento',
-    lastModified: '2026-11-11',
+    lastModified: '2026-11-12',
     title: 'Medi-Cal Doctor in South Sacramento | Apollo Physicians',
     description: `South Sacramento family doctor who accepts most Medi-Cal plans. How to choose Dr. Paramjit Panesar, MD, as your primary doctor. Call ${PHONES.main.display} to verify.`,
     clinical: true,
   },
   nivano: {
     path: '/nivano-physicians-doctor-sacramento',
-    lastModified: '2026-11-11',
+    lastModified: '2026-11-12',
     title: 'Nivano Physicians Doctor, Sacramento | Apollo Physicians',
     description: `Nivano Physicians family doctor in South Sacramento. How to choose Dr. Paramjit Panesar, MD, as your primary care doctor. Call ${PHONES.main.display} to verify.`,
     clinical: true,

@@ -191,10 +191,12 @@ interface WebPageInput {
   faq?: boolean;
   /** The entity the page is about. Defaults to the clinic. */
   about?: 'clinic' | 'physician';
+  /** Date of the last content change (YYYY-MM-DD), from PAGE_META.lastModified. */
+  dateModified?: string;
 }
 
 /** One WebPage (or ProfilePage, or MedicalWebPage) node per page, tying the site, entity, breadcrumb and FAQ together. */
-export function webPageNode({ path, name, description, type = 'WebPage', breadcrumb = false, faq = false, about = 'clinic' }: WebPageInput): Node {
+export function webPageNode({ path, name, description, type = 'WebPage', breadcrumb = false, faq = false, about = 'clinic', dateModified }: WebPageInput): Node {
   const subject = { '@id': about === 'physician' ? PHYSICIAN_ID : CLINIC_ID };
   const reviewed = type === 'MedicalWebPage' && CLINICAL_REVIEW.reviewedOn;
   return {
@@ -204,6 +206,7 @@ export function webPageNode({ path, name, description, type = 'WebPage', breadcr
     name,
     description,
     inLanguage: 'en-US',
+    ...(dateModified ? { dateModified } : {}),
     isPartOf: { '@id': WEBSITE_ID },
     ...(type === 'ProfilePage' ? { mainEntity: subject } : { about: subject }),
     ...(breadcrumb ? { breadcrumb: { '@id': breadcrumbId(path) } } : {}),
@@ -259,7 +262,7 @@ interface PageGraphInput {
  * breadcrumb when it shows them. Clinical pages are typed MedicalWebPage; the physician page is a ProfilePage.
  */
 export function pageGraph({ key, faqs, breadcrumb, about }: PageGraphInput): Node {
-  const meta: { path: string; title: string; description: string; clinical?: boolean } = {
+  const meta: { path: string; title: string; description: string; clinical?: boolean; lastModified: string } = {
     ...PAGE_META[key],
   };
   const type: WebPageInput['type'] = key === 'panesar' ? 'ProfilePage' : meta.clinical ? 'MedicalWebPage' : 'WebPage';
@@ -272,6 +275,7 @@ export function pageGraph({ key, faqs, breadcrumb, about }: PageGraphInput): Nod
       name: meta.title,
       description: meta.description,
       type,
+      dateModified: meta.lastModified,
       about: about ?? (key === 'panesar' ? 'physician' : 'clinic'),
       breadcrumb: Boolean(breadcrumb),
       faq: Boolean(faqs?.length),

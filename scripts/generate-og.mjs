@@ -29,7 +29,7 @@ const PAGES = [
   ['panesar', 'Dr. Paramjit Panesar, Family Doctor'],
   ['services', 'Family Medicine Services in Sacramento'],
   ['immigration', 'Immigration Medical Exam in Sacramento'],
-  ['insurance', 'Doctor Accepting Medicare in Sacramento'],
+  ['insurance', 'Insurance & Payment Options, Sacramento'],
   ['medicare', 'Medicare Family Doctor in Sacramento'],
   ['mediCal', 'Medi-Cal Doctor in South Sacramento'],
   ['nivano', 'Nivano Physicians Doctor, Sacramento'],
