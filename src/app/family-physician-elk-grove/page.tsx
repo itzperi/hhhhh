@@ -10,7 +10,7 @@ import { MapEmbed } from '@/components/ui/MapEmbed';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { BREADCRUMBS } from '@/data/navigation';
-import { PAGE_META } from '@/data/pages';
+import { PAGE_META, livePages } from '@/data/pages';
 import { ELK_GROVE_DIRECT_ANSWER, ELK_GROVE_FAQS, ELK_GROVE_NOTE, INITIAL_VISIT_PRICE } from '@/data/practice';
 import { AREAS_SERVED, ELK_GROVE_DRIVE, LOCATION, OFFICE, PHONES } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
@@ -29,7 +29,17 @@ const ROUTES = [
   { start: 'Elk Grove, ZIP 95624', time: `About ${ELK_GROVE_DRIVE.minutes} minutes`, distance: '6.8 miles', route: ELK_GROVE_DRIVE.routeFrom95624 },
 ] as const;
 
+/** Segment pages shown to Elk Grove patients; a link appears only once its page is live (after clinical review). */
+const SEGMENT_LINKS = [
+  { path: PAGE_META.medicare.path, label: 'Medicare doctor in Sacramento, for Elk Grove patients with Medicare' },
+  { path: PAGE_META.mediCal.path, label: 'Medi-Cal doctor in South Sacramento, for Elk Grove members' },
+  { path: PAGE_META.nivano.path, label: 'Nivano Physicians network, for Elk Grove patients' },
+  { path: PAGE_META.selfPay.path, label: 'Doctor without insurance, with self-pay visits' },
+] as const;
+
 export default function ElkGrovePage() {
+  const livePaths = new Set(livePages().map((page) => page.path));
+  const segmentLinks = SEGMENT_LINKS.filter((link) => livePaths.has(link.path)).map((link) => ({ href: link.path, label: link.label }));
   return (
     <>
       <JsonLd data={pageGraph({ key: 'elkGrove', faqs: ELK_GROVE_FAQS, breadcrumb: BREADCRUMBS.elkGrove })} />
@@ -131,7 +141,7 @@ export default function ElkGrovePage() {
         </div>
       </Section>
 
-      <Section id="insurance" headingId="elk-insurance-heading" title="Insurance for Elk Grove patients" tone="muted">
+      <Section id="insurance" headingId="elk-insurance-heading" title="Insurance and payment for Elk Grove patients" tone="muted">
         <p className="max-w-3xl text-navy-800">
           Elk Grove patients use the same plans as every patient, shown above. {INITIAL_VISIT_PRICE} Call {PHONES.main.display} to confirm your plan before you travel, or see the{' '}
           <Link href="/insurance-accepted" className="font-semibold text-teal-800 hover:underline">
@@ -139,6 +149,17 @@ export default function ElkGrovePage() {
           </Link>
           .
         </p>
+        {segmentLinks.length > 0 && (
+          <ul className="mt-4 max-w-3xl list-disc space-y-2 pl-6 text-navy-800">
+            {segmentLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="font-semibold text-teal-800 hover:underline">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </Section>
 
       <FaqList idPrefix="elk" title="Elk Grove questions" faqs={ELK_GROVE_FAQS} />

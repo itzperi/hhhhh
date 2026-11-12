@@ -590,6 +590,14 @@ export const MEDICARE: PageContent = {
       links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
     },
     {
+      id: 'elk-grove-patients',
+      heading: 'For Elk Grove patients with Medicare',
+      paragraphs: [
+        `Medicare patients from Elk Grove ZIP codes 95758 and 95624 are seen at the same South Sacramento office. Google Maps shows ${DRIVE} by car with usual traffic. Bring your Medicare card, any supplement or Medicare Advantage card, and a photo ID, and call ${CALL} before you travel to confirm your appointment.`,
+      ],
+      links: [{ label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' }],
+    },
+    {
       id: 'find-the-office',
       heading: 'Finding the office',
       paragraphs: [
@@ -695,6 +703,14 @@ export const SELF_PAY: PageContent = {
         `${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}.`,
       ],
       links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
+    },
+    {
+      id: 'elk-grove-patients',
+      heading: 'For Elk Grove patients without insurance',
+      paragraphs: [
+        `Initial self-pay visits start at ${INITIAL_VISIT_FROM} for every new patient, including patients who travel from Elk Grove. The office is ${DRIVE} by car from ZIP codes 95758 and 95624 with usual traffic. Call ${CALL} before you leave home to confirm your appointment and to ask what the visit includes.`,
+      ],
+      links: [{ label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' }],
     },
     {
       id: 'find-the-office',
@@ -837,6 +853,14 @@ export const MEDI_CAL: PageContent = {
       links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
     },
     {
+      id: 'elk-grove-patients',
+      heading: 'For Elk Grove patients with Medi-Cal',
+      paragraphs: [
+        `If you live in Elk Grove and have Medi-Cal, call the member services number on your plan card and ask whether Dr. Panesar can be your primary care doctor. Then call ${CALL} to book. The office is ${DRIVE} by car from ZIP codes 95758 and 95624 with usual traffic, so confirm your appointment before you leave home.`,
+      ],
+      links: [{ label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' }],
+    },
+    {
       id: 'find-the-office',
       heading: 'Finding the office',
       paragraphs: [
@@ -913,6 +937,14 @@ export const NIVANO: PageContent = {
         `${DOC}, is board certified in family medicine by the ${CREDENTIALS.boardBody} and holds California medical license ${CREDENTIALS.licenseNumber}.`,
       ],
       links: [{ label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' }],
+    },
+    {
+      id: 'elk-grove-patients',
+      heading: 'For Elk Grove patients in the Nivano Physicians network',
+      paragraphs: [
+        `If your plan assigns your doctor through Nivano Physicians and you live in Elk Grove, you can ask your plan to choose Dr. Panesar at Apollo Physicians. The office is ${DRIVE} by car from ZIP codes 95758 and 95624 with usual traffic. Call ${CALL} before you travel to confirm your plan and your appointment.`,
+      ],
+      links: [{ label: 'Family physician for Elk Grove patients', href: '/family-physician-elk-grove' }],
     },
     {
       id: 'find-the-office',
