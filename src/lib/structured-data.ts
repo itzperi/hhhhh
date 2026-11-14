@@ -11,7 +11,7 @@ import {
   SITE_URL,
   absoluteUrl,
 } from '@/data/site';
-import { CREDENTIALS, INITIAL_VISIT_FROM, PROVIDER } from '@/data/practice';
+import { CREDENTIALS, INITIAL_VISIT_FROM, PHYSICIAN_LANGUAGES, PROVIDER } from '@/data/practice';
 import { CLINICAL_REVIEW, PAGE_META, isLive, reviewDateFor, type PageKey } from '@/data/pages';
 import type { Crumb } from '@/data/navigation';
 import type { FaqItem } from '@/types';
@@ -150,6 +150,7 @@ export function physicianNode(): Node {
     address: postalAddress(),
     worksFor: { '@id': CLINIC_ID },
     identifier: { '@type': 'PropertyValue', propertyID: 'NPI', value: NPI.panesar },
+    knowsLanguage: PHYSICIAN_LANGUAGES.map((lang) => ({ '@type': 'Language', name: lang.name, alternateName: lang.code })),
     hasCredential: [
       {
         '@type': 'EducationalOccupationalCredential',
@@ -171,7 +172,11 @@ export function physicianNode(): Node {
       },
     ],
     alumniOf: [
-      { '@type': 'CollegeOrUniversity', name: CREDENTIALS.medicalSchool },
+      {
+        '@type': 'CollegeOrUniversity',
+        name: CREDENTIALS.medicalSchool,
+        address: { '@type': 'PostalAddress', addressLocality: 'Ludhiana', addressRegion: 'Punjab', addressCountry: 'IN' },
+      },
       { '@type': 'CollegeOrUniversity', name: 'University of Arkansas for Medical Sciences' },
     ],
     knowsAbout: ['Family medicine', 'Immigration medical exams', 'Preventive care'],

@@ -137,6 +137,12 @@ export const PAGE_META = {
     description: `Nivano Physicians family doctor in South Sacramento. How to choose Dr. Paramjit Panesar, MD, as your primary care doctor. Call ${PHONES.main.display} to verify.`,
     clinical: true,
   },
+  languages: {
+    path: '/punjabi-hindi-speaking-doctor-sacramento',
+    lastModified: '2026-11-14',
+    title: 'Punjabi/Hindi-Speaking Doctor Sacramento | Apollo Physicians',
+    description: `Punjabi and Hindi speaking family doctor in South Sacramento: Dr. Paramjit Panesar, MD, board certified, medical degree from Punjab, India. Call ${PHONES.main.display}.`,
+  },
   sportsPhysical: {
     path: '/sports-physical-sacramento',
     lastModified: '2026-11-14',

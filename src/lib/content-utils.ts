@@ -1,6 +1,6 @@
 import type { ContentBlock } from '@/data/content';
 import { CLINICAL_REVIEW } from '@/data/pages';
-import { INITIAL_VISIT_PRICE, PROVIDER, TELEMEDICINE, insuranceSentence } from '@/data/practice';
+import { INITIAL_VISIT_PRICE, LANGUAGES_SENTENCE, PROVIDER, TELEMEDICINE, insuranceSentence } from '@/data/practice';
 import { BRAND, NPI, OFFICE, OFFICE_HOURS, PHONES, type OfficeHoursRow } from '@/data/site';
 import type { FaqItem } from '@/types';
 
@@ -50,6 +50,7 @@ export function quickFacts(): QuickFact[] {
   if (OFFICE_HOURS) facts.push({ label: 'Hours', value: OFFICE_HOURS.map(formatHoursRow).join('; ') });
   facts.push(
     { label: 'Provider', value: `${PROVIDER.name} (NPI ${NPI.panesar})`, href: '/dr-paramjit-panesar-md' },
+    { label: 'Languages', value: `Dr. Panesar speaks ${LANGUAGES_SENTENCE}`, href: '/punjabi-hindi-speaking-doctor-sacramento' },
     { label: 'Insurance', value: insuranceSentence(), href: '/insurance-accepted' },
     { label: 'Price', value: INITIAL_VISIT_PRICE },
     { label: 'Appointments', value: 'Same-day and next-day appointments' },

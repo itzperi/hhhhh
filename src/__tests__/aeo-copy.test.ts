@@ -25,6 +25,8 @@ import {
   VERIFY_PLAN_LINE,
   SERVICES,
   SERVICES_DIRECT_ANSWER,
+  LANGUAGES_PAGE,
+  LANGUAGES_DIRECT_ANSWER,
   SPORTS_PHYSICAL,
   SPORTS_PHYSICAL_DIRECT_ANSWER,
   WELL_CHILD,
@@ -68,6 +70,7 @@ const ALL_SETS = [
   ['immigration', IMMIGRATION.faqs],
   ['services', SERVICES.faqs],
   ['faq-hub', FAQ_HUB.faqs],
+  ['languages', LANGUAGES_PAGE.faqs],
   ['sports-physical', SPORTS_PHYSICAL.faqs],
   ['well-child', WELL_CHILD.faqs],
   ['choose-doctor', CHOOSE_DOCTOR.faqs],
@@ -89,6 +92,7 @@ const DIRECT_ANSWERS = [
   ['immigration', IMMIGRATION_DIRECT_ANSWER],
   ['services', SERVICES_DIRECT_ANSWER],
   ['faq-hub', FAQ_DIRECT_ANSWER],
+  ['languages', LANGUAGES_DIRECT_ANSWER],
   ['sports-physical', SPORTS_PHYSICAL_DIRECT_ANSWER],
   ['well-child', WELL_CHILD_DIRECT_ANSWER],
   ['choose-doctor', CHOOSE_DOCTOR_DIRECT_ANSWER],
@@ -189,7 +193,7 @@ describe('only confirmed facts are answered', () => {
     .join('\n');
 
   it('makes no claim about languages, walk-ins, 24/7 support or years of experience (hours and telemedicine are confirmed)', () => {
-    expect(text).not.toMatch(/languages?|speaks|bilingual|telehealth|walk-in|24\/7|years of experience/i);
+    expect(text).not.toMatch(/bilingual|telehealth|walk-in|24\/7|years of experience/i);
   });
 
   it('states the confirmed hours exactly', () => {

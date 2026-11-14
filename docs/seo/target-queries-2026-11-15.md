@@ -51,3 +51,21 @@ What decides "best X near me" results:
 ## 5. What nobody can promise
 
 No change guarantees a ranking, and position 1 for "best" searches depends mostly on reviews and distance from the searcher. Measure monthly in Search Console (queries report filtered to these 24 phrases) and with a geo-grid check of the map pack; see `measure-plan-2026-11-12.md`.
+
+## 6. Language and "Indian doctor" searches (added 15 Nov 2026)
+
+| Search (and its "Best …" version) | Page | How it matches |
+|---|---|---|
+| Punjabi-speaking doctor / family physician / primary care doctor Sacramento | `/punjabi-hindi-speaking-doctor-sacramento` | Title, H1, FAQ "Is there a Punjabi speaking doctor in Sacramento?", primary care section |
+| Hindi-speaking doctor / family physician / primary care doctor Sacramento | Same page | FAQ "Is there a Hindi speaking doctor in Sacramento?"; one page for both languages to avoid near-duplicate doorway pages |
+| Indian doctor / Indian family physician Sacramento | Same page + physician page | "Trained in Punjab, India and in the United States" section and table. Per the owner, the site does not label the doctor's ethnicity; it states the medical school and its place |
+
+Site-wide: Physician schema `knowsLanguage` (en, pa, hi), Quick Facts "Languages" row on every inner page (links to the new page), home FAQ, physician FAQ, llms.txt and llms-full.txt.
+
+Off-site, which matters most for these searches:
+- Google Business Profile: there is no language field, so mention "Dr. Panesar speaks Punjabi and Hindi" in the description and in posts. Reviews that mention Punjabi or Hindi help the map pack match these searches (never script or reward reviews).
+- Healthgrades, Zocdoc, Doximity, WebMD, Vitals and health-plan directories all have a languages field: set English, Punjabi, Hindi. AI assistants and health-plan "find a doctor" tools read these.
+- Community listings: gurdwara and temple notice boards and newsletters, Punjabi and Hindi community directories and radio in Sacramento. These produce the brand mentions AI answers draw on.
+- Consider Punjabi and Hindi versions of this page later (hreflang), written by a fluent reviewer, not machine translation.
+
+Verified: 357 tests, typecheck, lint, build, crawl (17 pages), schema validator, no horizontal scroll at 375 px.

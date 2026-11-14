@@ -70,7 +70,7 @@ export const PROVIDER = {
 /**
  * OWNER: the physician's credentials. Each can be checked by the public: license on the Medical Board of
  * California search, certification on the ABMS site, civil surgeon designation on the USCIS tool.
- * Languages spoken are NOT confirmed (the owner asked to confirm first), so none is published.
+ * Languages: Dr. Panesar speaks English, Punjabi and Hindi (owner, 15 Nov 2026, item 16). Staff languages are not confirmed.
  */
 export const CREDENTIALS = {
   boardBody: 'American Board of Family Medicine',
@@ -80,10 +80,21 @@ export const CREDENTIALS = {
   licenseSince: '2010',
   medicalSchool: 'Dayanand Medical College',
   medicalSchoolYear: '2004',
+  medicalSchoolPlace: 'Ludhiana, Punjab, India',
   residency: 'University of Arkansas for Medical Sciences (UAMS)',
   residencyYears: '2007 to 2010',
   civilSurgeon: 'USCIS-designated civil surgeon (Form I-693 immigration medical exams)',
 } as const;
+
+/** OWNER (15 Nov 2026, item 16): languages Dr. Panesar speaks with patients. Staff languages are not confirmed. */
+export const PHYSICIAN_LANGUAGES = [
+  { name: 'English', code: 'en' },
+  { name: 'Punjabi', code: 'pa' },
+  { name: 'Hindi', code: 'hi' },
+] as const;
+
+/** "English, Punjabi and Hindi" */
+export const LANGUAGES_SENTENCE = 'English, Punjabi and Hindi';
 
 /** Public places to check the credentials above. */
 export const VERIFY_LINKS = {
@@ -168,6 +179,10 @@ export const HOME_FAQS: readonly FaqItem[] = [
     answer: `${PROVIDER.name}, is a family physician at Apollo Physicians in Sacramento. Dr. Panesar is board certified in family medicine by the ${CREDENTIALS.boardBody}, completed residency at UAMS, and is a USCIS-designated civil surgeon for immigration medical exams. Dr. Panesar sees patients at ${OFFICE.street}.`,
   },
   {
+    question: 'Does Apollo Physicians have a Punjabi or Hindi speaking doctor?',
+    answer: `Yes. ${PROVIDER.name}, the family physician at Apollo Physicians in South Sacramento, speaks ${LANGUAGES_SENTENCE} with patients. Dr. Panesar earned a medical degree from ${CREDENTIALS.medicalSchool} in ${CREDENTIALS.medicalSchoolPlace}. Call ${CALL} and say you would like your visit in Punjabi or Hindi.`,
+  },
+  {
     question: 'Is Apollo Physicians a primary care practice in South Sacramento?',
     answer: `Yes. Apollo Physicians is a family medicine practice, which is primary care, in South Sacramento at ${OFFICE.street}. ${PROVIDER.name}, a board-certified family physician, can be your primary care physician for checkups, physicals, vaccinations and ongoing conditions. Call ${CALL} to book or to name Dr. Panesar as your primary doctor.`,
   },
@@ -178,6 +193,10 @@ export const HOME_FAQS: readonly FaqItem[] = [
 ];
 
 export const PANESAR_FAQS: readonly FaqItem[] = [
+  {
+    question: 'What languages does Dr. Panesar speak?',
+    answer: `${PROVIDER.name}, speaks ${LANGUAGES_SENTENCE} with patients at Apollo Physicians, ${OFFICE.street}, in South Sacramento. Patients can have the whole visit with the doctor in Punjabi or Hindi. Mention your language when you call ${CALL} to book, so the office can note it.`,
+  },
   {
     question: 'Who is Dr. Paramjit Panesar?',
     answer: `${PROVIDER.name}, is a family physician at Apollo Physicians in Sacramento. Dr. Panesar is board certified in family medicine, earned a medical degree from ${CREDENTIALS.medicalSchool} in ${CREDENTIALS.medicalSchoolYear}, and completed residency at UAMS from 2007 to 2010. Dr. Panesar holds an active California medical license issued in ${CREDENTIALS.licenseSince}.`,

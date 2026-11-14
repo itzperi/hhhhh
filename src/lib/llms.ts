@@ -3,6 +3,7 @@ import {
   CREDENTIALS,
   ELK_GROVE_NOTE,
   INITIAL_VISIT_PRICE,
+  LANGUAGES_SENTENCE,
   LLMS_CONFIRMED,
   PROVIDER,
   SPECIALTY,
@@ -19,8 +20,8 @@ import { livePages, PAGE_META, isLive } from '@/data/pages';
  * drift from the site. A convenience file for AI systems, not a ranking signal.
  *
  * Confirmed facts only. Insurance, price, appointment availability and the physician NPI appear when their flag in
- * LLMS_CONFIRMED is true (the owner confirmed them on 6 Nov 2026). Hours and languages are not included until the
- * owner confirms them. The list of pages contains live pages only, so it never points at a page that answers 404.
+ * LLMS_CONFIRMED is true (the owner confirmed them on 6 Nov 2026). Hours and the physician's languages were confirmed
+ * on 11 and 15 Nov 2026. The list of pages contains live pages only, so it never points at a page that answers 404.
  */
 export function buildLlmsTxt(c: { [K in keyof typeof LLMS_CONFIRMED]: boolean } = LLMS_CONFIRMED): string {
   const summary = [
@@ -36,7 +37,8 @@ export function buildLlmsTxt(c: { [K in keyof typeof LLMS_CONFIRMED]: boolean } 
   const physician = [
     `- ${PROVIDER.name}. ${SPECIALTY}.${c.physicianNpi ? ` NPI ${NPI.panesar}.` : ''}`,
     `- Board certified in family medicine (${CREDENTIALS.boardBody}). California medical license ${CREDENTIALS.licenseNumber}, active since ${CREDENTIALS.licenseSince}.`,
-    `- Medical degree: ${CREDENTIALS.medicalSchool}, ${CREDENTIALS.medicalSchoolYear}. Residency: ${CREDENTIALS.residency}, ${CREDENTIALS.residencyYears}.`,
+    `- Speaks ${LANGUAGES_SENTENCE} with patients.`,
+    `- Medical degree: ${CREDENTIALS.medicalSchool} (${CREDENTIALS.medicalSchoolPlace}), ${CREDENTIALS.medicalSchoolYear}. Residency: ${CREDENTIALS.residency}, ${CREDENTIALS.residencyYears}.`,
     `- ${CREDENTIALS.civilSurgeon}.`,
     `- Profile page: ${absoluteUrl(PAGE_META.panesar.path)}`,
     `- Check the credentials: ${VERIFY_LINKS.license.href} ; ${VERIFY_LINKS.certification.href} ; ${VERIFY_LINKS.civilSurgeon.href}`,

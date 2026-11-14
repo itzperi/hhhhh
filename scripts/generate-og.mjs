@@ -34,6 +34,7 @@ const PAGES = [
   ['mediCal', 'Medi-Cal Doctor in South Sacramento'],
   ['nivano', 'Nivano Physicians Doctor, Sacramento'],
   ['selfPay', 'Doctor Without Insurance in Sacramento'],
+  ['languages', 'Punjabi/Hindi-Speaking Doctor Sacramento'],
   ['sportsPhysical', 'Sports Physical in Sacramento, CA'],
   ['wellChild', 'Well-Child Exam in Sacramento, CA'],
   ['chooseDoctor', 'Choosing a Family Doctor in Sacramento'],

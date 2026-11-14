@@ -114,14 +114,15 @@ describe('llms.txt', () => {
     for (const plan of INSURANCE_ACCEPTED) expect(text).toContain(plan);
   });
 
-  it('states the confirmed hours and telemedicine, and never languages or 24/7 support', () => {
+  it('states the confirmed hours, telemedicine and physician languages, and never staff languages or 24/7 support', () => {
     const text = buildLlmsTxt();
     expect(text).toContain('## Hours');
     expect(text).toContain('Telemedicine visits for patients in California.');
     expect(text).toContain('Medi-Cal: most plans.');
     expect(text).toContain('not a community health center or free clinic');
+    expect(text).toContain('Speaks English, Punjabi and Hindi with patients.');
     for (const flags of [none, all]) {
-      expect(buildLlmsTxt(flags)).not.toMatch(/bilingual|speaks|spanish|punjabi|hindi|telehealth|24\/7|sliding|Vivant|River City/i);
+      expect(buildLlmsTxt(flags)).not.toMatch(/bilingual|spanish|staff speak|telehealth|24\/7|sliding|Vivant|River City/i);
     }
   });
 

@@ -133,3 +133,12 @@ Google Business Profile, WebMD and Vitals still show Mon-Fri 8:30-5:00 with Satu
 |---|---|---|
 | 41 | Does the office see children, and from what age? Are well-child checkups offered? | `/well-child-exam-sacramento` (held), and the "ask whether your child's age can be seen" wording on the sports physical page |
 | 42 | Dr. Panesar's review of the two new health pages (sports physical, well-child exam) in `docs/clinical-review/review-packet.md` | Set `SECOND_CLINICAL_REVIEW.reviewedOn` in `src/data/pages.ts` to publish them |
+
+## Confirmed 15 Nov 2026 (relayed by the site owner)
+
+| Item | Fact | Published as |
+|---|---|---|
+| 16 | Dr. Panesar speaks **English, Punjabi and Hindi** with patients. Staff languages are **not** confirmed | `PHYSICIAN_LANGUAGES` in `src/data/practice.ts`: Physician `knowsLanguage` schema, Quick Facts row, home and physician FAQs, llms.txt, `/punjabi-hindi-speaking-doctor-sacramento`. The site never says the front desk speaks them |
+| 16a | Owner chose **not** to describe the doctor's ethnicity ("Indian doctor"). The site states only the training fact: medical degree from Dayanand Medical College, Ludhiana, Punjab, India (2004) | Same page, physician schema `alumniOf` address |
+
+Still open: staff languages (would allow "our front desk speaks Punjabi/Hindi").

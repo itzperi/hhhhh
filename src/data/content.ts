@@ -1,5 +1,5 @@
 import type { FaqItem } from '@/types';
-import { CREDENTIALS, INITIAL_VISIT_FROM, INSURANCE_ACCEPTED, PROVIDER, VERIFY_LINKS, insuranceSentence } from './practice';
+import { CREDENTIALS, INITIAL_VISIT_FROM, INSURANCE_ACCEPTED, LANGUAGES_SENTENCE, PROVIDER, VERIFY_LINKS, insuranceSentence } from './practice';
 import { ELK_GROVE_DRIVE, LOCATION, OFFICE, PHONES } from './site';
 
 /**
@@ -1502,5 +1502,118 @@ export const CHOOSE_DOCTOR: PageContent = {
   sources: [
     { label: VERIFY_LINKS.certification.label, href: VERIFY_LINKS.certification.href },
     { label: VERIFY_LINKS.license.label, href: VERIFY_LINKS.license.href },
+  ],
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Punjabi and Hindi speaking doctor (not health information). Languages confirmed by the owner on
+ * 15 Nov 2026 (item 16) for Dr. Panesar only; staff languages are not confirmed, so nothing says the
+ * front desk speaks them. The page never labels the doctor's ethnicity: it states the training facts.
+ * ----------------------------------------------------------------------------------------------- */
+
+export const LANGUAGES_DIRECT_ANSWER = `${DOC}, the family physician at Apollo Physicians in South Sacramento, speaks ${LANGUAGES_SENTENCE} with patients. Dr. Panesar earned a medical degree from ${CREDENTIALS.medicalSchool} in ${CREDENTIALS.medicalSchoolPlace}, and is board certified in family medicine. New patients are welcome. Call ${CALL} to book.`;
+
+export const LANGUAGES_PAGE: PageContent = {
+  h1: 'Punjabi and Hindi Speaking Family Doctor in Sacramento',
+  eyebrow: 'Care in Punjabi, Hindi and English',
+  blocks: [
+    {
+      id: 'your-language',
+      heading: 'See a doctor in Punjabi or Hindi',
+      paragraphs: [
+        `${DOC}, speaks ${LANGUAGES_SENTENCE}. You can describe your symptoms, ask questions and go over your medicines with the doctor in the language you are most comfortable with.`,
+        'Family members are welcome to come with you, but they do not have to interpret for you during the visit with the doctor.',
+      ],
+    },
+    {
+      id: 'training',
+      heading: 'Trained in Punjab, India and in the United States',
+      table: {
+        caption: `Training and credentials of ${DOC}`,
+        head: ['Credential', 'Details'],
+        rows: [
+          ['Medical degree', `${CREDENTIALS.medicalSchool}, ${CREDENTIALS.medicalSchoolPlace} (${CREDENTIALS.medicalSchoolYear})`],
+          ['Residency', `Family medicine, ${CREDENTIALS.residency}, ${CREDENTIALS.residencyYears}`],
+          ['Board certification', `Family medicine, ${CREDENTIALS.boardBody}`],
+          ['California license', `${CREDENTIALS.licenseNumber}, ${CREDENTIALS.licenseBody}, since ${CREDENTIALS.licenseSince}`],
+          ['Immigration exams', 'USCIS-designated civil surgeon (Form I-693)'],
+          ['Languages', LANGUAGES_SENTENCE],
+        ],
+      },
+      links: [
+        { label: VERIFY_LINKS.license.label, href: VERIFY_LINKS.license.href, external: true },
+        { label: VERIFY_LINKS.certification.label, href: VERIFY_LINKS.certification.href, external: true },
+        { label: `About ${DOC}`, href: '/dr-paramjit-panesar-md' },
+      ],
+    },
+    {
+      id: 'primary-care',
+      heading: 'A primary care doctor for the whole family',
+      paragraphs: [
+        `As a family physician, ${DOC}, can be your primary care doctor for checkups, physicals, vaccinations and ongoing conditions such as diabetes and high blood pressure. Same-day and next-day appointments are offered, and telemedicine visits are available for patients in California.`,
+        `Dr. Panesar is also a USCIS-designated civil surgeon, so immigration medical exams for Form I-693 can be done in Punjabi or Hindi too.`,
+      ],
+      links: [
+        { label: 'Immigration medical exam', href: '/immigration-medical-exam-sacramento' },
+        { label: 'Same-day appointments', href: '/same-day-appointments-sacramento' },
+        { label: 'Services', href: '/services' },
+      ],
+    },
+    {
+      id: 'how-to-book',
+      heading: 'How to book a visit in Punjabi or Hindi',
+      steps: [
+        `Call ${CALL}.`,
+        'Say you would like your visit with Dr. Panesar in Punjabi or Hindi.',
+        'Give your insurance plan, or say you will pay for yourself.',
+        'Bring a photo ID, your insurance card and a list of your medicines.',
+      ],
+    },
+    {
+      id: 'paying',
+      heading: 'Insurance and cost',
+      paragraphs: [
+        `Apollo Physicians accepts ${insuranceSentence()}. Initial self-pay visits start at ${INITIAL_VISIT_FROM}. ${VERIFY_PLAN_LINE}`,
+      ],
+      links: [{ label: 'Insurance and payment options', href: '/insurance-accepted' }],
+    },
+    {
+      id: 'find-the-office',
+      heading: 'Where the office is',
+      paragraphs: [
+        `The office is at ${ADDRESS}, in South Sacramento, next to ${LOCATION.highway}. Patients come from Sacramento and from Elk Grove, ${DRIVE} away by car.`,
+      ],
+      links: [{ label: 'Directions and contact details', href: '/contact' }],
+    },
+  ],
+  faqs: [
+    {
+      question: 'Is there a Punjabi speaking doctor in Sacramento?',
+      answer: `Yes. ${DOC}, at Apollo Physicians speaks Punjabi, as well as Hindi and English. The office is at ${OFFICE.street} in South Sacramento. Dr. Panesar is a board-certified family physician who accepts new patients. Call ${CALL} and ask for your visit in Punjabi.`,
+    },
+    {
+      question: 'Is there a Hindi speaking doctor in Sacramento?',
+      answer: `Yes. ${DOC}, at Apollo Physicians speaks Hindi, as well as Punjabi and English. The office is at ${OFFICE.street} in South Sacramento. Dr. Panesar is a board-certified family physician who accepts new patients. Call ${CALL} and ask for your visit in Hindi.`,
+    },
+    {
+      question: 'Where did Dr. Panesar go to medical school?',
+      answer: `${DOC}, of Apollo Physicians earned a medical degree from ${CREDENTIALS.medicalSchool} in ${CREDENTIALS.medicalSchoolPlace}, in ${CREDENTIALS.medicalSchoolYear}, then completed family medicine residency at the University of Arkansas for Medical Sciences from 2007 to 2010. Dr. Panesar is board certified by the ${CREDENTIALS.boardBody}.`,
+    },
+    {
+      question: 'Can I see a Punjabi or Hindi speaking primary care doctor with Medicare or Medi-Cal?',
+      answer: `Yes. Apollo Physicians accepts Original Medicare and most Medi-Cal plans, and ${DOC}, speaks Punjabi and Hindi. If your Medi-Cal plan assigns a primary care doctor, ask the plan to assign Dr. Panesar. Call ${CALL} to verify your exact plan, because networks change.`,
+    },
+    {
+      question: 'Can I have my immigration medical exam in Punjabi or Hindi?',
+      answer: `Yes. ${DOC}, at Apollo Physicians is a USCIS-designated civil surgeon and speaks Punjabi, Hindi and English, so the Form I-693 exam can be done in your language. Call ${CALL} to book the exam and ask what to bring.`,
+    },
+    {
+      question: 'Do the front desk staff speak Punjabi or Hindi?',
+      answer: `Apollo Physicians has confirmed that ${DOC}, speaks Punjabi and Hindi. Ask about the front desk staff when you call ${CALL}. Saying which language you prefer when you book lets the office note it for your visit with Dr. Panesar.`,
+    },
+  ],
+  sources: [
+    { label: VERIFY_LINKS.license.label, href: VERIFY_LINKS.license.href },
+    { label: VERIFY_LINKS.certification.label, href: VERIFY_LINKS.certification.href },
   ],
 };
