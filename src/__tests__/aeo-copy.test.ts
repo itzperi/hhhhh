@@ -25,6 +25,12 @@ import {
   VERIFY_PLAN_LINE,
   SERVICES,
   SERVICES_DIRECT_ANSWER,
+  SPORTS_PHYSICAL,
+  SPORTS_PHYSICAL_DIRECT_ANSWER,
+  WELL_CHILD,
+  WELL_CHILD_DIRECT_ANSWER,
+  CHOOSE_DOCTOR,
+  CHOOSE_DOCTOR_DIRECT_ANSWER,
 } from '@/data/content';
 import {
   ELK_GROVE_DIRECT_ANSWER,
@@ -62,6 +68,9 @@ const ALL_SETS = [
   ['immigration', IMMIGRATION.faqs],
   ['services', SERVICES.faqs],
   ['faq-hub', FAQ_HUB.faqs],
+  ['sports-physical', SPORTS_PHYSICAL.faqs],
+  ['well-child', WELL_CHILD.faqs],
+  ['choose-doctor', CHOOSE_DOCTOR.faqs],
 ] as const;
 
 const DIRECT_ANSWERS = [
@@ -80,6 +89,9 @@ const DIRECT_ANSWERS = [
   ['immigration', IMMIGRATION_DIRECT_ANSWER],
   ['services', SERVICES_DIRECT_ANSWER],
   ['faq-hub', FAQ_DIRECT_ANSWER],
+  ['sports-physical', SPORTS_PHYSICAL_DIRECT_ANSWER],
+  ['well-child', WELL_CHILD_DIRECT_ANSWER],
+  ['choose-doctor', CHOOSE_DOCTOR_DIRECT_ANSWER],
 ] as const;
 
 const firstSentence = (text: string) => text.split(/(?<=[.!?])\s/)[0] ?? '';

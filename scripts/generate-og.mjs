@@ -34,6 +34,9 @@ const PAGES = [
   ['mediCal', 'Medi-Cal Doctor in South Sacramento'],
   ['nivano', 'Nivano Physicians Doctor, Sacramento'],
   ['selfPay', 'Doctor Without Insurance in Sacramento'],
+  ['sportsPhysical', 'Sports Physical in Sacramento, CA'],
+  ['wellChild', 'Well-Child Exam in Sacramento, CA'],
+  ['chooseDoctor', 'Choosing a Family Doctor in Sacramento'],
   ['contact', 'Contact and Directions in Sacramento'],
   ['faq', 'Family Doctor Questions, Sacramento'],
 ];

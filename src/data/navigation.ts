@@ -34,6 +34,9 @@ const FOOTER_LABELS: Record<PageKey, string> = {
   mediCal: 'Medi-Cal patients',
   nivano: 'Nivano Physicians patients',
   selfPay: 'Doctor without insurance',
+  sportsPhysical: 'Sports physical',
+  wellChild: 'Well-child exam',
+  chooseDoctor: 'Choosing a family doctor',
   contact: 'Contact and directions',
   faq: 'Questions and answers',
 };
@@ -73,6 +76,9 @@ const CRUMB_NAMES: Record<Exclude<PageKey, 'home'>, string> = {
   mediCal: 'Medi-Cal',
   nivano: 'Nivano Physicians',
   selfPay: 'Paying without insurance',
+  sportsPhysical: 'Sports physical',
+  wellChild: 'Well-child exam',
+  chooseDoctor: 'Choosing a family doctor',
   contact: 'Contact',
   faq: 'Questions and answers',
 };

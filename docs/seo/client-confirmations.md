@@ -126,3 +126,10 @@ Google Business Profile, WebMD and Vitals still show Mon-Fri 8:30-5:00 with Satu
 | Item | Fact | Published as |
 |---|---|---|
 | 37 | Dr. Panesar approved all the health content with no edits. The site owner confirmed that the approval date is **12 Nov 2026**. The approval was relayed by the owner; there is no written approval from the doctor in the repo | `CLINICAL_REVIEW.reviewedOn` = `2026-11-12` in `src/data/pages.ts`. Eight pages go live on merge: Medicare, Medi-Cal, Nivano Physicians, no-insurance, same-day, annual physical, immigration, services. Keep the doctor's written approval (email or a signed copy of `docs/clinical-review/review-packet.md`) with the practice's records |
+
+## Open items added 15 Nov 2026 (target-queries work)
+
+| Item | Question for the practice | Blocks |
+|---|---|---|
+| 41 | Does the office see children, and from what age? Are well-child checkups offered? | `/well-child-exam-sacramento` (held), and the "ask whether your child's age can be seen" wording on the sports physical page |
+| 42 | Dr. Panesar's review of the two new health pages (sports physical, well-child exam) in `docs/clinical-review/review-packet.md` | Set `SECOND_CLINICAL_REVIEW.reviewedOn` in `src/data/pages.ts` to publish them |

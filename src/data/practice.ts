@@ -168,6 +168,10 @@ export const HOME_FAQS: readonly FaqItem[] = [
     answer: `${PROVIDER.name}, is a family physician at Apollo Physicians in Sacramento. Dr. Panesar is board certified in family medicine by the ${CREDENTIALS.boardBody}, completed residency at UAMS, and is a USCIS-designated civil surgeon for immigration medical exams. Dr. Panesar sees patients at ${OFFICE.street}.`,
   },
   {
+    question: 'Is Apollo Physicians a primary care practice in South Sacramento?',
+    answer: `Yes. Apollo Physicians is a family medicine practice, which is primary care, in South Sacramento at ${OFFICE.street}. ${PROVIDER.name}, a board-certified family physician, can be your primary care physician for checkups, physicals, vaccinations and ongoing conditions. Call ${CALL} to book or to name Dr. Panesar as your primary doctor.`,
+  },
+  {
     question: 'Is Apollo Physicians accepting new patients?',
     answer: `Yes. Apollo Physicians is accepting new patients at ${OFFICE.street}, ${OFFICE.city}. To become a patient, call ${CALL}, tell the office your insurance plan or that you will pay yourself, and ask for the next available appointment. Bring a photo ID and your insurance card to the first visit.`,
   },

@@ -1,6 +1,8 @@
 import {
   ANNUAL_DIRECT_ANSWER,
   ANNUAL_PHYSICAL,
+  CHOOSE_DOCTOR,
+  CHOOSE_DOCTOR_DIRECT_ANSWER,
   CONTACT,
   CONTACT_DIRECT_ANSWER,
   FAQ_DIRECT_ANSWER,
@@ -23,6 +25,10 @@ import {
   SELF_PAY_DIRECT_ANSWER,
   SERVICES,
   SERVICES_DIRECT_ANSWER,
+  SPORTS_PHYSICAL,
+  SPORTS_PHYSICAL_DIRECT_ANSWER,
+  WELL_CHILD,
+  WELL_CHILD_DIRECT_ANSWER,
   type ContentBlock,
 } from '@/data/content';
 import { CLINICAL_REVIEW, PAGE_META, isLive, reviewedOnLabel, type PageKey } from '@/data/pages';
@@ -57,6 +63,9 @@ const PAGE_TEXT: Record<PageKey, PageText> = {
   mediCal: { directAnswer: MEDI_CAL_DIRECT_ANSWER, blocks: MEDI_CAL.blocks, faqs: MEDI_CAL.faqs },
   nivano: { directAnswer: NIVANO_DIRECT_ANSWER, blocks: NIVANO.blocks, faqs: NIVANO.faqs },
   selfPay: { directAnswer: SELF_PAY_DIRECT_ANSWER, blocks: SELF_PAY.blocks, faqs: SELF_PAY.faqs },
+  sportsPhysical: { directAnswer: SPORTS_PHYSICAL_DIRECT_ANSWER, blocks: SPORTS_PHYSICAL.blocks, faqs: SPORTS_PHYSICAL.faqs },
+  wellChild: { directAnswer: WELL_CHILD_DIRECT_ANSWER, blocks: WELL_CHILD.blocks, faqs: WELL_CHILD.faqs },
+  chooseDoctor: { directAnswer: CHOOSE_DOCTOR_DIRECT_ANSWER, blocks: CHOOSE_DOCTOR.blocks, faqs: CHOOSE_DOCTOR.faqs },
   contact: { directAnswer: CONTACT_DIRECT_ANSWER, blocks: CONTACT.blocks, faqs: CONTACT.faqs },
   faq: { directAnswer: FAQ_DIRECT_ANSWER, blocks: FAQ_HUB.blocks, faqs: FAQ_HUB.faqs },
 };
@@ -77,7 +86,6 @@ export function buildLlmsFullTxt(): string {
   const facts = quickFacts()
     .map((f) => `- ${f.label}: ${f.value}`)
     .join('\n');
-  const reviewed = reviewedOnLabel();
   const sections = [`# ${BRAND.name}: full text of every live page\n\n## Quick facts\n\n${facts}`];
 
   for (const key of Object.keys(PAGE_META) as PageKey[]) {
@@ -88,6 +96,7 @@ export function buildLlmsFullTxt(): string {
     for (const block of visibleBlocks(page.blocks ?? [])) parts.push(blockText(block));
     const faqs = visibleFaqs(page.faqs);
     if (faqs.length) parts.push(['### Questions and answers', ...faqs.map((f) => `Q: ${f.question}\nA: ${f.answer}`)].join('\n\n'));
+    const reviewed = reviewedOnLabel(meta);
     if ('clinical' in meta && meta.clinical && reviewed) parts.push(`Medical review: ${CLINICAL_REVIEW.reviewer}. Last reviewed: ${reviewed}.`);
     sections.push(parts.join('\n\n'));
   }

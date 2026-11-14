@@ -16,6 +16,17 @@ export const CLINICAL_REVIEW = {
   reviewedOn: '2026-11-12' as string | null,
 };
 
+/**
+ * Second review batch: health pages written after the 12 Nov 2026 review (sports physical, well-child exam).
+ * They stay held (404, out of the sitemap and navigation) until Dr. Panesar reviews them, so the first review
+ * date is never shown on content the doctor has not seen. Set reviewedOn to that date (YYYY-MM-DD).
+ */
+export const SECOND_CLINICAL_REVIEW = {
+  reviewer: CLINICAL_REVIEW.reviewer,
+  /** PENDING. See docs/seo/target-queries-2026-11-15.md. */
+  reviewedOn: null as string | null,
+};
+
 export interface PageMeta {
   path: string;
   /** Date of the last content change (YYYY-MM-DD): the sitemap lastmod value. */
@@ -24,6 +35,8 @@ export interface PageMeta {
   description: string;
   /** Contains health information, so it is published only once CLINICAL_REVIEW.reviewedOn is set. */
   clinical?: boolean;
+  /** Written after the first review: published only once SECOND_CLINICAL_REVIEW.reviewedOn is set. */
+  secondReview?: boolean;
   /** Label in the navigation. Omit to leave the page out of the main navigation. */
   navLabel?: string;
 }
@@ -33,9 +46,9 @@ const TODAY = '2026-11-06';
 export const PAGE_META = {
   home: {
     path: '/',
-    lastModified: TODAY,
+    lastModified: '2026-11-14',
     title: 'Family Physician in Sacramento, CA | Apollo Physicians',
-    description: `Family physician in Sacramento at Apollo Physicians, ${OFFICE.street}. Same-day and next-day visits, new patients welcome. Call ${PHONES.main.display}.`,
+    description: `Family physician and primary care doctor in South Sacramento at ${OFFICE.street}. Same-day visits, new patients welcome. Call ${PHONES.main.display}.`,
     navLabel: 'Home',
   },
   newPatients: {
@@ -124,6 +137,28 @@ export const PAGE_META = {
     description: `Nivano Physicians family doctor in South Sacramento. How to choose Dr. Paramjit Panesar, MD, as your primary care doctor. Call ${PHONES.main.display} to verify.`,
     clinical: true,
   },
+  sportsPhysical: {
+    path: '/sports-physical-sacramento',
+    lastModified: '2026-11-14',
+    title: 'Sports Physical in Sacramento, CA | Apollo Physicians',
+    description: `School and sports physical forms completed in South Sacramento by Dr. Paramjit Panesar, MD. Same-day visits, what to bring, how to book. Call ${PHONES.main.display}.`,
+    clinical: true,
+    secondReview: true,
+  },
+  wellChild: {
+    path: '/well-child-exam-sacramento',
+    lastModified: '2026-11-14',
+    title: 'Well-Child Exam in Sacramento, CA | Apollo Physicians',
+    description: `Well-child checkups in South Sacramento with Dr. Paramjit Panesar, MD, a board-certified family physician. What to bring and how to book. Call ${PHONES.main.display}.`,
+    clinical: true,
+    secondReview: true,
+  },
+  chooseDoctor: {
+    path: '/choosing-a-family-doctor-sacramento',
+    lastModified: '2026-11-14',
+    title: 'Choosing a Family Doctor in Sacramento | Apollo Physicians',
+    description: `How to choose a family doctor in Sacramento: check certification, license, insurance and appointments. Apollo Physicians' answers inside. Call ${PHONES.main.display}.`,
+  },
   contact: {
     path: '/contact',
     lastModified: TODAY,
@@ -142,8 +177,13 @@ export const PAGE_META = {
 export type PageKey = keyof typeof PAGE_META;
 
 /** True when a page may be shown: it has no health information, or Dr. Panesar has reviewed it. */
-export function isLive(page: { path: string; clinical?: boolean }): boolean {
-  return !page.clinical || CLINICAL_REVIEW.reviewedOn !== null;
+/** The review date that applies to a page: the second batch has its own. */
+export function reviewDateFor(page: Pick<PageMeta, 'secondReview'> | PageMeta): string | null {
+  return page.secondReview ? SECOND_CLINICAL_REVIEW.reviewedOn : CLINICAL_REVIEW.reviewedOn;
+}
+
+export function isLive(page: PageMeta | { path: string; clinical?: boolean }): boolean {
+  return !page.clinical || reviewDateFor(page as PageMeta) !== null;
 }
 
 /** Pages visitors and search engines can see now. */
@@ -152,8 +192,8 @@ export function livePages(): readonly PageMeta[] {
 }
 
 /** Display form of the review date, for example "6 November 2026". */
-export function reviewedOnLabel(): string | null {
-  const date = CLINICAL_REVIEW.reviewedOn;
+export function reviewedOnLabel(page?: PageMeta): string | null {
+  const date = page ? reviewDateFor(page) : CLINICAL_REVIEW.reviewedOn;
   if (!date) return null;
   return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
 }

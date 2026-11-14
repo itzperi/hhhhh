@@ -45,7 +45,7 @@ export function ContentPage({ pageKey, content, directAnswer, before, after }: C
   const meta = PAGE_META[pageKey];
   const clinical = 'clinical' in meta && meta.clinical;
   const faqs = visibleFaqs(content.faqs);
-  const reviewed = reviewedOnLabel();
+  const reviewed = reviewedOnLabel(meta);
   const livePaths = new Set(livePages().map((page) => page.path));
 
   return (
